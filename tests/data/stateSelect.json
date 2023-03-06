@@ -1,0 +1,25 @@
+{
+  "MIO05020101": [
+    {
+      "label": "Высокий",
+      "isRight": true,
+      "id": "MIO0502010101",
+      "price": 10,
+      "is_selected": true
+    },
+    {
+      "label": "Средний",
+      "isRight": false,
+      "id": "MIO0502010102",
+      "price": 0,
+      "is_selected": false
+    },
+    {
+      "label": "Низкий",
+      "isRight": false,
+      "id": "MIO0502010103",
+      "price": 0,
+      "is_selected": false
+    }
+  ]
+}

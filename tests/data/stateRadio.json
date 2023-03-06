@@ -1,0 +1,25 @@
+{
+  "MIO01040101": [
+    {
+      "label": "Скриншот 1. Error 404.Google",
+      "isRight": true,
+      "id": "MIO0104010101",
+      "price": 20,
+      "is_selected": true
+    },
+    {
+      "label": "Скриншот 2. Письмо. Жалоба в госорганы",
+      "isRight": false,
+      "id": "MIO0104010102",
+      "price": 0,
+      "is_selected": false
+    },
+    {
+      "label": "Не знаю",
+      "isRight": false,
+      "id": "MIO0104010103",
+      "price": 0,
+      "is_selected": false
+    }
+  ]
+}

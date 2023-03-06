@@ -1,0 +1,46 @@
+{
+  "MIO01070101": [
+    {
+      "value": "Я уже заплатил? Или ещё что-то надо делать?",
+      "isRight": true,
+      "id": "MIO0107010101",
+      "price": 10,
+      "is_selected": true
+    },
+    {
+      "value": "Я нигде там с суммой и номером телефона не ошибся?",
+      "isRight": true,
+      "id": "MIO0107010102",
+      "price": 10,
+      "is_selected": false
+    },
+    {
+      "value": "Что еще за напоминание о платеже? Когда и о чем мне будут напоминать?",
+      "isRight": false,
+      "id": "MIO0107010103",
+      "price": 10,
+      "is_selected": false
+    },
+    {
+      "value": "В избранное что добавится? Шаблон или запись в истории платежей?",
+      "isRight": false,
+      "id": "MIO0107010104",
+      "price": 10,
+      "is_selected": false
+    },
+    {
+      "value": "Так, а как мне еще и за бабушкин телефон заплатить?",
+      "isRight": true,
+      "id": "MIO0107010105",
+      "price": 10,
+      "is_selected": false
+    },
+    {
+      "value": "А комиссию, кстати, взяли за платеж?",
+      "isRight": false,
+      "id": "MIO0107010106",
+      "price": 10,
+      "is_selected": true
+    }
+  ]
+}

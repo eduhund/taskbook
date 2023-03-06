@@ -1,0 +1,585 @@
+{
+		"id": "MIO0503",
+		"name": "46",
+		"type": "practice",
+		"required": true,
+		"title": "Предлагаем вашему вниманию",
+		"description": "",
+		"hint": "Исходите из приоритетов пользователя в данной ситуации. В задании возможно несколько вариантов ответов. ",
+		"solution": [
+			{
+				"type": "p",
+				"value": "Здесь нет единственно верного решения. Хотя бы потому, что мы рассматриваем только одну жизненную ситуацию, а их в реальности больше."
+			},
+			{
+				"type": "p",
+				"value": "Здесь надо сделать «достаточно хорошо». Думаем, у вас получилось."
+			}
+		],
+		"maxScore": 400,
+		"content": [
+			{
+				"id": "MIO050301",
+				"intro": [
+					{
+						"id": "MIO0503010001",
+						"type": "p",
+						"value": "6 утра, вы проспали и опаздываете на электричку, но есть шанс успеть: за время поездки в метро купить билет через онлайн-сервис, которым вы никогда не пользовались."
+					},
+					{
+						"id": "MIO0503010002",
+						"type": "p",
+						"value": "Расставьте приоритеты блоков в контексте жизненной ситуации."
+					},
+					{
+						"id": "MIO0503010003",
+						"type": "h2",
+						"value": "Модель информационных ожиданий",
+						"marker": "mio-title"
+					},
+					{
+						"id": "MIO0503010004",
+						"type": "ol",
+						"list": [
+							{
+								"id": "MIO0503010005",
+								"type": "li",
+								"value": "Где тут что?"
+							},
+							{
+								"id": "MIO0503010006",
+								"type": "li",
+								"value": "Как найти мою станцию, их там сотни…"
+							},
+							{
+								"id": "MIO0503010007",
+								"type": "li",
+								"value": "Это точно моя Ивановка, которая под Выборгом? Может, их две?"
+							},
+							{
+								"id": "MIO0503010008",
+								"type": "li",
+								"value": "На карте сбера закончились деньги, они примут Яндекс.Деньги?"
+							},
+							{
+								"id": "MIO0503010009",
+								"type": "li",
+								"value": "Куда бежать на вокзале?"
+							},
+							{
+								"id": "MIO0503010010",
+								"type": "li",
+								"value": "Купить билет"
+							}
+						]
+					},
+					{
+						"id": "MIO0503010011",
+						"type": "matrixQuestion",
+						"value": "В какой области интерфейса лучше разместить  элемент?"
+					},
+					{
+						"id": "MIO0503010012",
+						"type": "matrixAlt",
+						"value": "Возможны разные варианты решения"
+					}
+				],
+				"questions": [
+					{
+						"type": "choice",
+						"subtopic": "Куда поместить этот элемент?",
+						"variants": [
+							{
+								"id": "MIO0503010101",
+								"label": "1",
+								"isRight": true,
+								"price": 10
+							},
+							{
+								"id": "MIO0503010102",
+								"label": "2",
+								"isRight": true,
+								"price": 10
+							},
+							{
+								"id": "MIO0503010103",
+								"label": "3",
+								"isRight": true,
+								"price": 10
+							},
+							{
+								"id": "MIO0503010104",
+								"label": "4",
+								"isRight": true,
+								"price": 10
+							},
+							{
+								"id": "MIO0503010105",
+								"label": "5",
+								"isRight": true,
+								"price": 10
+							},
+							{
+								"id": "MIO0503010106",
+								"label": "6",
+								"isRight": false,
+								"price": 0
+							},
+							{
+								"id": "MIO0503010107",
+								"label": "7",
+								"isRight": false,
+								"price": 0
+							},
+							{
+								"id": "MIO0503010108",
+								"label": "8",
+								"isRight": false,
+								"price": 0
+							}
+						],
+						"id": "MIO05030101",
+						"maxScore": 50
+					},
+					{
+						"type": "choice",
+						"subtopic": "Куда поместить этот элемент?",
+						"variants": [
+							{
+								"id": "MIO0503010201",
+								"label": "1",
+								"isRight": true,
+								"price": 10
+							},
+							{
+								"id": "MIO0503010202",
+								"label": "2",
+								"isRight": true,
+								"price": 10
+							},
+							{
+								"id": "MIO0503010203",
+								"label": "3",
+								"isRight": true,
+								"price": 10
+							},
+							{
+								"id": "MIO0503010204",
+								"label": "4",
+								"isRight": true,
+								"price": 10
+							},
+							{
+								"id": "MIO0503010205",
+								"label": "5",
+								"isRight": true,
+								"price": 10
+							},
+							{
+								"id": "MIO0503010206",
+								"label": "6",
+								"isRight": false,
+								"price": 0
+							},
+							{
+								"id": "MIO0503010207",
+								"label": "7",
+								"isRight": false,
+								"price": 0
+							},
+							{
+								"id": "MIO0503010208",
+								"label": "8",
+								"isRight": false,
+								"price": 0
+							}
+						],
+						"id": "MIO05030102",
+						"maxScore": 50
+					},
+					{
+						"type": "choice",
+						"subtopic": "Куда поместить этот элемент?",
+						"variants": [
+							{
+								"id": "MIO0503010301",
+								"label": "1",
+								"isRight": true,
+								"price": 10
+							},
+							{
+								"id": "MIO0503010302",
+								"label": "2",
+								"isRight": true,
+								"price": 10
+							},
+							{
+								"id": "MIO0503010303",
+								"label": "3",
+								"isRight": true,
+								"price": 10
+							},
+							{
+								"id": "MIO0503010304",
+								"label": "4",
+								"isRight": true,
+								"price": 10
+							},
+							{
+								"id": "MIO0503010305",
+								"label": "5",
+								"isRight": true,
+								"price": 10
+							},
+							{
+								"id": "MIO0503010306",
+								"label": "6",
+								"isRight": false,
+								"price": 0
+							},
+							{
+								"id": "MIO0503010307",
+								"label": "7",
+								"isRight": false,
+								"price": 0
+							},
+							{
+								"id": "MIO0503010308",
+								"label": "8",
+								"isRight": false,
+								"price": 0
+							}
+						],
+						"id": "MIO05030103",
+						"maxScore": 50
+					},
+					{
+						"type": "choice",
+						"subtopic": "Куда поместить этот элемент?",
+						"variants": [
+							{
+								"id": "MIO0503010401",
+								"label": "1",
+								"isRight": true,
+								"price": 10
+							},
+							{
+								"id": "MIO0503010402",
+								"label": "2",
+								"isRight": true,
+								"price": 10
+							},
+							{
+								"id": "MIO0503010403",
+								"label": "3",
+								"isRight": true,
+								"price": 10
+							},
+							{
+								"id": "MIO0503010404",
+								"label": "4",
+								"isRight": true,
+								"price": 10
+							},
+							{
+								"id": "MIO0503010405",
+								"label": "5",
+								"isRight": true,
+								"price": 10
+							},
+							{
+								"id": "MIO0503010406",
+								"label": "6",
+								"isRight": false,
+								"price": 0
+							},
+							{
+								"id": "MIO0503010407",
+								"label": "7",
+								"isRight": false,
+								"price": 0
+							},
+							{
+								"id": "MIO0503010408",
+								"label": "8",
+								"isRight": false,
+								"price": 0
+							}
+						],
+						"id": "MIO05030104",
+						"maxScore": 50
+					},
+					{
+						"type": "choice",
+						"subtopic": "Куда поместить этот элемент?",
+						"variants": [
+							{
+								"id": "MIO0503010501",
+								"label": "1",
+								"isRight": true,
+								"price": 10
+							},
+							{
+								"id": "MIO0503010502",
+								"label": "2",
+								"isRight": true,
+								"price": 10
+							},
+							{
+								"id": "MIO0503010503",
+								"label": "3",
+								"isRight": true,
+								"price": 10
+							},
+							{
+								"id": "MIO0503010504",
+								"label": "4",
+								"isRight": true,
+								"price": 10
+							},
+							{
+								"id": "MIO0503010505",
+								"label": "5",
+								"isRight": true,
+								"price": 10
+							},
+							{
+								"id": "MIO0503010506",
+								"label": "6",
+								"isRight": false,
+								"price": 0
+							},
+							{
+								"id": "MIO0503010507",
+								"label": "7",
+								"isRight": false,
+								"price": 0
+							},
+							{
+								"id": "MIO0503010508",
+								"label": "8",
+								"isRight": false,
+								"price": 0
+							}
+						],
+						"id": "MIO05030105",
+						"maxScore": 50
+					},
+					{
+						"type": "choice",
+						"subtopic": "Куда поместить этот элемент?",
+						"variants": [
+							{
+								"id": "MIO0503010601",
+								"label": "1",
+								"isRight": true,
+								"price": 10
+							},
+							{
+								"id": "MIO0503010602",
+								"label": "2",
+								"isRight": true,
+								"price": 10
+							},
+							{
+								"id": "MIO0503010603",
+								"label": "3",
+								"isRight": true,
+								"price": 10
+							},
+							{
+								"id": "MIO0503010604",
+								"label": "4",
+								"isRight": true,
+								"price": 10
+							},
+							{
+								"id": "MIO0503010605",
+								"label": "5",
+								"isRight": true,
+								"price": 10
+							},
+							{
+								"id": "MIO0503010606",
+								"label": "6",
+								"isRight": false,
+								"price": 0
+							},
+							{
+								"id": "MIO0503010607",
+								"label": "7",
+								"isRight": false,
+								"price": 0
+							},
+							{
+								"id": "MIO0503010608",
+								"label": "8",
+								"isRight": false,
+								"price": 0
+							}
+						],
+						"id": "MIO05030106",
+						"maxScore": 50
+					},
+					{
+						"type": "choice",
+						"subtopic": "Куда поместить этот элемент?",
+						"variants": [
+							{
+								"id": "MIO0503010701",
+								"label": "1",
+								"isRight": true,
+								"price": 10
+							},
+							{
+								"id": "MIO0503010702",
+								"label": "2",
+								"isRight": true,
+								"price": 10
+							},
+							{
+								"id": "MIO0503010703",
+								"label": "3",
+								"isRight": true,
+								"price": 10
+							},
+							{
+								"id": "MIO0503010704",
+								"label": "4",
+								"isRight": true,
+								"price": 10
+							},
+							{
+								"id": "MIO0503010705",
+								"label": "5",
+								"isRight": true,
+								"price": 10
+							},
+							{
+								"id": "MIO0503010706",
+								"label": "6",
+								"isRight": false,
+								"price": 0
+							},
+							{
+								"id": "MIO0503010707",
+								"label": "7",
+								"isRight": false,
+								"price": 0
+							},
+							{
+								"id": "MIO0503010708",
+								"label": "8",
+								"isRight": false,
+								"price": 0
+							}
+						],
+						"id": "MIO05030107",
+						"maxScore": 50
+					},
+					{
+						"type": "choice",
+						"subtopic": "Куда поместить этот элемент?",
+						"variants": [
+							{
+								"id": "MIO0503010801",
+								"label": "1",
+								"isRight": true,
+								"price": 10
+							},
+							{
+								"id": "MIO0503010802",
+								"label": "2",
+								"isRight": true,
+								"price": 10
+							},
+							{
+								"id": "MIO0503010803",
+								"label": "3",
+								"isRight": true,
+								"price": 10
+							},
+							{
+								"id": "MIO0503010804",
+								"label": "4",
+								"isRight": true,
+								"price": 10
+							},
+							{
+								"id": "MIO0503010805",
+								"label": "5",
+								"isRight": true,
+								"price": 10
+							},
+							{
+								"id": "MIO0503010806",
+								"label": "6",
+								"isRight": false,
+								"price": 0
+							},
+							{
+								"id": "MIO0503010807",
+								"label": "7",
+								"isRight": false,
+								"price": 0
+							},
+							{
+								"id": "MIO0503010808",
+								"label": "8",
+								"isRight": false,
+								"price": 0
+							}
+						],
+						"id": "MIO05030108",
+						"maxScore": 50
+					}
+				],
+				"img": [
+					{
+						"url": "http://files.pavlova.cc/eduhund/mio5/%D0%AD%D0%BA%D1%80%D0%B0%D0%BD%20%D1%81%20%D0%B1%D0%BB%D0%BE%D0%BA%D0%B0%D0%BC%D0%B8%20%D0%B4%D0%BB%D1%8F%20%D1%81%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B8.png",
+						"thumbnails": [
+							"http://files.pavlova.cc/eduhund/MIO5_1120/ektan_s_blikami_dla_sortirovki.webp"
+						],
+						"id": "MIO0503010013"
+					},
+					{
+						"url": "https://thumb.tildacdn.com/tild3937-6362-4362-b139-373463343065/-/resize/996x/-/format/webp/tutu1.png",
+						"thumbnails": [
+							"http://files.pavlova.cc/eduhund/MIO5_1120/tutu.webp"
+						],
+						"id": "MIO0503010014"
+					},
+					{
+						"url": "https://thumb.tildacdn.com/tild3438-6130-4964-b935-373662373537/-/format/webp/tutu2.png",
+						"id": "MIO0503010015"
+					},
+					{
+						"url": "https://thumb.tildacdn.com/tild3764-6237-4430-a166-363331666464/-/format/webp/tutu3.png",
+						"id": "MIO0503010016"
+					},
+					{
+						"url": "https://thumb.tildacdn.com/tild6230-3661-4433-b663-303962386435/-/format/webp/tutu4.png",
+						"id": "MIO0503010017"
+					},
+					{
+						"url": "https://thumb.tildacdn.com/tild3231-6333-4063-b462-386162306364/-/resize/968x/-/format/webp/tutu5.png",
+						"id": "MIO0503010018"
+					},
+					{
+						"url": "https://thumb.tildacdn.com/tild6330-3332-4661-b964-626437333134/-/resize/786x/-/format/webp/tutu6.png",
+						"id": "MIO0503010019"
+					},
+					{
+						"url": "https://thumb.tildacdn.com/tild3064-3933-4063-a434-636237376636/-/format/webp/tutu7.png",
+						"thumbnails": [
+							"http://files.pavlova.cc/eduhund/MIO5_1120/shema_poezdov.webp"
+						],
+						"id": "MIO0503010020"
+					}
+				],
+				"refs": []
+			}
+		],
+		"module": "MIO",
+		"lesson": 5
+	}
