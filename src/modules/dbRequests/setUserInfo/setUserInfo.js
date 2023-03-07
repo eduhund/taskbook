@@ -1,16 +1,16 @@
 const { log } = require("../../../utils/logger");
 const { db } = require("../mongo");
 
-async function setPassword({ email, pass }) {
+async function setUserInfo({ email, data }) {
   log.debug("Set password for login: " + email);
   return db.USERS.findOneAndUpdate(
     { email },
-    { $set: { pass } },
+    { $set: data },
     { upsert: true, returnDocument: "after", returnNewDocument: true }
   ).then((user) => {
-    log.info("Updated user: " + user);
+    log.info("Updated user: " + user.value);
     return user.value;
   });
 }
 
-module.exports.setPassword = setPassword;
+module.exports.setUserInfo = setUserInfo;

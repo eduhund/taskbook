@@ -12,7 +12,7 @@ const { setComment } = require("./setComment/setComment");
 const { setState } = require("./setState/setState");
 const { setControls } = require("./setControls/setControls");
 const { addUserAction } = require("./addUserAction/addUserAction");
-const { setPassword } = require("./setPassword/setPassword");
+const { setUserInfo } = require("./setUserInfo/setUserInfo");
 
 const REQUESTS = {
   getUserInfo,
@@ -27,7 +27,7 @@ const REQUESTS = {
   setState,
   setControls,
   addUserAction,
-  setPassword,
+  setUserInfo,
 };
 
 function getDBRequest(type, params) {
