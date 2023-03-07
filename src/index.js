@@ -1,5 +1,7 @@
 require("dotenv").config();
 
+const { defaultLanguage } = require("../config.json");
+
 const { log } = require("./utils/logger");
 const fs = require("fs");
 const express = require("express");
@@ -42,7 +44,11 @@ const { lowerString } = require("./utils/lowString");
 apiRouter.post("/auth", (req, res) => {
   const email = lowerString(req.body.email);
   const pass = req.body.pass;
-  getApiRequest("authUser", { email, pass }).then((response) => {
+  const lang = ["ru, en"].includes(req.body.lang)
+    ? req.body.lang
+    : defaultLanguage;
+
+  getApiRequest("authUser", { email, pass, lang }).then((response) => {
     if (response?.status === 0) {
       res.status(200);
       res.send({
@@ -67,7 +73,7 @@ apiRouter.post("/createPassword", async (req, res) => {
   const newPass = req.body.newPass;
   const verifyKey = req.body.verifyKey;
   if (await checkKey(verifyKey)) {
-    getDBRequest("setPassword", { email, pass: hashPass(newPass) })
+    getDBRequest("setUserInfo", { email, data: { pass: hashPass(newPass) } })
       .then((user) => {
         if (user) {
           return getApiRequest("authUser", { email, pass: newPass });

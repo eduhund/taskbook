@@ -6,22 +6,24 @@ const { checkPass } = require("../../../utils/pass");
 
 const tokens = accessTokens;
 
-async function authUser({ email, pass }) {
+async function authUser({ email, pass, lang }) {
   const user = await getDBRequest("getUserInfo", {
     query: { email },
   });
   if (user) {
     if (checkPass(user, pass)) {
       const userToken = tokens.setToken(user);
+      lang !== user.lang &&
+        getDBRequest("setUserInfo", { email, data: { lang } });
       log.info(`Auth success!`);
-      log.debug(tokens.checkList());
       return {
         status: 0,
         data: {
+          id: user.id,
           email: user.email,
           firstName: user.firstName,
           lastName: user.lastName,
-          id: user.id,
+          lang,
           token: userToken,
         },
       };
