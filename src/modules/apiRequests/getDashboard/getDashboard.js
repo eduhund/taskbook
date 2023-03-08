@@ -36,6 +36,9 @@ async function getDashboard({ userId }) {
     const today = Date.now();
     const startDate = Date.parse(userModules[moduleId].start);
     const deadline = Date.parse(userModules[moduleId].deadline);
+    const UTCMidnight = new Date(deadline);
+    UTCMidnight.setUTCHours(23, 59, 59, 0);
+    const UTCDeadline = Date.parse(UTCMidnight);
 
     moduleData.startDate = userModules[moduleId].start;
     moduleData.deadline = userModules[moduleId].deadline;
@@ -48,15 +51,19 @@ async function getDashboard({ userId }) {
 
     if (today < startDate) {
       moduleData.status = "paid";
-    } else if (today >= deadline) {
+    } else if (today >= UTCDeadline) {
       moduleData.status = "past";
-    } else if (today >= deadline - 864000000 && today < deadline) {
+    } else if (today >= UTCDeadline - 864000000 && today < UTCDeadline) {
       moduleData.status = "deadline";
     } else {
       moduleData.status = "active";
     }
 
-    if (moduleData.status == "active" || moduleData.status == "deadline" || moduleData.status == "past") {
+    if (
+      moduleData.status == "active" ||
+      moduleData.status == "deadline" ||
+      moduleData.status == "past"
+    ) {
       const moduleState = await getDBRequest("getUserState", {
         query: {
           userId,
