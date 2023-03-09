@@ -360,6 +360,18 @@ apiRouter.post("/checkTask", checkAuth, (req, res) => {
   }
 });
 
+apiRouter.get("/getCounselor", checkAuth, (req, res) => {
+  const userId = req?.userId;
+  addUserAction({
+    userId,
+    action: "getCounselor",
+    req,
+  });
+  getApiRequest("getCounselor", {}).then((data) => {
+    res.send(data);
+  });
+});
+
 const server = https.createServer(options, app);
 
 server.listen(port, () => {

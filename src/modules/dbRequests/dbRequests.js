@@ -13,6 +13,7 @@ const { setState } = require("./setState/setState");
 const { setControls } = require("./setControls/setControls");
 const { addUserAction } = require("./addUserAction/addUserAction");
 const { setUserInfo } = require("./setUserInfo/setUserInfo");
+const { getCounselor } = require("./getCounselor/getCounselor");
 
 const REQUESTS = {
   getUserInfo,
@@ -28,6 +29,7 @@ const REQUESTS = {
   setControls,
   addUserAction,
   setUserInfo,
+  getCounselor,
 };
 
 function getDBRequest(type, params) {

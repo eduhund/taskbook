@@ -9,5 +9,8 @@ const STATE = mongoClient.db(process.env.DATABASE_NAME).collection("state");
 const MODULES = mongoClient.db(process.env.DATABASE_NAME).collection("modules");
 const ACTIONS = mongoClient.db(process.env.DATABASE_NAME).collection("actions");
 const CERTS = mongoClient.db(process.env.DATABASE_NAME).collection("certs");
+const COUNSELOR = mongoClient
+  .db(process.env.DATABASE_NAME)
+  .collection("counselor_ru");
 
-module.exports.db = { USERS, TASKS, STATE, MODULES, ACTIONS, CERTS };
+module.exports.db = { USERS, TASKS, STATE, MODULES, ACTIONS, CERTS, COUNSELOR };

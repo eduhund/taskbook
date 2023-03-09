@@ -13,6 +13,7 @@ const { getModuleInfo } = require("./getModuleInfo/getModuleInfo");
 const { getLessonsList } = require("./getLessonsList/getLessonsList");
 const { getTasksList } = require("./getTasksList/getTasksList");
 const { addComment } = require("./addComment/addComment");
+const { getCounselor } = require("./getCounselor/getCounselor");
 
 const REQUESTS = {
   authUser,
@@ -30,6 +31,7 @@ const REQUESTS = {
   getLessonsList,
   getTasksList,
   addComment,
+  getCounselor,
 };
 
 function getApiRequest(type, params) {
