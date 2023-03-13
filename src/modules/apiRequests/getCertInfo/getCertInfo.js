@@ -2,6 +2,7 @@ const { log } = require("../../../utils/logger");
 const { getDBRequest } = require("../../dbRequests/dbRequests");
 const { generateSkills } = require("./generateSkills");
 const { generateCertId } = require("../../../utils/generateCertId");
+const { createCert } = require("../../../utils/certGenerator");
 
 async function getCertInfo({ userId, moduleId }) {
   const requests = [
@@ -61,6 +62,8 @@ async function getCertInfo({ userId, moduleId }) {
   }, 0);
 
   moduleData.skills = await generateSkills(moduleId, userId);
+
+  moduleData.fileId = createCert(moduleId, {}, []);
 
   return {
     OK: true,

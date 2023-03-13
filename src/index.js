@@ -7,6 +7,7 @@ const fs = require("fs");
 const express = require("express");
 const https = require("https");
 const cors = require("cors");
+const path = require("node:path");
 
 const { getDBRequest } = require("./modules/dbRequests/dbRequests");
 const { getApiRequest } = require("./modules/apiRequests/apiRequests");
@@ -30,12 +31,14 @@ const options = {
 };
 
 const apiRouter = express.Router();
+const diplomas = express.Router();
 
 app.use(cors());
 app.use(express.static("static"));
 app.use(express.json());
 app.use(require("body-parser").urlencoded({ extended: false }));
 app.use("/api/v2", apiRouter);
+app.use("/diplomas", diplomas);
 
 const { lowerString } = require("./utils/lowString");
 
@@ -370,6 +373,14 @@ apiRouter.get("/getCounselor", checkAuth, (req, res) => {
   getApiRequest("getCounselor", {}).then((data) => {
     res.send(data);
   });
+});
+
+diplomas.get("/:id", (req, res) => {
+  const fileId = req.params.id;
+  const filePath = path.resolve(`./diplomas/${fileId}.png`);
+  if (fs.existsSync(filePath)) {
+    res.sendFile(filePath);
+  } else res.sendStatus(400);
 });
 
 const server = https.createServer(options, app);
