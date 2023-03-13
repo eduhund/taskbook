@@ -2,6 +2,14 @@ const sharp = require("sharp");
 const crypto = require("crypto");
 const fs = require("fs");
 
+const mainColors = {
+  MIO: "#FAC43B",
+  TXT: "#A6200E",
+  HSB: "#0C356C",
+  COM: "#6B70E2",
+  UCC: "#295A12",
+};
+
 /**
  * @param {string} str
  * @returns {string}
@@ -72,9 +80,8 @@ function processValues(svg, values) {
   }
   for (const [identifier, elementValue] of values) {
     const multiline = identifier.startsWith("multiline");
-    console.log(identifier, elementValue);
     if (!multiline) {
-      svg = svg.replace(prefix + identifier + suffix, elementValue);
+      svg = svg.replaceAll(prefix + identifier + suffix, elementValue);
     } else {
       var identifierIndex = svg.length;
       while (identifierIndex >= 0) {
@@ -105,37 +112,52 @@ function processValues(svg, values) {
  */
 function buildSvg(svg, [values, disciplines]) {
   var valuesMap = new Map(Object.entries(values));
-  var date = (valuesMap.get("date") || "2022-09-01").split("-");
-  date.reverse();
-  date = date.join(".");
-  valuesMap.set("date", date);
+  var date = new Date(valuesMap.get("certDate") || "2022-09-01")
+    .toLocaleDateString("ru-RU", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    })
+    .replace(" г.", "");
+  valuesMap.set("certDate", date);
   svg = processDisciplines(svg, disciplines);
   svg = processValues(svg, valuesMap);
   return svg;
 }
 
 function createCert(module, params, data) {
-  const info = {
-    header: "#0071B2",
-    headerOpacity: "1",
-    background: "#ffffff",
-    foreground: "#002033",
-    foreground2: "#0071B2",
-    date: "2022-12-31",
-    certType: "зачетку",
-    certId: `MIO00000000`,
-    firstName: "Роман",
-    lastName: "Небыль",
-    totalScore: 100,
-    multilineCourseName: "Информационные ожидания",
-    code: "MIO",
-  };
-  //const [info, disciplines] = data;
-  var svg = fs.readFileSync(`./templates/diplomas/${module}.svg`).toString();
-  const processed = buildSvg(svg, [info, []]);
+  const [info, disciplines] = data;
+  var svg = fs.readFileSync(`./templates/diplomas/poster.svg`).toString();
+  info.bgColor = params.colored ? mainColors[module] || "#101010" : "#FFFFFF";
+  info.primaryColor =
+    params.colored && module !== "MIO" ? "#FFFFFF" : mainColors[module];
+  info.textColor = !params.colored || module !== "MIO" ? "#101010" : "#FFFFFF";
+  info.headerOpacity = info?.progress < 60 ? "0.1" : "1";
+
+  if (params.colored && module !== "MIO") {
+    info.skillOpacity = "0.77";
+  } else if (params.colored && module === "MIO") {
+    info.skillOpacity = "0.6";
+  } else if (params.progress) {
+    info.skillOpacity = "0";
+  } else info.skillOpacity = "1";
+
+  if (params.mascot && info?.progress >= 60) {
+    info.mascotOpacity = "1";
+  } else if (params.mascot && info?.progress < 60) {
+    info.mascotOpacity = "0.3";
+  } else info.mascotOpacity = "0";
+
+  if (params.progress && info?.progress >= 60) {
+    info.progressOpacity = "1";
+  } else if (params.progress && info?.progress < 60) {
+    info.progressOpacity = "0.3";
+  } else info.progressOpacity = "0";
+
+  const processed = buildSvg(svg, [info, disciplines]);
   const fileId = crypto
     .createHash("sha256")
-    .update(`MIO00000000`)
+    .update(data[0]?.certId)
     .digest("hex");
   sharp(Buffer.from(processed)).png().toFile(`./diplomas/${fileId}.png`);
   return fileId;
