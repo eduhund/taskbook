@@ -218,17 +218,17 @@ apiRouter.get("/getLessonFinal", checkAuth, checkModuleAccess, (req, res) => {
 });
 
 // Get diploma's data
-apiRouter.get("/getCertInfo", checkAuth, checkCertAccess, (req, res) => {
+apiRouter.get("/getDiploma", checkAuth, checkCertAccess, (req, res) => {
   const userId = req?.userId;
   const moduleId = req?.query?.moduleId;
   if (validate(res, moduleId)) {
     addUserAction({
       userId,
-      action: "getCertInfo",
+      action: "getDiploma",
       data: { moduleId },
       req,
     });
-    getApiRequest("getCertInfo", { userId, moduleId }).then((data) => {
+    getApiRequest("getDiploma", { userId, moduleId }).then((data) => {
       res.send(data);
     });
   }
@@ -375,11 +375,14 @@ apiRouter.get("/getCounselor", checkAuth, (req, res) => {
   });
 });
 
-diplomas.get("/:id", (req, res) => {
+diplomas.get("/:id/:size", (req, res) => {
   const fileId = req.params.id;
-  const filePath = path.resolve(`./diplomas/${fileId}.png`);
-  if (fs.existsSync(filePath)) {
-    res.sendFile(filePath);
+  const size = req.params.size;
+  if (size) {
+    const filePath = path.resolve(`./diplomas/${fileId}/${size}.png`);
+    if (fs.existsSync(filePath)) {
+      res.sendFile(filePath);
+    }
   } else res.sendStatus(400);
 });
 

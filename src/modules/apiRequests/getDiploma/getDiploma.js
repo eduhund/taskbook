@@ -12,7 +12,7 @@ function setCertType(progress = 0) {
   } else return "зачетку";
 }
 
-async function getCertInfo({ userId, moduleId }) {
+async function getDiploma({ userId, moduleId }) {
   const requests = [
     getDBRequest("getUserInfo", {
       query: { id: userId },
@@ -31,13 +31,14 @@ async function getCertInfo({ userId, moduleId }) {
   ];
   const [userData, stateData, moduleData] = await Promise.all(requests);
 
+  const start = userData?.modules?.[moduleId]?.deadline;
   const deadline = userData?.modules?.[moduleId]?.deadline;
   const now = new Date(Date.now()).toISOString().split("T")[0];
   const certDate = Date.parse(deadline) < Date.parse(now) ? deadline : now;
 
   const certId =
     userData?.modules?.[moduleId]?.certId ||
-    (await generateCertId(userId, moduleId, moduleData.start));
+    (await generateCertId(userId, moduleId, start));
 
   const firstName = userData.firstName;
   const lastName = userData.lastName;
@@ -75,7 +76,7 @@ async function getCertInfo({ userId, moduleId }) {
 
   const params = {
     lang: "ru",
-    colored: false,
+    colored: true,
     mascot: true,
     progress: true,
   };
@@ -95,6 +96,7 @@ async function getCertInfo({ userId, moduleId }) {
 
   moduleData.firstName = firstName;
   moduleData.lastName = lastName;
+  moduleData.start = start;
   moduleData.deadline = deadline;
   moduleData.certDate = certDate;
   moduleData.certId = certId;
@@ -113,4 +115,4 @@ async function getCertInfo({ userId, moduleId }) {
   };
 }
 
-module.exports.getCertInfo = getCertInfo;
+module.exports.getDiploma = getDiploma;

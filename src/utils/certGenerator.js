@@ -1,6 +1,7 @@
 const sharp = require("sharp");
 const crypto = require("crypto");
 const fs = require("fs");
+const path = require("node:path");
 
 const mainColors = {
   MIO: "#FAC43B",
@@ -91,7 +92,6 @@ function processValues(svg, values) {
         var closeTagIndex = svg.indexOf(">", identifierIndex);
         if (openTagIndex < 0 || closeTagIndex < 0) break;
         var tag = svg.slice(openTagIndex, closeTagIndex + 1);
-        console.log(tag);
         var elementValueTrim = hyphenate(elementValue, 8).split("\n");
         var content =
           elementValueTrim == null
@@ -131,7 +131,7 @@ function createCert(module, params, data) {
   info.bgColor = params.colored ? mainColors[module] || "#101010" : "#FFFFFF";
   info.primaryColor =
     params.colored && module !== "MIO" ? "#FFFFFF" : mainColors[module];
-  info.textColor = !params.colored || module !== "MIO" ? "#101010" : "#FFFFFF";
+  info.textColor = params.colored || module !== "MIO" ? "#FFFFFF" : "#101010";
   info.headerOpacity = info?.progress < 60 ? "0.1" : "1";
 
   if (params.colored && module !== "MIO") {
@@ -142,9 +142,9 @@ function createCert(module, params, data) {
     info.skillOpacity = "0";
   } else info.skillOpacity = "1";
 
-  if (params.mascot && info?.progress >= 60) {
+  if (params.mascot && !params.colored && info?.progress >= 60) {
     info.mascotOpacity = "1";
-  } else if (params.mascot && info?.progress < 60) {
+  } else if (params.mascot && !params.colored && info?.progress < 60) {
     info.mascotOpacity = "0.3";
   } else info.mascotOpacity = "0";
 
@@ -154,12 +154,28 @@ function createCert(module, params, data) {
     info.progressOpacity = "0.3";
   } else info.progressOpacity = "0";
 
+  info.signColor = params.colored || module !== "MIO" ? "w" : "b";
+
   const processed = buildSvg(svg, [info, disciplines]);
   const fileId = crypto
     .createHash("sha256")
     .update(data[0]?.certId)
     .digest("hex");
-  sharp(Buffer.from(processed)).png().toFile(`./diplomas/${fileId}.png`);
+
+  const buffer = Buffer.from(processed);
+  const folderPath = path.resolve(`./diplomas/${fileId}`);
+  if (!fs.existsSync(folderPath)) {
+    fs.mkdirSync(`./diplomas/${fileId}`, { recursive: true });
+  }
+  sharp(buffer, { density: 600 })
+    .png({ compressionLevel: 9 })
+    .toFile(folderPath + `/large.png`);
+  sharp(buffer, { density: 300 })
+    .png({ compressionLevel: 6 })
+    .toFile(folderPath + `/medium.png`);
+  sharp(buffer, { density: 150 })
+    .png({ compressionLevel: 6 })
+    .toFile(folderPath + `/small.png`);
   return fileId;
 }
 
