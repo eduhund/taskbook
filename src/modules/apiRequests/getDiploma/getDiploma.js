@@ -76,7 +76,7 @@ async function getDiploma({ userId, moduleId }) {
 
   const params = {
     lang: "ru",
-    colored: true,
+    colored: false,
     mascot: true,
     progress: true,
   };
