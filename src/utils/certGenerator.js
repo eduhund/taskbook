@@ -125,20 +125,20 @@ function buildSvg(svg, [values, disciplines]) {
   return svg;
 }
 
-function createCert(module, params, data) {
+async function createCert(module, params, data) {
   const [info, disciplines] = data;
   var svg = fs.readFileSync(`./templates/diplomas/poster.svg`).toString();
   info.bgColor = params.colored ? mainColors[module] || "#101010" : "#FFFFFF";
   info.primaryColor =
     params.colored && module !== "MIO" ? "#FFFFFF" : mainColors[module];
-  info.textColor = params.colored || module !== "MIO" ? "#FFFFFF" : "#101010";
+  info.textColor = module === "MIO" || !params.colored ? "#101010" : "#FFFFFF";
   info.headerOpacity = info?.progress < 60 ? "0.1" : "1";
 
   if (params.colored && module !== "MIO") {
     info.skillOpacity = "0.77";
   } else if (params.colored && module === "MIO") {
     info.skillOpacity = "0.6";
-  } else if (params.progress) {
+  } else if (!params.progress) {
     info.skillOpacity = "0";
   } else info.skillOpacity = "1";
 
@@ -156,6 +156,8 @@ function createCert(module, params, data) {
 
   info.signColor = params.colored || module !== "MIO" ? "w" : "b";
 
+  console.log(info);
+
   const processed = buildSvg(svg, [info, disciplines]);
   const fileId = crypto
     .createHash("sha256")
@@ -167,15 +169,9 @@ function createCert(module, params, data) {
   if (!fs.existsSync(folderPath)) {
     fs.mkdirSync(`./diplomas/${fileId}`, { recursive: true });
   }
-  sharp(buffer, { density: 600 })
-    .png({ compressionLevel: 9 })
-    .toFile(folderPath + `/large.png`);
-  sharp(buffer, { density: 300 })
-    .png({ compressionLevel: 6 })
+  await sharp(buffer, { density: 150 })
+    .png()
     .toFile(folderPath + `/medium.png`);
-  sharp(buffer, { density: 150 })
-    .png({ compressionLevel: 6 })
-    .toFile(folderPath + `/small.png`);
   return fileId;
 }
 

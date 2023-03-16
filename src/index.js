@@ -35,10 +35,10 @@ const diplomas = express.Router();
 
 app.use(cors());
 app.use(express.static("static"));
+app.use("/diplomas", express.static("diplomas"));
 app.use(express.json());
 app.use(require("body-parser").urlencoded({ extended: false }));
 app.use("/api/v2", apiRouter);
-app.use("/diplomas", diplomas);
 
 const { lowerString } = require("./utils/lowString");
 
@@ -373,17 +373,6 @@ apiRouter.get("/getCounselor", checkAuth, (req, res) => {
   getApiRequest("getCounselor", {}).then((data) => {
     res.send(data);
   });
-});
-
-diplomas.get("/:id/:size", (req, res) => {
-  const fileId = req.params.id;
-  const size = req.params.size;
-  if (size) {
-    const filePath = path.resolve(`./diplomas/${fileId}/${size}.png`);
-    if (fs.existsSync(filePath)) {
-      res.sendFile(filePath);
-    }
-  } else res.sendStatus(400);
 });
 
 const server = https.createServer(options, app);

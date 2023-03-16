@@ -83,7 +83,7 @@ async function getOneSkill(userId, skill) {
 async function generateSkills(moduleId, userId) {
   const skills = [];
 
-  for (skill of SKILLS[moduleId]) {
+  for (skill of SKILLS[moduleId] || []) {
     skills.push(await getOneSkill(userId, skill));
   }
 

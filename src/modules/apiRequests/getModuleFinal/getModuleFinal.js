@@ -15,7 +15,14 @@ async function getModuleFinal({ userId, moduleId }) {
     }),
     getDBRequest("getModuleInfo", {
       query: { code: moduleId },
-      returns: ["name", "shortName", "lessons", "final", "totalTasks"],
+      returns: [
+        "name",
+        "shortName",
+        "lessons",
+        "final",
+        "totalTasks",
+        "mascot",
+      ],
     }),
   ];
   const [userData, stateData, moduleData] = await Promise.all(requests);

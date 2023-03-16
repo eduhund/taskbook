@@ -92,7 +92,7 @@ async function getDiploma({ userId, moduleId }) {
     multilineCourseName: moduleData?.name,
   };
 
-  const fileId = createCert(moduleId, params, [info, skills]);
+  const fileId = await createCert(moduleId, params, [info, skills]);
 
   moduleData.firstName = firstName;
   moduleData.lastName = lastName;
