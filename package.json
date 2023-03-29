@@ -18,7 +18,8 @@
     "log4js": "^6.7.0",
     "mongodb": "^4.5.0",
     "node-fetch": "^2.6.9",
-    "pg": "^8.7.3"
+    "pg": "^8.7.3",
+    "sharp": "^0.31.3"
   },
   "devDependencies": {
     "jest": "^27.4.0"

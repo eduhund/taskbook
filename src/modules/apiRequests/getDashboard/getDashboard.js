@@ -6,13 +6,15 @@ const { getNextTaskId } = require("../../../utils/getNextTaskId");
 const { setLessonsState } = require("./setLessonsState");
 const { getNumberOfDoneTasks } = require("./getNumberOfDoneTasks");
 
+const DEMO = process.env.DEMO;
+
 async function getDashboard({ userId }) {
 	const requests = [
 		getDBRequest("getUserInfo", {
 			query: { id: userId },
 		}),
 		getDBRequest("getModulesList", {
-			query: process.env.DEMO ? {} : { active: true },
+			query: DEMO ? {} : { active: true },
 		}),
 	];
 

@@ -8,7 +8,7 @@ const { getModuleStart } = require("./getModuleStart/getModuleStart");
 const { getModuleFinal } = require("./getModuleFinal/getModuleFinal");
 const { getLessonStart } = require("./getLessonStart/getLessonStart");
 const { getLessonFinal } = require("./getLessonFinal/getLessonFinal");
-const { getCertInfo } = require("./getCertInfo/getCertInfo");
+const { getDiploma } = require("./getDiploma/getDiploma");
 const { getModuleInfo } = require("./getModuleInfo/getModuleInfo");
 const { getLessonsList } = require("./getLessonsList/getLessonsList");
 const { getTasksList } = require("./getTasksList/getTasksList");
@@ -26,7 +26,7 @@ const REQUESTS = {
   getModuleFinal,
   getLessonStart,
   getLessonFinal,
-  getCertInfo,
+  getDiploma,
   getModuleInfo,
   getLessonsList,
   getTasksList,

@@ -7,6 +7,7 @@ const fs = require("fs");
 const express = require("express");
 const https = require("https");
 const cors = require("cors");
+const path = require("node:path");
 
 const { getDBRequest } = require("./modules/dbRequests/dbRequests");
 const { getApiRequest } = require("./modules/apiRequests/apiRequests");
@@ -30,9 +31,11 @@ const options = {
 };
 
 const apiRouter = express.Router();
+const diplomas = express.Router();
 
 app.use(cors());
 app.use(express.static("static"));
+app.use("/diplomas", express.static("diplomas"));
 app.use(express.json());
 app.use(require("body-parser").urlencoded({ extended: false }));
 app.use("/api/v2", apiRouter);
@@ -212,17 +215,17 @@ apiRouter.get("/getLessonFinal", checkAuth, checkModuleAccess, (req, res) => {
 });
 
 // Get diploma's data
-apiRouter.get("/getCertInfo", checkAuth, checkCertAccess, (req, res) => {
+apiRouter.get("/getDiploma", checkAuth, checkCertAccess, (req, res) => {
 	const userId = req?.userId;
 	const moduleId = req?.query?.moduleId;
 	if (validate(res, moduleId)) {
 		addUserAction({
 			userId,
-			action: "getCertInfo",
+			action: "getDiploma",
 			data: { moduleId },
 			req,
 		});
-		getApiRequest("getCertInfo", { userId, moduleId }).then((data) => {
+		getApiRequest("getDiploma", { userId, moduleId }).then((data) => {
 			res.send(data);
 		});
 	}
