@@ -12,7 +12,7 @@ async function getDashboard({ userId }) {
 			query: { id: userId },
 		}),
 		getDBRequest("getModulesList", {
-			query: { active: process.env.DEMO },
+			query: process.env.DEMO ? {} : { active: true },
 		}),
 	];
 
