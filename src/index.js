@@ -40,8 +40,8 @@ const options = {};
 try {
 	options.cert = fs.readFileSync(process.env.SSL_CERT);
 	options.key = fs.readFileSync(process.env.SSL_KEY);
-} catch {
-	log.error("Can't download SSL certificates!");
+} catch (e) {
+	log.error("Can't download SSL certificates: ", e);
 }
 
 // API v.2
@@ -54,17 +54,17 @@ apiRouter.post("/auth", async (req, res) => {
 
 	if (!validate(res, email, pass)) return;
 
-	const response = await getApiRequest("authUser", { email, pass, lang });
+	const data = await getApiRequest("authUser", { email, pass, lang });
 
-	if (!response) res.sendStatus(500);
+	if (!data) res.sendStatus(500);
 
-	if (response.OK) {
+	if (data.OK) {
 		res.status(200);
 	} else {
 		res.status(401);
 	}
 
-	res.send(response);
+	res.send(data);
 });
 
 // Create new password
@@ -102,44 +102,49 @@ apiRouter.post("/createPassword", async (req, res) => {
 		});
 	}
 
-	const response = await getApiRequest("authUser", { email, pass: newPass });
+	const data = await getApiRequest("authUser", { email, pass: newPass });
 
-	if (!response) res.sendStatus(500);
+	if (!data) res.sendStatus(500);
 
-	if (response.OK) {
+	if (data.OK) {
 		res.status(200);
 	} else {
 		res.status(401);
 	}
 
-	res.send(response);
+	res.send(data);
 });
 
 // Get task data (content + state)
 apiRouter.get("/getTask", checkAuth, checkModuleAccess, async (req, res) => {
-	const userId = req?.userId;
-	const taskId = req?.query?.taskId;
-	if (!validate(res, taskId)) {
-		res.send({ OK: false, error: {} });
-	}
+	const userId = req.userId;
+	const taskId = req.query.taskId;
+	if (!validate(res, taskId)) return;
+
 	var status = true;
-	try {
-		const data = await getApiRequest("getTask", { userId, taskId });
-		res.send({ OK: status, data });
-	} catch (e) {
-		log.warn(e);
+
+	const data = await getApiRequest("getTask", { userId, taskId });
+	if (!data) {
+		res.sendStatus(500);
 		status = false;
-		res.status(500);
-		res.send({ OK: status, error: {} });
-	} finally {
-		addUserAction({
-			userId,
-			action: "getTask",
-			status,
-			data: { taskId },
-			req,
-		});
 	}
+
+	if (!data.OK) {
+		res.status(401);
+		status = false;
+	} else {
+		res.status(200);
+	}
+
+	res.send(data);
+
+	addUserAction({
+		userId,
+		action: "getTask",
+		status,
+		data: { taskId },
+		req,
+	});
 });
 
 // Get data of module's start page

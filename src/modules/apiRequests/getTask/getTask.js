@@ -11,8 +11,6 @@ async function getTask({ userId, taskId }) {
 	const moduleId = getModuleId(taskId);
 	const lesson = getLessonId(taskId);
 
-	log.debug(taskId);
-
 	const requests = [
 		getDBRequest("getUserInfo", {
 			query: { id: userId },
@@ -29,26 +27,30 @@ async function getTask({ userId, taskId }) {
 		}),
 	];
 
-	const [userData, moduleData, taskData, taskState] = await Promise.all(
-		requests
-	);
+	try {
+		const [userData, moduleData, taskData, taskState] = await Promise.all(
+			requests
+		);
 
-	const preparedModuleData = await prepareModuleData(
-		moduleData,
-		taskId,
-		lesson
-	);
+		const preparedModuleData = await prepareModuleData(
+			moduleData,
+			taskId,
+			lesson
+		);
 
-	const finalData = await prepareTaskData(
-		[taskData, taskState, preparedModuleData],
-		userId
-	);
+		const finalData = await prepareTaskData(
+			[taskData, taskState, preparedModuleData],
+			userId
+		);
 
-	finalData.deadline = userData?.modules[moduleId]?.deadline;
+		finalData.deadline = userData?.modules[moduleId]?.deadline;
+		finalData.totalTasks = moduleData?.totalTasks;
 
-	finalData.totalTasks = moduleData?.totalTasks;
-
-	return finalData;
+		return finalData;
+	} catch (e) {
+		log.warn(e);
+		throw e;
+	}
 }
 
 module.exports.getTask = getTask;

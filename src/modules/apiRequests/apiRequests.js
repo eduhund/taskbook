@@ -1,3 +1,5 @@
+const { log } = require("../../utils/logger");
+
 const { authUser } = require("./authUser/authUser");
 const { getTask } = require("./getTask/getTask");
 const { checkTask } = require("./checkTask/checkTask");
@@ -16,26 +18,31 @@ const { addComment } = require("./addComment/addComment");
 const { getCounselor } = require("./getCounselor/getCounselor");
 
 const REQUESTS = {
-  authUser,
-  getTask,
-  checkTask,
-  setState,
-  setControls,
-  getDashboard,
-  getModuleStart,
-  getModuleFinal,
-  getLessonStart,
-  getLessonFinal,
-  getDiploma,
-  getModuleInfo,
-  getLessonsList,
-  getTasksList,
-  addComment,
-  getCounselor,
+	authUser,
+	getTask,
+	checkTask,
+	setState,
+	setControls,
+	getDashboard,
+	getModuleStart,
+	getModuleFinal,
+	getLessonStart,
+	getLessonFinal,
+	getDiploma,
+	getModuleInfo,
+	getLessonsList,
+	getTasksList,
+	addComment,
+	getCounselor,
 };
 
-function getApiRequest(type, params) {
-  return REQUESTS[type](params);
+async function getApiRequest(type, params) {
+	try {
+		return REQUESTS[type](params);
+	} catch (e) {
+		log.warn(`Error in API method: ${type}.`, e);
+		return;
+	}
 }
 
 module.exports.getApiRequest = getApiRequest;
