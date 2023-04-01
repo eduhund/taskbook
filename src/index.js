@@ -1,6 +1,6 @@
 require("dotenv").config();
 
-const { defaultLanguage } = require("../config.json");
+const { supportedLangs, defaultLang } = require("../config.json");
 
 const { log } = require("./utils/logger");
 const fs = require("fs");
@@ -16,6 +16,7 @@ const { addUserAction } = require("./modules/statistics/addUserAction");
 const { hashPass } = require("./utils/pass");
 const { checkKey } = require("./utils/otkRequests");
 const { validate } = require("./utils/validate");
+const { lowerString } = require("./utils/lowString");
 const {
 	checkAuth,
 	checkModuleAccess,
@@ -24,11 +25,6 @@ const {
 
 const app = express();
 const port = process.env.SERVER_PORT;
-
-const options = {
-	cert: fs.readFileSync(process.env.SSL_CERT),
-	key: fs.readFileSync(process.env.SSL_KEY),
-};
 
 const apiRouter = express.Router();
 const diplomas = express.Router();
@@ -40,31 +36,35 @@ app.use(express.json());
 app.use(require("body-parser").urlencoded({ extended: false }));
 app.use("/api/v2", apiRouter);
 
-const { lowerString } = require("./utils/lowString");
+const options = {};
+try {
+	options.cert = fs.readFileSync(process.env.SSL_CERT);
+	options.key = fs.readFileSync(process.env.SSL_KEY);
+} catch {
+	log.error("Can't download SSL certificates!");
+}
 
 // API v.2
 // Auth
-apiRouter.post("/auth", (req, res) => {
+apiRouter.post("/auth", async (req, res) => {
 	const email = lowerString(req.body.email);
 	const pass = req.body.pass;
-	const lang = ["ru, en"].includes(req.body.lang)
-		? req.body.lang
-		: defaultLanguage;
+	const userLang = req.body.lang;
+	const lang = supportedLangs.includes(userLang) ? req.body.lang : defaultLang;
 
-	getApiRequest("authUser", { email, pass, lang }).then((response) => {
-		if (response?.OK) {
-			res.status(200);
-			res.send(response);
-		} else {
-			res.status(401);
-			res.send({
-				OK: false,
-				error: response?.error,
-				errorDescription: response?.errorDescription,
-				errorCode: response?.status,
-			});
-		}
-	});
+	if (!validate(res, email, pass)) return;
+
+	const response = await getApiRequest("authUser", { email, pass, lang });
+
+	if (!response) res.sendStatus(500);
+
+	if (response.OK) {
+		res.status(200);
+	} else {
+		res.status(401);
+	}
+
+	res.send(response);
 });
 
 // Create new password
@@ -72,60 +72,72 @@ apiRouter.post("/createPassword", async (req, res) => {
 	const email = lowerString(req.body.email);
 	const newPass = req.body.newPass;
 	const verifyKey = req.body.verifyKey;
-	if (await checkKey(verifyKey)) {
-		getDBRequest("setUserInfo", { email, data: { pass: hashPass(newPass) } })
-			.then((user) => {
-				if (user) {
-					return getApiRequest("authUser", { email, pass: newPass });
-				} else
-					return {
-						OK: false,
-						error: "Password didn't set",
-						error_description: "Password setting failure",
-						error_code: 100011,
-					};
-			})
-			.then((response) => {
-				if (response?.status === 0) {
-					res.status(200);
-					res.send({
-						OK: true,
-						data: response.data,
-					});
-				} else {
-					res.status(401);
-					res.send({
-						OK: false,
-						error: response?.error,
-						errorDescription: response?.errorDescription,
-						errorCode: response?.status,
-					});
-				}
-			});
-	} else {
+
+	if (!(await checkKey(verifyKey))) {
 		res.status(401);
 		res.send({
 			OK: false,
-			error: "invalid_verify key",
-			error_description: "Verify key is invalid or expires",
-			error_code: 100010,
+			error: {
+				code: 100105,
+				type: "invalid_credentials",
+				description: "Verify key is invalid or expired",
+			},
 		});
 	}
+
+	const user = getDBRequest("setUserInfo", {
+		email,
+		data: { pass: hashPass(newPass) },
+	});
+
+	if (!user) {
+		res.status(401);
+		res.send({
+			OK: false,
+			error: {
+				code: 20101,
+				type: "process_failure",
+				description: "Password didn't set",
+			},
+		});
+	}
+
+	const response = await getApiRequest("authUser", { email, pass: newPass });
+
+	if (!response) res.sendStatus(500);
+
+	if (response.OK) {
+		res.status(200);
+	} else {
+		res.status(401);
+	}
+
+	res.send(response);
 });
 
 // Get task data (content + state)
-apiRouter.get("/getTask", checkAuth, checkModuleAccess, (req, res) => {
+apiRouter.get("/getTask", checkAuth, checkModuleAccess, async (req, res) => {
 	const userId = req?.userId;
 	const taskId = req?.query?.taskId;
-	if (validate(res, taskId)) {
+	if (!validate(res, taskId)) {
+		res.send({ OK: false, error: {} });
+	}
+	var status = true;
+	try {
+		const data = await getApiRequest("getTask", { userId, taskId });
+		res.send({ OK: status, data });
+	} catch (e) {
+		log.warn(e);
+		status = false;
+		res.status(500);
+		res.send({ OK: status, error: {} });
+	} finally {
 		addUserAction({
 			userId,
 			action: "getTask",
+			status,
 			data: { taskId },
 			req,
-		});
-		getApiRequest("getTask", { userId, taskId }).then((data) => {
-			res.send(data);
 		});
 	}
 });

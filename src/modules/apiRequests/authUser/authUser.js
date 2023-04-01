@@ -28,19 +28,25 @@ async function authUser({ email, pass, lang }) {
 				},
 			};
 		} else {
-			log.info(`Password is invalid!`);
+			log.info(`${email}: Invalid password!`);
 			return {
-				status: 10002,
-				error: "invalid_credentials",
-				error_description: "Invalid password",
+				OK: false,
+				error: {
+					code: 10102,
+					type: "invalid_credentials",
+					description: "Invalid password",
+				},
 			};
 		}
 	} else {
-		log.info(`User ${email} didn't found!`);
+		log.info(`${email}: User didn't found!`);
 		return {
-			status: 10001,
-			error: "invalid_credentials",
-			error_description: "User didn't found",
+			OK: false,
+			error: {
+				code: 10101,
+				type: "invalid_credentials",
+				description: "User didn't found",
+			},
 		};
 	}
 }

@@ -1,3 +1,4 @@
 {
-    "defaultLanguage": "ru"
+	"supportedLangs": ["ru", "en"],
+	"defaultLang": "ru"
 }

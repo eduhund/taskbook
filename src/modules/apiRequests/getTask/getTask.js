@@ -8,45 +8,47 @@ const { prepareModuleData } = require("./prepareModuleData");
 const { prepareTaskData } = require("./prepareTaskData");
 
 async function getTask({ userId, taskId }) {
-  const moduleId = getModuleId(taskId);
-  const lesson = getLessonId(taskId);
+	const moduleId = getModuleId(taskId);
+	const lesson = getLessonId(taskId);
 
-  const requests = [
-    getDBRequest("getUserInfo", {
-      query: { id: userId },
-      returns: ["modules"],
-    }),
-    getDBRequest("getModuleInfo", {
-      query: { code: moduleId },
-    }),
-    getDBRequest("getTaskInfo", {
-      query: { id: taskId },
-    }),
-    getDBRequest("getStateInfo", {
-      query: { userId, taskId },
-    }),
-  ];
+	log.debug(taskId);
 
-  const [userData, moduleData, taskData, taskState] = await Promise.all(
-    requests
-  );
+	const requests = [
+		getDBRequest("getUserInfo", {
+			query: { id: userId },
+			returns: ["modules"],
+		}),
+		getDBRequest("getModuleInfo", {
+			query: { code: moduleId },
+		}),
+		getDBRequest("getTaskInfo", {
+			query: { id: taskId },
+		}),
+		getDBRequest("getStateInfo", {
+			query: { userId, taskId },
+		}),
+	];
 
-  const preparedModuleData = await prepareModuleData(
-    moduleData,
-    taskId,
-    lesson
-  );
+	const [userData, moduleData, taskData, taskState] = await Promise.all(
+		requests
+	);
 
-  const finalData = await prepareTaskData(
-    [taskData, taskState, preparedModuleData],
-    userId
-  );
+	const preparedModuleData = await prepareModuleData(
+		moduleData,
+		taskId,
+		lesson
+	);
 
-  finalData.deadline = userData?.modules[moduleId]?.deadline;
+	const finalData = await prepareTaskData(
+		[taskData, taskState, preparedModuleData],
+		userId
+	);
 
-  finalData.totalTasks = moduleData?.totalTasks;
+	finalData.deadline = userData?.modules[moduleId]?.deadline;
 
-  return finalData;
+	finalData.totalTasks = moduleData?.totalTasks;
+
+	return finalData;
 }
 
 module.exports.getTask = getTask;
