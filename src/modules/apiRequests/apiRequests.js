@@ -18,6 +18,12 @@ const { getTasksList } = require("./getTasksList/getTasksList");
 const { addComment } = require("./addComment/addComment");
 const { getCounselor } = require("./getCounselor/getCounselor");
 
+const {
+	checkAuth,
+	checkModuleAccess,
+	checkCertAccess,
+} = require("../../utils/checkAuth");
+
 const REQUESTS = {
 	auth,
 	createPassword,
@@ -52,6 +58,16 @@ const PUBLIC = [
 		exec: [
 			(req, res, next) => getApiRequest("createPassword", { req, res, next }),
 			(req, res) => getApiRequest("auth", { req, res }),
+		],
+	},
+	{
+		name: "getTask",
+		method: "get",
+		path: "/getTask",
+		exec: [
+			checkAuth,
+			checkModuleAccess,
+			(req, res) => getApiRequest("getTask", { req, res }),
 		],
 	},
 ];

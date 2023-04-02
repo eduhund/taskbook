@@ -39,39 +39,6 @@ for (const request of PUBLIC) {
 }
 
 // API v.2
-
-// Get task data (content + state)
-apiRouter.get("/getTask", checkAuth, checkModuleAccess, async (req, res) => {
-	const userId = req.userId;
-	const taskId = req.query.taskId;
-	if (!validate(res, taskId)) return;
-
-	var status = true;
-
-	const data = await getApiRequest("getTask", { userId, taskId });
-	if (!data) {
-		res.sendStatus(500);
-		status = false;
-	}
-
-	if (!data.OK) {
-		res.status(401);
-		status = false;
-	} else {
-		res.status(200);
-	}
-
-	res.send(data);
-
-	addUserAction({
-		userId,
-		action: "getTask",
-		status,
-		data: { taskId },
-		req,
-	});
-});
-
 // Get data of module's start page
 apiRouter.get("/getModuleStart", checkAuth, checkModuleAccess, (req, res) => {
 	const userId = req?.userId;
