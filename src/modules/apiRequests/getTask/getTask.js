@@ -66,16 +66,14 @@ async function getTask({ req, res }) {
 
 		const data = generateMessage(0, aggData);
 
-		res.status(200);
-		res.send(data);
+		res.status(200).send(data);
 
 		return data;
 	} catch (e) {
 		log.warn(`${taskId}: Error with processing task`);
 		log.warn(e);
 		const error = generateMessage(20102);
-		res.status(400);
-		res.send(error);
+		res.status(400).send(error);
 	} finally {
 		addUserAction({
 			userId,

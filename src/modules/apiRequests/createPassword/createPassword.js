@@ -10,8 +10,7 @@ async function createPassword({ req, res, next }) {
 	const verifyResult = await checkKey(verifyKey);
 	if (!verifyResult) {
 		const error = generateMessage(10105);
-		res.status(401);
-		res.send(error);
+		res.status(401).send(error);
 		return error;
 	}
 
@@ -22,8 +21,7 @@ async function createPassword({ req, res, next }) {
 
 	if (!user) {
 		const error = generateMessage(20101);
-		res.status(401);
-		res.send(error);
+		res.status(401).send(error);
 		return error;
 	}
 

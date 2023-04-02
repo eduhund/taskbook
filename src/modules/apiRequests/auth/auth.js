@@ -17,16 +17,14 @@ async function auth({ req, res }) {
 	if (!user) {
 		log.info(`${email}: User didn't found!`);
 		const error = generateMessage(10101);
-		res.status(401);
-		res.send(error);
+		res.status(401).send(error);
 		return error;
 	}
 
 	if (!checkPass(user, pass)) {
 		log.info(`${email}: Invalid password!`);
 		const error = generateMessage(10102);
-		res.status(401);
-		res.send(error);
+		res.status(401).send(error);
 		return error;
 	}
 
@@ -45,8 +43,7 @@ async function auth({ req, res }) {
 	};
 	const data = generateMessage(0, userData);
 
-	res.status(200);
-	res.send(data);
+	res.status(200).send(data);
 
 	return data;
 }

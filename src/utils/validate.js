@@ -5,6 +5,10 @@ const { generateMessage } = require("./messageGenerator");
 
 const requireParams = {
 	["/api/v2/auth"]: ["email", "pass"],
+	["/api/v2/createPassword"]: ["email", "pass", "verifyKey"],
+	["/api/v2/getTask"]: ["taskId", "accessToken"],
+	["/api/v2/getModuleStart"]: ["moduleId", "accessToken"],
+	["/api/v2/getModuleFinal"]: ["moduleId", "accessToken"],
 };
 
 function validate(res, ...args) {
@@ -19,7 +23,7 @@ function validate(res, ...args) {
 }
 
 function paramsProcessor(req, res, next) {
-	const params = req.body;
+	const params = Object.keys(req.body).length !== 0 ? req.body : req.query;
 	const path = req.path;
 	for (const param of requireParams[path] || []) {
 		if (!(param in params)) {

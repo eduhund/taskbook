@@ -3,18 +3,15 @@ const cors = require("cors");
 
 const { PUBLIC } = require("../modules/apiRequests/apiRequests");
 
-const { getDBRequest } = require("../modules/dbRequests/dbRequests");
 const { getApiRequest } = require("../modules/apiRequests/apiRequests");
 const { addUserAction } = require("../modules/statistics/addUserAction");
 
-const { checkKey } = require("../utils/otkRequests");
 const { validate, paramsProcessor } = require("../utils/validate");
 const {
 	checkAuth,
 	checkModuleAccess,
 	checkCertAccess,
 } = require("../utils/checkAuth");
-const { generateMessage } = require("../utils/messageGenerator");
 
 const app = express();
 
@@ -39,32 +36,6 @@ for (const request of PUBLIC) {
 }
 
 // API v.2
-
-// Get data of module's final page
-apiRouter.get("/getModuleFinal", checkAuth, checkCertAccess, (req, res) => {
-	const userId = req?.userId;
-	const moduleId = req?.query?.moduleId;
-	if (validate(res, moduleId)) {
-		addUserAction({
-			userId,
-			action: "getModuleFinal",
-			data: { moduleId },
-			req,
-		});
-		getApiRequest("getModuleFinal", { userId, moduleId }).then((data) => {
-			res.send(data);
-		});
-	} else {
-		res.status(403);
-		res.send({
-			OK: false,
-			error: "blocked_content",
-			error_description: "User don't have access to this content",
-			error_code: 10011,
-		});
-	}
-});
-
 // Get data of lesson's start page
 apiRouter.get("/getLessonStart", checkAuth, checkModuleAccess, (req, res) => {
 	const userId = req?.userId;

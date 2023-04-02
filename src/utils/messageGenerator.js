@@ -53,6 +53,16 @@ const ERRORS = [
 		type: "process_failure",
 		description: "Error while preparing task data",
 	},
+	{
+		code: 20103,
+		type: "process_failure",
+		description: "Error while preparing module start data",
+	},
+	{
+		code: 20104,
+		type: "process_failure",
+		description: "Error while preparing module final data",
+	},
 ];
 
 function generateMessage(code, data = {}) {

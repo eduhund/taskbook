@@ -43,16 +43,14 @@ async function getModuleStart({ req, res }) {
 
 		const data = generateMessage(0, moduleData);
 
-		res.status(200);
-		res.send(data);
+		res.status(200).send(data);
 
 		return data;
 	} catch (e) {
 		log.warn(`${moduleId}: Error with processing module start page`);
 		log.warn(e);
 		const error = generateMessage(20103);
-		res.status(400);
-		res.send(error);
+		res.status(400).send(error);
 	} finally {
 		addUserAction({
 			userId,

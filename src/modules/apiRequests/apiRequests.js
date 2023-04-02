@@ -80,6 +80,16 @@ const PUBLIC = [
 			(req, res) => getApiRequest("getModuleStart", { req, res }),
 		],
 	},
+	{
+		name: "getModuleFinal",
+		method: "get",
+		path: "/getModuleFinal",
+		exec: [
+			checkAuth,
+			checkModuleAccess,
+			(req, res) => getApiRequest("getModuleFinal", { req, res }),
+		],
+	},
 ];
 
 async function getApiRequest(type, { req, res, next }) {
