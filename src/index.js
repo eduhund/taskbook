@@ -1,13 +1,10 @@
 require("dotenv").config();
 
-const { supportedLangs, defaultLang } = require("../config.json");
-
 const { log } = require("./utils/logger");
 const fs = require("fs");
 const express = require("express");
 const https = require("https");
 const cors = require("cors");
-const path = require("node:path");
 
 const { getDBRequest } = require("./modules/dbRequests/dbRequests");
 const { getApiRequest } = require("./modules/apiRequests/apiRequests");
@@ -15,7 +12,7 @@ const { addUserAction } = require("./modules/statistics/addUserAction");
 
 const { hashPass } = require("./utils/pass");
 const { checkKey } = require("./utils/otkRequests");
-const { validate } = require("./utils/validate");
+const { validate, paramsProcessor } = require("./utils/validate");
 const { lowerString } = require("./utils/lowString");
 const {
 	checkAuth,
@@ -34,6 +31,7 @@ app.use(express.static("static"));
 app.use("/diplomas", express.static("diplomas"));
 app.use(express.json());
 app.use(require("body-parser").urlencoded({ extended: false }));
+app.use(paramsProcessor);
 app.use("/api/v2", apiRouter);
 
 const options = {};
@@ -47,14 +45,11 @@ try {
 // API v.2
 // Auth
 apiRouter.post("/auth", async (req, res) => {
-	const email = lowerString(req.body.email);
+	const email = req.body.email;
 	const pass = req.body.pass;
-	const userLang = req.body.lang;
-	const lang = supportedLangs.includes(userLang) ? req.body.lang : defaultLang;
+	const lang = req.body.lang;
 
-	if (!validate(res, email, pass)) return;
-
-	const data = await getApiRequest("authUser", { email, pass, lang });
+	const data = await getApiRequest("auth", { email, pass, lang });
 
 	if (!data) res.sendStatus(500);
 
@@ -70,7 +65,7 @@ apiRouter.post("/auth", async (req, res) => {
 // Create new password
 apiRouter.post("/createPassword", async (req, res) => {
 	const email = lowerString(req.body.email);
-	const newPass = req.body.newPass;
+	const pass = req.body.pass;
 	const verifyKey = req.body.verifyKey;
 
 	if (!(await checkKey(verifyKey))) {
@@ -87,7 +82,7 @@ apiRouter.post("/createPassword", async (req, res) => {
 
 	const user = getDBRequest("setUserInfo", {
 		email,
-		data: { pass: hashPass(newPass) },
+		data: { pass },
 	});
 
 	if (!user) {

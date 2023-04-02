@@ -6,7 +6,7 @@ const { checkPass } = require("../../../utils/pass");
 
 const tokens = accessTokens;
 
-async function authUser({ email, pass, lang }) {
+async function auth({ email, pass, lang }) {
 	const user = await getDBRequest("getUserInfo", {
 		query: { email },
 	});
@@ -15,7 +15,7 @@ async function authUser({ email, pass, lang }) {
 			const userToken = tokens.setToken(user);
 			lang !== user.lang &&
 				getDBRequest("setUserInfo", { email, data: { lang } });
-			log.info(`Auth success!`);
+			log.info(`${user.id}: Auth success!`);
 			return {
 				OK: true,
 				data: {
@@ -51,4 +51,4 @@ async function authUser({ email, pass, lang }) {
 	}
 }
 
-module.exports.authUser = authUser;
+module.exports.auth = auth;

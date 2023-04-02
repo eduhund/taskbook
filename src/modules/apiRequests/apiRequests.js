@@ -1,6 +1,6 @@
 const { log } = require("../../utils/logger");
 
-const { authUser } = require("./authUser/authUser");
+const { auth } = require("./auth/auth");
 const { getTask } = require("./getTask/getTask");
 const { checkTask } = require("./checkTask/checkTask");
 const { setState } = require("./setState/setState");
@@ -18,7 +18,7 @@ const { addComment } = require("./addComment/addComment");
 const { getCounselor } = require("./getCounselor/getCounselor");
 
 const REQUESTS = {
-	authUser,
+	auth,
 	getTask,
 	checkTask,
 	setState,
