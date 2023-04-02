@@ -39,30 +39,6 @@ for (const request of PUBLIC) {
 }
 
 // API v.2
-// Get data of module's start page
-apiRouter.get("/getModuleStart", checkAuth, checkModuleAccess, (req, res) => {
-	const userId = req?.userId;
-	const moduleId = req?.query?.moduleId;
-	if (validate(res, moduleId)) {
-		addUserAction({
-			userId,
-			action: "getModuleStart",
-			data: { moduleId },
-			req,
-		});
-		getApiRequest("getModuleStart", { userId, moduleId }).then((data) => {
-			res.send(data);
-		});
-	} else {
-		res.status(403);
-		res.send({
-			OK: false,
-			error: "blocked_content",
-			error_description: "User don't have access to this content",
-			error_code: 10011,
-		});
-	}
-});
 
 // Get data of module's final page
 apiRouter.get("/getModuleFinal", checkAuth, checkCertAccess, (req, res) => {
