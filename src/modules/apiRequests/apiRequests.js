@@ -1,6 +1,7 @@
 const { log } = require("../../utils/logger");
 
 const { auth } = require("./auth/auth");
+const { createPassword } = require("./createPassword/createPassword");
 const { getTask } = require("./getTask/getTask");
 const { checkTask } = require("./checkTask/checkTask");
 const { setState } = require("./setState/setState");
@@ -19,6 +20,7 @@ const { getCounselor } = require("./getCounselor/getCounselor");
 
 const REQUESTS = {
 	auth,
+	createPassword,
 	getTask,
 	checkTask,
 	setState,
@@ -41,14 +43,22 @@ const PUBLIC = [
 		name: "auth",
 		method: "post",
 		path: "/auth",
-		exec: (req, res) => getApiRequest("auth", req, res),
-		middlewares: [],
+		exec: [(req, res) => getApiRequest("auth", { req, res })],
+	},
+	{
+		name: "createPassword",
+		method: "post",
+		path: "/createPassword",
+		exec: [
+			(req, res, next) => getApiRequest("createPassword", { req, res, next }),
+			(req, res) => getApiRequest("auth", { req, res }),
+		],
 	},
 ];
 
-async function getApiRequest(type, req, res) {
+async function getApiRequest(type, { req, res, next }) {
 	try {
-		return REQUESTS[type](req, res);
+		return REQUESTS[type]({ req, res, next });
 	} catch (e) {
 		log.warn(`Error in API method: ${type}.`, e);
 		res.sendStatus(500);

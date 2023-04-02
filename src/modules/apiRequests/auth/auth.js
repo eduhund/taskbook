@@ -7,10 +7,8 @@ const { generateMessage } = require("../../../utils/messageGenerator");
 
 const tokens = accessTokens;
 
-async function auth(req, res) {
-	const email = req.body.email;
-	const pass = req.body.pass;
-	const lang = req.body.lang;
+async function auth({ req, res }) {
+	const { email, pass, lang } = req.body;
 
 	const user = await getDBRequest("getUserInfo", {
 		query: { email },

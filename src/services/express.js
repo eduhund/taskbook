@@ -29,57 +29,16 @@ app.use(paramsProcessor);
 app.use("/api/v2", apiRouter);
 
 for (const request of PUBLIC) {
-	switch (request.method) {
+	const { path, method, exec } = request;
+	switch (method) {
 		case "get":
-			apiRouter.get(request.path, (req, res) =>
-				getApiRequest(request.name, req, res)
-			);
-
+			apiRouter.get(path, exec);
 		case "post":
-			apiRouter.post(request.path, request.exec);
+			apiRouter.post(path, exec);
 	}
 }
 
 // API v.2
-
-// Create new password
-apiRouter.post("/createPassword", async (req, res) => {
-	const email = req.body.email;
-	const pass = req.body.pass;
-	const verifyKey = req.body.verifyKey;
-
-	if (!(await checkKey(verifyKey))) {
-		const error = generateMessage(10105);
-		res.status(401);
-		res.send(error);
-		return error;
-	}
-
-	const user = getDBRequest("setUserInfo", {
-		email,
-		data: { pass },
-	});
-
-	if (!user) {
-		const error = generateMessage(20101);
-		res.status(401);
-		res.send(error);
-		return error;
-	}
-
-	const data = await getApiRequest("auth", { email, pass: newPass });
-
-	if (!data) res.sendStatus(500);
-
-	if (data.OK) {
-		res.status(200);
-	} else {
-		res.status(401);
-	}
-
-	res.send(data);
-	return data;
-});
 
 // Get task data (content + state)
 apiRouter.get("/getTask", checkAuth, checkModuleAccess, async (req, res) => {
