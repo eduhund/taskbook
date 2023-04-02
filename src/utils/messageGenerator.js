@@ -48,6 +48,11 @@ const ERRORS = [
 		type: "process_failure",
 		description: "Password didn't set",
 	},
+	{
+		code: 20102,
+		type: "process_failure",
+		description: "Error while preparing task data",
+	},
 ];
 
 function generateMessage(code, data = {}) {

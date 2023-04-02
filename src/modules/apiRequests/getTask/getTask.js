@@ -73,7 +73,7 @@ async function getTask({ req, res }) {
 	} catch (e) {
 		log.warn(`${taskId}: Error with processing task`);
 		log.warn(e);
-		const error = generateMessage(10301);
+		const error = generateMessage(20102);
 		res.status(400);
 		res.send(error);
 	} finally {
