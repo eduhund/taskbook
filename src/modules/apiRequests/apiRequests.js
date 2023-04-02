@@ -36,13 +36,24 @@ const REQUESTS = {
 	getCounselor,
 };
 
-async function getApiRequest(type, params) {
+const PUBLIC = [
+	{
+		name: "auth",
+		method: "post",
+		path: "/auth",
+		exec: (req, res) => getApiRequest("auth", req, res),
+		middlewares: [],
+	},
+];
+
+async function getApiRequest(type, req, res) {
 	try {
-		return REQUESTS[type](params);
+		return REQUESTS[type](req, res);
 	} catch (e) {
 		log.warn(`Error in API method: ${type}.`, e);
+		res.sendStatus(500);
 		return;
 	}
 }
 
-module.exports.getApiRequest = getApiRequest;
+module.exports = { PUBLIC, getApiRequest };

@@ -1,7 +1,12 @@
+const request = require("supertest");
 const { getApiRequest } = require("../src/modules/apiRequests/apiRequests");
 const { readFileAsObject } = require("./utils/fileUtils");
+const baseURL = `http://localhost:${process.env.SERVER_PORT}`;
 
 describe("Auth", () => {
+	beforeAll(async () => {
+		await request(baseURL).post("/auth").send(newTodo);
+	});
 	test.each([
 		{
 			name: "not a user",

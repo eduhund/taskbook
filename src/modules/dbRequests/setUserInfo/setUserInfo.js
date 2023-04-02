@@ -7,7 +7,7 @@ async function setUserInfo({ email, data }) {
 		{ $set: data },
 		{ upsert: true, returnDocument: "after", returnNewDocument: true }
 	).then((user) => {
-		log.info("Updated user: " + user.value);
+		log.info("Updated user: ", user.value);
 		return user.value;
 	});
 }

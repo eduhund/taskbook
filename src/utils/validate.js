@@ -1,9 +1,10 @@
 const { lowerString } = require("../utils/lowString");
 const { hashPass } = require("../utils/pass");
 const { supportedLangs, defaultLang } = require("../../config.json");
+const { generateMessage } = require("./messageGenerator");
 
 const requireParams = {
-	"/auth": ["email", "pass"],
+	["/api/v2/auth"]: ["email", "pass"],
 };
 
 function validate(res, ...args) {
@@ -12,34 +13,21 @@ function validate(res, ...args) {
 		valid = valid && Boolean(args[i]);
 	}
 	if (!valid) {
-		res.send({
-			OK: false,
-			error: {
-				code: 10101,
-				type: "invalid_request",
-				description: "Missing required params",
-			},
-		});
+		res.send(generateMessage(10001));
 	}
 	return valid;
 }
 
 function paramsProcessor(req, res, next) {
 	const params = req.body;
-	const path = req.route?.path;
-	(requireParams[path] || []).forEach((param) => {
+	const path = req.path;
+	for (const param of requireParams[path] || []) {
 		if (!(param in params)) {
-			res.send({
-				OK: false,
-				error: {
-					code: 10101,
-					type: "invalid_request",
-					description: "Missing required params",
-				},
-			});
+			res.status(400);
+			res.send(generateMessage(10001));
 			return;
 		}
-	});
+	}
 
 	if ("email" in params) {
 		params.email = lowerString(params.email);
