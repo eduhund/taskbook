@@ -36,22 +36,6 @@ for (const request of PUBLIC) {
 }
 
 // API v.2
-// Get data of lesson's start page
-apiRouter.get("/getLessonStart", checkAuth, checkModuleAccess, (req, res) => {
-	const userId = req?.userId;
-	const fullLessonId = req?.query?.lessonId;
-	if (validate(res, fullLessonId)) {
-		addUserAction({
-			userId,
-			action: "getLessonStart",
-			data: { lessonId: fullLessonId },
-			req,
-		});
-		getApiRequest("getLessonStart", { userId, fullLessonId }).then((data) => {
-			res.send(data);
-		});
-	}
-});
 
 // Get data of lessons's final page
 apiRouter.get("/getLessonFinal", checkAuth, checkModuleAccess, (req, res) => {

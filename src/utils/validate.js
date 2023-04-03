@@ -9,6 +9,7 @@ const requireParams = {
 	["/api/v2/getTask"]: ["taskId", "accessToken"],
 	["/api/v2/getModuleStart"]: ["moduleId", "accessToken"],
 	["/api/v2/getModuleFinal"]: ["moduleId", "accessToken"],
+	["/api/v2/getLessonStart"]: ["lessonId", "accessToken"],
 };
 
 function validate(res, ...args) {
