@@ -54,17 +54,6 @@ apiRouter.get("/getDiploma", checkAuth, checkCertAccess, (req, res) => {
 	}
 });
 
-// Get module's main info
-apiRouter.get("/getModuleInfo", checkAuth, checkModuleAccess, (req, res) => {
-	const userId = req?.userId;
-	const moduleId = req?.query?.moduleId;
-	if (validate(res, moduleId)) {
-		getApiRequest("getModuleInfo", { userId, moduleId }).then((data) => {
-			res.send(data);
-		});
-	}
-});
-
 // Get lessons's navigation info
 apiRouter.get("/getLessonsList", checkAuth, checkModuleAccess, (req, res) => {
 	const userId = req?.userId;

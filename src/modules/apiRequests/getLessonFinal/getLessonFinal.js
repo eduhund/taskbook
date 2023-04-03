@@ -3,6 +3,8 @@ const { getDBRequest } = require("../../dbRequests/dbRequests");
 
 const { getModuleId, getLessonId } = require("../../../utils/idExtractor");
 const { createSummary } = require("./createSummary");
+const { generateMessage } = require("../../../utils/messageGenerator");
+const { addUserAction } = require("../../../modules/statistics/addUserAction");
 
 async function getLessonFinal({ req, res }) {
 	const userId = req?.userId;

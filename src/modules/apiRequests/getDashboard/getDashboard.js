@@ -5,6 +5,8 @@ const { calculateTotalScore } = require("../../../utils/calculators");
 const { getNextTaskId } = require("../../../utils/getNextTaskId");
 const { setLessonsState } = require("./setLessonsState");
 const { getNumberOfDoneTasks } = require("./getNumberOfDoneTasks");
+const { generateMessage } = require("../../../utils/messageGenerator");
+const { addUserAction } = require("../../../modules/statistics/addUserAction");
 
 const DEMO = process.env.DEMO;
 

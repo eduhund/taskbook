@@ -70,6 +70,16 @@ const PUBLIC = [
 		],
 	},
 	{
+		name: "getModuleInfo",
+		method: "get",
+		path: "/getModuleInfo",
+		exec: [
+			checkAuth,
+			checkModuleAccess,
+			(req, res) => getApiRequest("getModuleInfo", { req, res }),
+		],
+	},
+	{
 		name: "getTask",
 		method: "get",
 		path: "/getTask",

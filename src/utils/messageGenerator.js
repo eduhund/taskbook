@@ -78,6 +78,11 @@ const ERRORS = [
 		type: "process_failure",
 		description: "Error while preparing dashboard data",
 	},
+	{
+		code: 20108,
+		type: "process_failure",
+		description: "Error while preparing module info",
+	},
 ];
 
 function generateMessage(code, data = {}) {
