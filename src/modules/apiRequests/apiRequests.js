@@ -1,4 +1,4 @@
-const { log } = require("../../utils/logger");
+const { log } = require("../../services/logger");
 
 const { auth } = require("./auth/auth");
 const { createPassword } = require("./createPassword/createPassword");

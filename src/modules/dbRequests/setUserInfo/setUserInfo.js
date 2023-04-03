@@ -1,4 +1,4 @@
-const { log } = require("../../../utils/logger");
+const { log } = require("../../../services/logger");
 const { db } = require("../mongo");
 
 async function setUserInfo({ email, data }) {

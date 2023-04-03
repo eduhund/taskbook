@@ -1,11 +1,9 @@
 const express = require("express");
 const cors = require("cors");
-
-const { PUBLIC } = require("../modules/apiRequests/apiRequests");
 const { paramsProcessor } = require("../utils/validate");
+const { PUBLIC } = require("../modules/apiRequests/apiRequests");
 
 const app = express();
-
 const apiRouter = express.Router();
 
 app.use(cors());

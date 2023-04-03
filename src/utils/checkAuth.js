@@ -1,6 +1,5 @@
 const { db } = require("../modules/dbRequests/mongo");
-const { log } = require("../utils/logger");
-
+const { log } = require("../services/logger");
 const { accessTokens } = require("../modules/userTokens/accessTokens");
 const { getModuleId } = require("./idExtractor");
 

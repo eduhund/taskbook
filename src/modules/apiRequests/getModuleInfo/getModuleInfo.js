@@ -1,4 +1,4 @@
-const { log } = require("../../../utils/logger");
+const { log } = require("../../../services/logger");
 const { getDBRequest } = require("../../dbRequests/dbRequests");
 const { generateMessage } = require("../../../utils/messageGenerator");
 const { addUserAction } = require("../../../modules/statistics/addUserAction");

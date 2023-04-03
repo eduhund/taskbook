@@ -23,17 +23,6 @@ const requireParams = {
 	["/api/v2/getCounselor"]: ["accessToken"],
 };
 
-function validate(res, ...args) {
-	var valid = true;
-	for (var i = 0; i < args.length; i++) {
-		valid = valid && Boolean(args[i]);
-	}
-	if (!valid) {
-		res.send(generateMessage(10001));
-	}
-	return valid;
-}
-
 function paramsProcessor(req, res, next) {
 	const params = Object.keys(req.body).length !== 0 ? req.body : req.query;
 	const path = req.path;
@@ -62,4 +51,4 @@ function paramsProcessor(req, res, next) {
 	next();
 }
 
-module.exports = { validate, paramsProcessor };
+module.exports = { paramsProcessor };

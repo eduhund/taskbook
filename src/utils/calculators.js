@@ -1,5 +1,5 @@
 const { getTaskProcessor } = require("./taskProcessor");
-const { log } = require("../utils/logger");
+const { log } = require("../services/logger");
 
 function validateScore(score, maxScore) {
 	if (!score) {

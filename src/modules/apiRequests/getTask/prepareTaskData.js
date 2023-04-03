@@ -1,4 +1,4 @@
-const { log } = require("../../../utils/logger");
+const { log } = require("../../../services/logger");
 
 const { getParentContent } = require("../../../utils/getParentContent");
 const { setVisibility } = require("../../../utils/visibilityControl");
