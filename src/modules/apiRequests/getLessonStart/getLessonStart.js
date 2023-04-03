@@ -4,7 +4,7 @@ const { getModuleId, getLessonId } = require("../../../utils/idExtractor");
 const { generateMessage } = require("../../../utils/messageGenerator");
 const { addUserAction } = require("../../../modules/statistics/addUserAction");
 
-async function getLessonStart({ userId, fullLessonId }) {
+async function getLessonStart({ req, res }) {
 	const userId = req.userId;
 	const fullLessonId = req.query.lessonId;
 
@@ -39,14 +39,14 @@ async function getLessonStart({ userId, fullLessonId }) {
 
 		return data;
 	} catch (e) {
-		log.warn(`${moduleId}: Error with processing module start page`);
+		log.warn(`${moduleId}: Error with processing lesson start page`);
 		log.warn(e);
-		const error = generateMessage(20103);
+		const error = generateMessage(20105);
 		res.status(400).send(error);
 	} finally {
 		addUserAction({
 			userId,
-			action: "getModuleStart",
+			action: "getLessonStart",
 			data: { moduleId },
 			req,
 		});

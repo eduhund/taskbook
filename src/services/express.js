@@ -37,23 +37,6 @@ for (const request of PUBLIC) {
 
 // API v.2
 
-// Get data of lessons's final page
-apiRouter.get("/getLessonFinal", checkAuth, checkModuleAccess, (req, res) => {
-	const userId = req?.userId;
-	const fullLessonId = req?.query?.lessonId;
-	if (validate(res, fullLessonId)) {
-		addUserAction({
-			userId,
-			action: "getLessonFinal",
-			data: { lessonId: fullLessonId },
-			req,
-		});
-		getApiRequest("getLessonFinal", { userId, fullLessonId }).then((data) => {
-			res.send(data);
-		});
-	}
-});
-
 // Get diploma's data
 apiRouter.get("/getDiploma", checkAuth, checkCertAccess, (req, res) => {
 	const userId = req?.userId;
