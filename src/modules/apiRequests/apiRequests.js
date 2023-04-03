@@ -179,6 +179,26 @@ const PUBLIC = [
 			(req, res) => getApiRequest("checkTask", { req, res }),
 		],
 	},
+	{
+		name: "setControls",
+		method: "post",
+		path: "/setControls",
+		exec: [
+			checkAuth,
+			checkModuleAccess,
+			(req, res) => getApiRequest("setControls", { req, res }),
+		],
+	},
+	{
+		name: "addComment",
+		method: "post",
+		path: "/addComment",
+		exec: [
+			checkAuth,
+			checkModuleAccess,
+			(req, res) => getApiRequest("addComment", { req, res }),
+		],
+	},
 ];
 
 async function getApiRequest(type, { req, res, next }) {

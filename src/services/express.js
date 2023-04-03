@@ -37,47 +37,6 @@ for (const request of PUBLIC) {
 
 // API v.2
 
-// Set task's controls state
-apiRouter.post("/setControls", checkAuth, (req, res) => {
-	const userId = req?.userId;
-	const taskId = req.body.taskId;
-	const controlsState = req.body.controlsState;
-
-	if (validate(res, taskId, controlsState)) {
-		addUserAction({
-			userId,
-			action: "setControls",
-			data: { taskId, controlsState },
-			req,
-		});
-		getApiRequest("setControls", { userId, taskId, controlsState }).then(
-			(data) => {
-				res.send(data);
-			}
-		);
-	}
-});
-
-// Set new task comment
-apiRouter.post("/addComment", checkAuth, (req, res) => {
-	const userId = req?.userId;
-	const taskId = req.body.taskId;
-	const comment = req.body.comment || "";
-	const protest = req.body.protest || false;
-
-	if (validate(res, taskId, comment)) {
-		addUserAction({
-			userId,
-			action: "addComment",
-			data: { comment, protest },
-			req,
-		});
-		getApiRequest("addComment", { userId, taskId, comment, protest }).then(
-			(result) => res.send(result)
-		);
-	}
-});
-
 apiRouter.get("/getCounselor", checkAuth, (req, res) => {
 	const userId = req?.userId;
 	addUserAction({

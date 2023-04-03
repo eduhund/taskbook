@@ -108,6 +108,16 @@ const ERRORS = [
 		type: "process_failure",
 		description: "Error while task was checking",
 	},
+	{
+		code: 20114,
+		type: "process_failure",
+		description: "Error while updating task's controls state",
+	},
+	{
+		code: 20115,
+		type: "process_failure",
+		description: "Error with processing new comment",
+	},
 ];
 
 function generateMessage(code, data = {}) {
