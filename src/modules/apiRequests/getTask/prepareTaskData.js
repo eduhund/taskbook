@@ -41,7 +41,7 @@ function validateTaskState(taskState) {
 async function prepareTaskData({ taskData, taskState, userId }) {
 	try {
 		if (taskData.type === "practice") {
-			Object.assign(taskData, validateTaskState(taskState));
+			Object.assign(taskData, validateTaskState(taskState || {}));
 			for (const content of taskData.content) {
 				for (const introItem of content.intro) {
 					if (introItem.type == "richText") {
