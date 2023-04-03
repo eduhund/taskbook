@@ -87,20 +87,6 @@ apiRouter.get("/getTasksList", checkAuth, checkModuleAccess, (req, res) => {
 	}
 });
 
-// Get dashboard content
-apiRouter.get("/getDashboard", checkAuth, (req, res) => {
-	const userId = req?.userId;
-	addUserAction({
-		userId,
-		action: "getDashboard",
-		data: {},
-		req,
-	});
-	getApiRequest("getDashboard", { userId }).then((data) => {
-		res.send(data);
-	});
-});
-
 // Set new task state
 apiRouter.post("/setState", checkAuth, (req, res) => {
 	const userId = req?.userId;

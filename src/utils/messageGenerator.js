@@ -73,6 +73,11 @@ const ERRORS = [
 		type: "process_failure",
 		description: "Error while preparing lesson final data",
 	},
+	{
+		code: 20107,
+		type: "process_failure",
+		description: "Error while preparing dashboard data",
+	},
 ];
 
 function generateMessage(code, data = {}) {

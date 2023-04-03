@@ -61,6 +61,15 @@ const PUBLIC = [
 		],
 	},
 	{
+		name: "getDashboard",
+		method: "get",
+		path: "/getDashboard",
+		exec: [
+			checkAuth,
+			(req, res) => getApiRequest("getDashboard", { req, res }),
+		],
+	},
+	{
 		name: "getTask",
 		method: "get",
 		path: "/getTask",
