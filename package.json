@@ -1,27 +1,28 @@
 {
-  "name": "eduhund_backend",
-  "version": "0.4.0",
-  "description": "Public implementation for Eduhund platform backend",
-  "main": "index.js",
-  "scripts": {
-    "start": "node src/index.js",
-    "test": "jest --verbose"
-  },
-  "author": "Roman Nebel",
-  "license": "ISC",
-  "dependencies": {
-    "@log4js-node/slack": "^1.0.0",
-    "cors": "^2.8.5",
-    "dotenv": "^16.0.2",
-    "express": "^4.18.1",
-    "lodash": "^4.17.21",
-    "log4js": "^6.7.0",
-    "mongodb": "^4.5.0",
-    "node-fetch": "^2.6.9",
-    "pg": "^8.7.3",
-    "sharp": "^0.31.3"
-  },
-  "devDependencies": {
-    "jest": "^27.4.0"
-  }
+	"name": "eduhund_backend",
+	"version": "0.4.0",
+	"description": "Public implementation for Eduhund platform backend",
+	"main": "index.js",
+	"scripts": {
+		"start": "node src/index.js",
+		"test": "jest --verbose"
+	},
+	"author": "Roman Nebel",
+	"license": "ISC",
+	"dependencies": {
+		"@log4js-node/slack": "^1.0.0",
+		"cors": "^2.8.5",
+		"dotenv": "^16.0.2",
+		"express": "^4.18.1",
+		"lodash": "^4.17.21",
+		"log4js": "^6.7.0",
+		"mongodb": "^4.5.0",
+		"node-fetch": "^2.6.9",
+		"pg": "^8.7.3",
+		"sharp": "^0.31.3",
+		"supertest": "^6.3.3"
+	},
+	"devDependencies": {
+		"jest": "^27.4.0"
+	}
 }

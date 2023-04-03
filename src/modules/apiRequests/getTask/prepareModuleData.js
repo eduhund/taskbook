@@ -1,34 +1,36 @@
 const { getAroundTaskData } = require("../../../utils/getAroundTaskData");
+const { getLessonId } = require("../../../utils/idExtractor");
 
-async function prepareModuleData(data, taskId, lesson) {
-  const moduleName = data?.name;
-  const moduleShortName = data?.shortName;
-  const tasks = data?.lessons[lesson]?.tasks;
-  const currentTaskIndex = (tasks || []).indexOf(taskId);
+async function prepareModuleData({ moduleData, taskId }) {
+	const lesson = getLessonId(taskId);
+	const moduleName = moduleData?.name;
+	const moduleShortName = moduleData?.shortName;
+	const totalTasks = moduleData?.totalTasks;
+	const tasks = moduleData?.lessons[lesson]?.tasks;
+	const currentTaskIndex = (tasks || []).indexOf(taskId);
 
-  const totalTasks = data?.totalTasks;
-  if (currentTaskIndex === -1) {
-    return {
-      moduleName,
-      moduleShortName,
-      totalTasks,
-    };
-  }
-  const nextTaskId =
-    currentTaskIndex < tasks.length ? tasks[currentTaskIndex + 1] : null;
-  const prevTaskId = currentTaskIndex > 0 ? tasks[currentTaskIndex - 1] : null;
+	if (currentTaskIndex === -1) {
+		return {
+			moduleName,
+			moduleShortName,
+			totalTasks,
+		};
+	}
+	const nextTaskId =
+		currentTaskIndex < tasks.length ? tasks[currentTaskIndex + 1] : null;
+	const prevTaskId = currentTaskIndex > 0 ? tasks[currentTaskIndex - 1] : null;
 
-  const nextTask = await getAroundTaskData(nextTaskId);
+	const nextTask = await getAroundTaskData(nextTaskId);
 
-  const prevTask = await getAroundTaskData(prevTaskId);
+	const prevTask = await getAroundTaskData(prevTaskId);
 
-  return {
-    moduleName,
-    moduleShortName,
-    nextTask,
-    prevTask,
-    totalTasks,
-  };
+	return {
+		moduleName,
+		moduleShortName,
+		totalTasks,
+		nextTask,
+		prevTask,
+	};
 }
 
 module.exports.prepareModuleData = prepareModuleData;
