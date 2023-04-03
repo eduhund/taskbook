@@ -54,17 +54,6 @@ apiRouter.get("/getDiploma", checkAuth, checkCertAccess, (req, res) => {
 	}
 });
 
-// Get module's navigation info
-apiRouter.get("/getTasksList", checkAuth, checkModuleAccess, (req, res) => {
-	const userId = req?.userId;
-	const fullLessonId = req?.query?.lessonId;
-	if (validate(res, fullLessonId)) {
-		getApiRequest("getTasksList", { userId, fullLessonId }).then((data) => {
-			res.send(data);
-		});
-	}
-});
-
 // Set new task state
 apiRouter.post("/setState", checkAuth, (req, res) => {
 	const userId = req?.userId;

@@ -2,54 +2,91 @@ const { log } = require("../../../utils/logger");
 
 const { getDBRequest } = require("../../dbRequests/dbRequests");
 const { getModuleId, getLessonId } = require("../../../utils/idExtractor");
-const { calculateMaxScore } = require("../../../utils/calculators");
+const { generateMessage } = require("../../../utils/messageGenerator");
+const { addUserAction } = require("../../../modules/statistics/addUserAction");
 
-async function getTasksList({ userId, fullLessonId }) {
-  const moduleId = getModuleId(fullLessonId);
-  const lessonId = getLessonId(fullLessonId);
+async function getTasksList({ req, res }) {
+	const userId = req?.userId;
+	const fullLessonId = req?.query?.lessonId;
 
-  const moduleDate = await getDBRequest("getModuleInfo", {
-    query: { code: moduleId },
-    returns: ["lessons"],
-  });
+	const moduleId = getModuleId(fullLessonId);
+	const lessonId = getLessonId(fullLessonId);
 
-  const tasksList = [];
+	const { lessons } = await getDBRequest("getModuleInfo", {
+		query: { code: moduleId },
+		returns: ["lessons"],
+	});
 
-  for (const taskId of moduleDate?.lessons?.[lessonId]?.tasks || []) {
-    const taskData = await getDBRequest("getTaskInfo", {
-      query: { id: taskId },
-      returns: ["id", "type", "title", "name", "maxScore"],
-    });
+	if (!lessons || !Object.keys(lessons)) {
+		const error = generateMessage(10303);
+		res.status(200).send(error);
+		return error;
+	}
 
-    switch (taskData?.type) {
-      case "practice":
-        taskData.label = taskData?.name;
-        //taskData.maxScore = calculateMaxScore(taskData);
+	try {
+		const tasksList = [];
 
-        const taskState = await getDBRequest("getStateInfo", {
-          query: { userId, taskId },
-        });
+		const lesson = lessons[lessonId];
 
-        taskData.score = taskState?.score >= 0 ? taskState?.score : null;
-        taskData.isChecked =
-          taskState?.is_checked || taskState?.isChecked || false;
-        taskData.inProcess = taskState?.inProcess;
+		if (!lesson) {
+			const error = generateMessage(10302);
+			res.status(200).send(error);
+			return error;
+		}
 
-        break;
+		for (const taskId of lesson.tasks || []) {
+			const taskData = await getDBRequest("getTaskInfo", {
+				query: { id: taskId },
+				returns: ["id", "type", "title", "name", "maxScore"],
+			});
 
-      case "theory":
-        taskData.label = "Теория";
+			if (!taskData) {
+				const error = generateMessage(10301);
+				res.status(200).send(error);
+				return error;
+			}
 
-        break;
-    }
+			switch (taskData?.type) {
+				case "practice":
+					taskData.label = taskData?.name;
 
-    tasksList.push(taskData);
-  }
+					const taskState = await getDBRequest("getStateInfo", {
+						query: { userId, taskId },
+					});
 
-  return {
-    OK: true,
-    data: tasksList,
-  };
+					taskData.score = taskState?.score >= 0 ? taskState?.score : null;
+					taskData.isChecked = taskState?.isChecked || false;
+					taskData.inProcess = taskState?.inProcess;
+
+					break;
+
+				case "theory":
+					taskData.label = "Теория";
+
+					break;
+			}
+
+			tasksList.push(taskData);
+		}
+
+		const data = generateMessage(0, tasksList);
+
+		res.status(200).send(data);
+
+		return data;
+	} catch (e) {
+		log.warn(`${moduleId}: Error with processing tasks list`);
+		log.warn(e);
+		const error = generateMessage(20109);
+		res.status(400).send(error);
+	} finally {
+		addUserAction({
+			userId,
+			action: "getTasksList",
+			data: { userId },
+			req,
+		});
+	}
 }
 
 module.exports.getTasksList = getTasksList;

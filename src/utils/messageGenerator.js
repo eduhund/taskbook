@@ -84,6 +84,11 @@ const ERRORS = [
 		description: "Error while preparing lessons list",
 	},
 	{
+		code: 20109,
+		type: "process_failure",
+		description: "Error while preparing tasks list",
+	},
+	{
 		code: 20110,
 		type: "process_failure",
 		description: "Error while preparing module info",
