@@ -129,6 +129,16 @@ const PUBLIC = [
 			(req, res) => getApiRequest("getLessonFinal", { req, res }),
 		],
 	},
+	{
+		name: "getLessonsList",
+		method: "get",
+		path: "/getLessonsList",
+		exec: [
+			checkAuth,
+			checkModuleAccess,
+			(req, res) => getApiRequest("getLessonsList", { req, res }),
+		],
+	},
 ];
 
 async function getApiRequest(type, { req, res, next }) {

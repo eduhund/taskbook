@@ -81,6 +81,11 @@ const ERRORS = [
 	{
 		code: 20108,
 		type: "process_failure",
+		description: "Error while preparing lessons list",
+	},
+	{
+		code: 20110,
+		type: "process_failure",
 		description: "Error while preparing module info",
 	},
 ];

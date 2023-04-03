@@ -13,6 +13,7 @@ const requireParams = {
 	["/api/v2/getModuleFinal"]: ["moduleId", "accessToken"],
 	["/api/v2/getLessonStart"]: ["lessonId", "accessToken"],
 	["/api/v2/getLessonFinal"]: ["lessonId", "accessToken"],
+	["/api/v2/getLessonsList"]: ["moduleId", "accessToken"],
 };
 
 function validate(res, ...args) {

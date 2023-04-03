@@ -67,7 +67,7 @@ async function getModuleInfo({ req, res }) {
 	} catch (e) {
 		log.warn(`${moduleId}: Error with processing module Info`);
 		log.warn(e);
-		const error = generateMessage(20108);
+		const error = generateMessage(20110);
 		res.status(400).send(error);
 	} finally {
 		addUserAction({
