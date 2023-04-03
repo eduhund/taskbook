@@ -10,4 +10,14 @@ function lowerString(string) {
 	}
 }
 
-module.exports.lowerString = lowerString;
+function upperString(string) {
+	try {
+		const upString = (string || "").toUpperCase();
+		return upString;
+	} catch (e) {
+		log.warn(e);
+		return "";
+	}
+}
+
+module.exports = { lowerString, upperString };

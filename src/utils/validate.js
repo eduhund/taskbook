@@ -1,4 +1,4 @@
-const { lowerString } = require("../utils/lowString");
+const { lowerString, upperString } = require("./stringProcessor");
 const { hashPass } = require("../utils/pass");
 const { supportedLangs, defaultLang } = require("../../config.json");
 const { generateMessage } = require("./messageGenerator");
@@ -46,6 +46,22 @@ function paramsProcessor(req, res, next) {
 		params.lang = supportedLangs.includes(params.lang)
 			? params.lang
 			: defaultLang;
+	}
+
+	if ("moduleId" in params) {
+		params.moduleId = upperString(params.moduleId);
+	}
+
+	if ("lessonId" in params) {
+		params.lessonId = upperString(params.lessonId);
+	}
+
+	if ("taskId" in params) {
+		params.taskId = upperString(params.taskId);
+	}
+
+	if ("questionId" in params) {
+		params.questionId = upperString(params.questionId);
 	}
 
 	next();
