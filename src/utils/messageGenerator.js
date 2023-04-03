@@ -98,6 +98,11 @@ const ERRORS = [
 		type: "process_failure",
 		description: "Error while preparing diploma",
 	},
+	{
+		code: 20112,
+		type: "process_failure",
+		description: "Error while setting new question state",
+	},
 ];
 
 function generateMessage(code, data = {}) {

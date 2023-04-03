@@ -37,25 +37,6 @@ for (const request of PUBLIC) {
 
 // API v.2
 
-// Set new task state
-apiRouter.post("/setState", checkAuth, (req, res) => {
-	const userId = req?.userId;
-	const questionId = req.body.questionId;
-	const state = req.body.state;
-
-	if (validate(res, questionId, state)) {
-		addUserAction({
-			userId,
-			action: "updateState",
-			data: { questionId, state },
-			req,
-		});
-		getApiRequest("setState", { userId, questionId, state }).then((data) => {
-			res.send(data);
-		});
-	}
-});
-
 // Set task's controls state
 apiRouter.post("/setControls", checkAuth, (req, res) => {
 	const userId = req?.userId;

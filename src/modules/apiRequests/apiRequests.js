@@ -159,6 +159,16 @@ const PUBLIC = [
 			(req, res) => getApiRequest("getDiploma", { req, res }),
 		],
 	},
+	{
+		name: "setState",
+		method: "post",
+		path: "/setState",
+		exec: [
+			checkAuth,
+			checkModuleAccess,
+			(req, res) => getApiRequest("setState", { req, res }),
+		],
+	},
 ];
 
 async function getApiRequest(type, { req, res, next }) {
