@@ -118,6 +118,11 @@ const ERRORS = [
 		type: "process_failure",
 		description: "Error with processing new comment",
 	},
+	{
+		code: 20116,
+		type: "process_failure",
+		description: "Error with getting counselor content",
+	},
 ];
 
 function generateMessage(code, data = {}) {

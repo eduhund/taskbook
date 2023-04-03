@@ -199,6 +199,15 @@ const PUBLIC = [
 			(req, res) => getApiRequest("addComment", { req, res }),
 		],
 	},
+	{
+		name: "getCounselor",
+		method: "get",
+		path: "/getCounselor",
+		exec: [
+			checkAuth,
+			(req, res) => getApiRequest("getCounselor", { req, res }),
+		],
+	},
 ];
 
 async function getApiRequest(type, { req, res, next }) {

@@ -2,16 +2,7 @@ const express = require("express");
 const cors = require("cors");
 
 const { PUBLIC } = require("../modules/apiRequests/apiRequests");
-
-const { getApiRequest } = require("../modules/apiRequests/apiRequests");
-const { addUserAction } = require("../modules/statistics/addUserAction");
-
-const { validate, paramsProcessor } = require("../utils/validate");
-const {
-	checkAuth,
-	checkModuleAccess,
-	checkCertAccess,
-} = require("../utils/checkAuth");
+const { paramsProcessor } = require("../utils/validate");
 
 const app = express();
 
@@ -34,19 +25,5 @@ for (const request of PUBLIC) {
 			apiRouter.post(path, exec);
 	}
 }
-
-// API v.2
-
-apiRouter.get("/getCounselor", checkAuth, (req, res) => {
-	const userId = req?.userId;
-	addUserAction({
-		userId,
-		action: "getCounselor",
-		req,
-	});
-	getApiRequest("getCounselor", {}).then((data) => {
-		res.send(data);
-	});
-});
 
 module.exports = { app };
