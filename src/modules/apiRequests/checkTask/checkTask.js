@@ -22,10 +22,10 @@ async function checkTask({ req, res }) {
 		}),
 	];
 
+	let score = 0;
 	try {
 		const [taskData, stateData] = await Promise.all(requests);
 
-		let score = 0;
 		if (isChecked) {
 			if (protest) {
 				score = taskData?.maxScore;
