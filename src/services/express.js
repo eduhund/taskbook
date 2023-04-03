@@ -78,28 +78,6 @@ apiRouter.post("/addComment", checkAuth, (req, res) => {
 	}
 });
 
-// Task checking
-apiRouter.post("/checkTask", checkAuth, (req, res) => {
-	const userId = req?.userId;
-	const taskId = req.body.taskId;
-	const isChecked = req.body.isChecked;
-	const protest = req.body.protest;
-
-	if (validate(res, taskId, typeof isChecked === "boolean")) {
-		addUserAction({
-			userId,
-			action: "checkTask",
-			data: { taskId, isChecked, protest },
-			req,
-		});
-		getApiRequest("checkTask", { userId, taskId, isChecked, protest }).then(
-			(data) => {
-				res.send(data);
-			}
-		);
-	}
-});
-
 apiRouter.get("/getCounselor", checkAuth, (req, res) => {
 	const userId = req?.userId;
 	addUserAction({

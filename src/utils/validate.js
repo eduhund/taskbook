@@ -17,6 +17,7 @@ const requireParams = {
 	["/api/v2/getTasksList"]: ["lessonId", "accessToken"],
 	["/api/v2/getDiploma"]: ["moduleId", "accessToken"],
 	["/api/v2/setState"]: ["questionId", "state", "accessToken"],
+	["/api/v2/checkTask"]: ["taskId", "isChecked", "protest", "accessToken"],
 };
 
 function validate(res, ...args) {

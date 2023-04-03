@@ -103,6 +103,11 @@ const ERRORS = [
 		type: "process_failure",
 		description: "Error while setting new question state",
 	},
+	{
+		code: 20113,
+		type: "process_failure",
+		description: "Error while task was checking",
+	},
 ];
 
 function generateMessage(code, data = {}) {
