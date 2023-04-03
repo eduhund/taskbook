@@ -37,23 +37,6 @@ for (const request of PUBLIC) {
 
 // API v.2
 
-// Get diploma's data
-apiRouter.get("/getDiploma", checkAuth, checkCertAccess, (req, res) => {
-	const userId = req?.userId;
-	const moduleId = req?.query?.moduleId;
-	if (validate(res, moduleId)) {
-		addUserAction({
-			userId,
-			action: "getDiploma",
-			data: { moduleId },
-			req,
-		});
-		getApiRequest("getDiploma", { userId, moduleId }).then((data) => {
-			res.send(data);
-		});
-	}
-});
-
 // Set new task state
 apiRouter.post("/setState", checkAuth, (req, res) => {
 	const userId = req?.userId;

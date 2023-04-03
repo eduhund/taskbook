@@ -149,6 +149,16 @@ const PUBLIC = [
 			(req, res) => getApiRequest("getTasksList", { req, res }),
 		],
 	},
+	{
+		name: "getDiploma",
+		method: "get",
+		path: "/getDiploma",
+		exec: [
+			checkAuth,
+			checkCertAccess,
+			(req, res) => getApiRequest("getDiploma", { req, res }),
+		],
+	},
 ];
 
 async function getApiRequest(type, { req, res, next }) {

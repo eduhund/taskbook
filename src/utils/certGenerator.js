@@ -156,8 +156,6 @@ async function createCert(module, params, data) {
 
 	info.signColor = !params.colored || module === "MIO" ? "b" : "w";
 
-	console.log(info);
-
 	const processed = buildSvg(svg, [info, disciplines]);
 	const fileId = crypto
 		.createHash("sha256")
