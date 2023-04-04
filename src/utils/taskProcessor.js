@@ -46,9 +46,17 @@ const tasksTextProcessor = {
 		return this.question?.price;
 	},
 	getScore: function (state) {
-		return state?.state?.value?.length >= this.question?.minLength
-			? this.question?.price
-			: 0;
+		if (this.question?.minLength) {
+			return state?.state?.value?.length >= this.question?.minLength
+				? this.question?.price
+				: 0;
+		}
+
+		if (this.question?.rightAnswer) {
+			return state?.state?.value == this.question?.rightAnswer
+				? this.question?.price
+				: 0;
+		}
 	},
 };
 
