@@ -95,10 +95,7 @@ async function getDashboard({ req, res }) {
 						nextTask = {
 							id: nextTaskId,
 							type: result?.type,
-							name:
-								result?.type === "practice"
-									? `Задача ${result?.name}`
-									: "Теория",
+							name: result?.name,
 							lesson: result?.lesson,
 						};
 					}
