@@ -26,7 +26,7 @@ async function getLessonFinal({ req, res }) {
 		}),
 		getDBRequest("getModuleInfo", {
 			query: { code: moduleId },
-			returns: ["shortName", "lessons", "maxScore", "totalTasks"],
+			returns: ["shortName", "lessons", "maxScore", "totalTasks", "lang"],
 		}),
 	];
 

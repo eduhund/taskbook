@@ -28,6 +28,7 @@ async function getModuleFinal({ req, res }) {
 				"final",
 				"totalTasks",
 				"mascot",
+				"lang",
 			],
 		}),
 	];

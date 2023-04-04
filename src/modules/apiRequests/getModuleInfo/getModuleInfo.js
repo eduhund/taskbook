@@ -20,7 +20,14 @@ async function getModuleInfo({ req, res }) {
 		}),
 		getDBRequest("getModuleInfo", {
 			query: { code: moduleId },
-			returns: ["name", "shortName", "lessons", "totalTasks", "moduleLink"],
+			returns: [
+				"name",
+				"shortName",
+				"lessons",
+				"totalTasks",
+				"moduleLink",
+				"lang",
+			],
 		}),
 	];
 

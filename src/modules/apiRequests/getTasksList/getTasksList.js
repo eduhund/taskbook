@@ -46,24 +46,14 @@ async function getTasksList({ req, res }) {
 				return error;
 			}
 
-			switch (taskData?.type) {
-				case "practice":
-					taskData.label = taskData?.name;
+			if (taskData?.type === "practice") {
+				const taskState = await getDBRequest("getStateInfo", {
+					query: { userId, taskId },
+				});
 
-					const taskState = await getDBRequest("getStateInfo", {
-						query: { userId, taskId },
-					});
-
-					taskData.score = taskState?.score >= 0 ? taskState?.score : null;
-					taskData.isChecked = taskState?.isChecked || false;
-					taskData.inProcess = taskState?.inProcess;
-
-					break;
-
-				case "theory":
-					taskData.label = "Теория";
-
-					break;
+				taskData.score = taskState?.score >= 0 ? taskState?.score : null;
+				taskData.isChecked = taskState?.isChecked || false;
+				taskData.inProcess = taskState?.inProcess;
 			}
 
 			tasksList.push(taskData);

@@ -6,6 +6,7 @@ async function prepareModuleData({ moduleData, taskId }) {
 	const moduleName = moduleData?.name;
 	const moduleShortName = moduleData?.shortName;
 	const totalTasks = moduleData?.totalTasks;
+	const lang = moduleData?.lang;
 	const tasks = moduleData?.lessons[lesson]?.tasks;
 	const currentTaskIndex = (tasks || []).indexOf(taskId);
 
@@ -28,6 +29,7 @@ async function prepareModuleData({ moduleData, taskId }) {
 		moduleName,
 		moduleShortName,
 		totalTasks,
+		lang,
 		nextTask,
 		prevTask,
 	};
