@@ -25,7 +25,7 @@ async function checkPayment({ req, res }) {
 	});
 
 	if (!user) {
-		log.info(`${email}: User didn't found!`);
+		log.info(`${payment.email}: User didn't found!`);
 		const error = generateMessage(10101);
 		res.status(401).send(error);
 		return error;
