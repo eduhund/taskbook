@@ -5,6 +5,7 @@ const { generateMessage } = require("./messageGenerator");
 
 const requireParams = {
 	["/api/v2/auth"]: ["email", "pass"],
+	["/api/v2/checkPayment"]: ["paymentId"],
 	["/api/v2/createPassword"]: ["email", "pass", "verifyKey"],
 	["/api/v2/getDashboard"]: ["accessToken"],
 	["/api/v2/getModuleInfo"]: ["moduleId", "accessToken"],

@@ -14,26 +14,28 @@ const { setControls } = require("./setControls/setControls");
 const { addUserAction } = require("./addUserAction/addUserAction");
 const { setUserInfo } = require("./setUserInfo/setUserInfo");
 const { getCounselor } = require("./getCounselor/getCounselor");
+const { getPaymentInfo } = require("./getPaymentInfo/getPaymentInfo");
 
 const REQUESTS = {
-  getUserInfo,
-  getUserState,
-  getUsersList,
-  getModuleInfo,
-  getTaskInfo,
-  getStateInfo,
-  getModulesList,
-  getTasksList,
-  setComment,
-  setState,
-  setControls,
-  addUserAction,
-  setUserInfo,
-  getCounselor,
+	getUserInfo,
+	getUserState,
+	getUsersList,
+	getModuleInfo,
+	getTaskInfo,
+	getStateInfo,
+	getModulesList,
+	getTasksList,
+	setComment,
+	setState,
+	setControls,
+	addUserAction,
+	setUserInfo,
+	getCounselor,
+	getPaymentInfo,
 };
 
 function getDBRequest(type, params) {
-  return REQUESTS[type](params);
+	return REQUESTS[type](params);
 }
 
 module.exports.getDBRequest = getDBRequest;

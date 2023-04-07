@@ -1,6 +1,7 @@
 const { log } = require("../../services/logger");
 
 const { auth } = require("./auth/auth");
+const { checkPayment } = require("./checkPayment/checkPayment");
 const { createPassword } = require("./createPassword/createPassword");
 const { getTask } = require("./getTask/getTask");
 const { checkTask } = require("./checkTask/checkTask");
@@ -26,6 +27,7 @@ const {
 
 const REQUESTS = {
 	auth,
+	checkPayment,
 	createPassword,
 	getTask,
 	checkTask,
@@ -50,6 +52,12 @@ const PUBLIC = [
 		method: "post",
 		path: "/auth",
 		exec: [(req, res) => getApiRequest("auth", { req, res })],
+	},
+	{
+		name: "checkPayment",
+		method: "post",
+		path: "/checkPayment",
+		exec: [(req, res) => getApiRequest("checkPayment", { req, res })],
 	},
 	{
 		name: "createPassword",
