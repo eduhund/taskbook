@@ -5,10 +5,10 @@ const { checkKey } = require("../../../utils/otkRequests");
 const { generateMessage } = require("../../../utils/messageGenerator");
 
 async function createPassword({ req, res, next }) {
-	const { email, pass, verifyKey } = req.body;
+	const { email, pass, key } = req.body;
 
-	const verifyResult = await checkKey(verifyKey);
-	if (!verifyResult) {
+	const verify = await checkKey(key);
+	if (!verify) {
 		const error = generateMessage(10105);
 		res.status(401).send(error);
 		return error;
