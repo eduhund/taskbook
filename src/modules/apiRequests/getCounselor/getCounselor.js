@@ -5,13 +5,16 @@ const { addUserAction } = require("../../../modules/statistics/addUserAction");
 
 async function getCounselor({ req, res }) {
 	const userId = req?.userId;
+	const { lang = "en" } = req?.query;
 	try {
-		const response = await getDBRequest("getCounselor", { lang: "ru" });
-		const data = generateMessage(0, response);
-
-		res.status(200).send(data);
-
-		return data;
+		const response = await getDBRequest("getCounselor", { lang });
+		if (response) {
+			const data = generateMessage(0, response?.data);
+			res.status(200).send(data);
+			return data;
+		} else {
+			throw new Error("Selected language is not exist");
+		}
 	} catch (e) {
 		log.warn(`${userId}: Error with getting counselor content`);
 		log.warn(e);

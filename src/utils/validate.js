@@ -21,7 +21,7 @@ const requireParams = {
 	["/api/v2/checkTask"]: ["taskId", "isChecked", "protest", "accessToken"],
 	["/api/v2/setControls"]: ["taskId", "controlsState", "accessToken"],
 	["/api/v2/addComment"]: ["taskId", "comment", "protest", "accessToken"],
-	["/api/v2/getCounselor"]: ["accessToken"],
+	["/api/v2/getCounselor"]: ["lang", "accessToken"],
 };
 
 function paramsProcessor(req, res, next) {

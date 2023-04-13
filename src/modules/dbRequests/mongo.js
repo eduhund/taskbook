@@ -14,7 +14,7 @@ const PAYMENTS = mongoClient
 	.collection("payments");
 const COUNSELOR = mongoClient
 	.db(process.env.DATABASE_NAME)
-	.collection("counselor_ru");
+	.collection("counselor");
 
 module.exports.db = {
 	USERS,

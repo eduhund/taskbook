@@ -8,7 +8,7 @@ function getCounselor({ query = {}, returns = [] }) {
 	for (const param of returns) {
 		projection[param] = 1;
 	}
-	return db.COUNSELOR.find(query, { projection }).toArray();
+	return db.COUNSELOR.findOne(query, { projection });
 }
 
 module.exports.getCounselor = getCounselor;
