@@ -9,7 +9,7 @@ async function getCounselor({ req, res }) {
 	try {
 		const response = await getDBRequest("getCounselor", { lang });
 		if (response) {
-			const data = generateMessage(0, response?.data);
+			const data = generateMessage(0, response?.pages);
 			res.status(200).send(data);
 			return data;
 		} else {
