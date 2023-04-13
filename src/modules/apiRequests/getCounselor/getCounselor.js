@@ -7,7 +7,7 @@ async function getCounselor({ req, res }) {
 	const userId = req?.userId;
 	const { lang = "en" } = req?.query;
 	try {
-		const response = await getDBRequest("getCounselor", { lang });
+		const response = await getDBRequest("getCounselor", { query: { lang } });
 		if (response) {
 			const data = generateMessage(0, response?.pages);
 			res.status(200).send(data);
