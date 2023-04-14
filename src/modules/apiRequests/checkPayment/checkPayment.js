@@ -4,8 +4,6 @@ const { getDBRequest } = require("../../dbRequests/dbRequests");
 const { accessTokens } = require("../../userTokens/accessTokens");
 const { generateMessage } = require("../../../utils/messageGenerator");
 
-const tokens = accessTokens;
-
 async function checkPayment({ req, res }) {
 	const { paymentId } = req.body;
 
@@ -22,6 +20,7 @@ async function checkPayment({ req, res }) {
 
 	const user = await getDBRequest("getUserInfo", {
 		query: { email: payment.email },
+		returns: ["id", "email", "firstName", "lastName", "lang"],
 	});
 
 	if (!user) {
@@ -31,14 +30,10 @@ async function checkPayment({ req, res }) {
 		return error;
 	}
 
-	const userToken = tokens.setToken(user);
+	const userToken = accessTokens.setToken(user);
 	log.info(`${user.id}: Auth success!`);
 	const userData = {
-		id: user.id,
-		email: user.email,
-		firstName: user.firstName,
-		lastName: user.lastName,
-		lang: user.lang,
+		...user,
 		token: userToken,
 	};
 	const data = generateMessage(0, userData);

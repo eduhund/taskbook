@@ -14,20 +14,27 @@ async function getDashboard({ req, res }) {
 	const userId = req?.userId;
 
 	const requests = [
-		getDBRequest("getUserInfo", {
-			query: { id: userId },
-		}),
 		getDBRequest("getModulesList", {
 			query: DEMO ? {} : { active: true },
 		}),
 	];
 
 	try {
-		let [userData, modulesList] = await Promise.all(requests);
+		const userData = await getDBRequest("getUserInfo", {
+			query: { id: userId },
+		});
 
 		const username = `${userData?.firstName} ${userData?.lastName}`;
 		const email = userData?.email;
+		const lang = userData?.lang;
 		const userModules = userData?.modules;
+
+		let modulesList = await getDBRequest("getModulesList", {
+			query: {
+				...(DEMO ? {} : { active: true }),
+				lang,
+			},
+		});
 
 		modulesList.forEach((module) => {
 			module.status = "available";
@@ -115,6 +122,7 @@ async function getDashboard({ req, res }) {
 		const finalData = {
 			username,
 			email,
+			lang,
 			modules: availableModules,
 		};
 		const data = generateMessage(0, finalData);
