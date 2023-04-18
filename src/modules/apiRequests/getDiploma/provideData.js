@@ -8,66 +8,89 @@ const locales = {
 };
 
 function getCertType(progress = 0) {
-	let type = "certType";
-	if (progress >= 60) {
-		type + "+";
-	}
-	if (progress >= 80) {
-		type + "+";
-	}
-	return type;
+	return progress >= 80
+		? "certType++"
+		: progress >= 60
+		? "certType+"
+		: "certType";
 }
 
-function provideData(data, params) {
-	const module = data.moduleId;
-	const { lang, colored, mascot, progress } = params;
-	data.bgColor = colored ? colors[module]?.primary || "#101010" : "#FFFFFF";
-	data.primaryColor =
-		colored && module !== "MIO" ? "#FFFFFF" : colors[module]?.primary;
-	data.textColor = module === "MIO" || !colored ? "#101010" : "#FFFFFF";
-	data.headerOpacity = data?.progress < 60 ? "0.1" : "1";
-
-	if (colored && module !== "MIO") {
-		data.skillOpacity = "0.77";
-	} else if (colored && module === "MIO") {
-		data.skillOpacity = "0.6";
-	} else if (!progress) {
-		data.skillOpacity = "0";
-	} else data.skillOpacity = "1";
-
-	if (mascot && !colored && data?.progress >= 60) {
-		data.mascotOpacity = "1";
-	} else if (mascot && !colored && data?.progress < 60) {
-		data.mascotOpacity = "0.3";
-	} else data.mascotOpacity = "0";
-
-	if (progress && data?.progress >= 60) {
-		data.progressOpacity = "1";
-	} else if (progress && data?.progress < 60) {
-		data.progressOpacity = "0.3";
-	} else data.progressOpacity = "0";
-
-	const certType = getCertType(data.progress);
-
-	data.certDate = new Date(data.certDate || "2023-01-01")
+function processTexts(lang, moduleId, certType, certDate) {
+	const date = new Date(certDate || "2023-01-01")
 		.toLocaleDateString(locales[lang], {
 			day: "numeric",
 			month: "long",
 			year: "numeric",
 		})
 		.replace(" г.", "");
+	return {
+		moduleName: hyphenate(moduleId),
+		certDescription: getPhrase(lang, "certDescription"),
+		certType: getPhrase(lang, certType),
+		certCheck1: getPhrase(lang, "certCheck1"),
+		certCheck2: getPhrase(lang, "certCheck2"),
+		certSignName: getPhrase(lang, "certSignName"),
+		certSignPos: getPhrase(lang, "certSignPos"),
+		certDate: date,
+	};
+}
 
-	data.signColor = !colored || module === "MIO" ? "b" : "w";
+function processColors(moduleId, progress, params) {
+	const { isColored, isMascot, isProgress } = params;
+	const bgColor = isColored ? colors[moduleId]?.primary : "#FFFFFF";
 
-	data.moduleName = hyphenate(module);
-	data.certDescription = getPhrase(lang, "certDescription");
-	data.certType = getPhrase(lang, certType);
-	data.certCheck1 = getPhrase(lang, "certCheck1");
-	data.certCheck2 = getPhrase(lang, "certCheck2");
-	data.certSignName = getPhrase(lang, "certSignName");
-	data.certSignPos = getPhrase(lang, "certSignPos");
+	let primaryColor;
+	if (moduleId === "MIO") {
+		primaryColor = isColored ? "#000000" : colors[moduleId]?.primary;
+	} else {
+		primaryColor = isColored ? "#FFFFFF" : colors[moduleId]?.primary;
+	}
 
-	return data;
+	const textColor = !isColored || moduleId === "MIO" ? "#101010" : "#FFFFFF";
+	const signColor = !isColored || moduleId === "MIO" ? "b" : "w";
+	const skillOpacity = isProgress
+		? isColored
+			? moduleId === "MIO"
+				? "0.6"
+				: "0.77"
+			: "1"
+		: "0";
+	const mascotOpacity =
+		!isMascot || isColored ? "0" : progress >= 60 ? "1" : "0.3";
+	const progressOpacity = isProgress ? (progress >= 60 ? "1" : "0.3") : "0";
+	const headerOpacity = progress < 60 ? "0.1" : "1";
+
+	return {
+		bgColor,
+		primaryColor,
+		textColor,
+		signColor,
+		skillOpacity,
+		mascotOpacity,
+		progressOpacity,
+		headerOpacity,
+	};
+}
+
+function provideData(data, params) {
+	const { moduleId, progress, certDate } = data;
+	const { lang } = params;
+
+	const certType = getCertType(progress);
+
+	const textData = processTexts(lang, moduleId, certType, certDate);
+	const colorData = processColors(moduleId, progress, params);
+	console.log({
+		...data,
+		...textData,
+		...colorData,
+	});
+
+	return {
+		...data,
+		...textData,
+		...colorData,
+	};
 }
 
 module.exports = provideData;

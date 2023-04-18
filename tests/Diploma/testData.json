@@ -1,0 +1,131 @@
+[
+	{
+		"name": "MIO/cert/white/mascot/progress",
+		"input": {
+			"data": {
+				"moduleId": "MIO",
+				"moduleName": "Информационные ожидания",
+				"firstName": "Константин",
+				"lastName": "Константинопольский",
+				"certId": "XXX00000000",
+				"certDate": "2023-01-01",
+				"progress": 6
+			},
+			"params": {
+				"lang": "ru",
+				"isColored": false,
+				"isMascot": true,
+				"isProgress": true
+			}
+		},
+		"output": {
+			"moduleId": "MIO",
+			"moduleName": "Информационные\nожидания",
+			"firstName": "Константин",
+			"lastName": "Константинопольский",
+			"certId": "XXX00000000",
+			"certDate": "1 января 2023",
+			"progress": 6,
+			"certDescription": "грыз гранит дизайн задачника eduHund.com и получил",
+			"certType": "зачетку",
+			"certCheck1": "Для проверки подлинности сертификата",
+			"certCheck2": "напишите на",
+			"certSignName": "Olga Pavlova",
+			"certSignPos": "рквдтль безумия",
+			"bgColor": "#FFFFFF",
+			"primaryColor": "#FAC43B",
+			"textColor": "#101010",
+			"signColor": "b",
+			"skillOpacity": "1",
+			"mascotOpacity": "0.3",
+			"progressOpacity": "0.3",
+			"headerOpacity": "0.1"
+		}
+	},
+	{
+		"name": "TXT/cert+/colour/mascot/progress",
+		"input": {
+			"data": {
+				"moduleId": "TXT",
+				"moduleName": "Несекретные секреты текстов",
+				"firstName": "Роман",
+				"lastName": "Небыль",
+				"certId": "XXX00000000",
+				"certDate": "2023-04-18",
+				"progress": 62
+			},
+			"params": {
+				"lang": "ru",
+				"isColored": true,
+				"isMascot": true,
+				"isProgress": true
+			}
+		},
+		"output": {
+			"moduleId": "TXT",
+			"moduleName": "Несекретные\nсекреты текстов",
+			"firstName": "Роман",
+			"lastName": "Небыль",
+			"certId": "XXX00000000",
+			"certDate": "18 апреля 2023",
+			"progress": 62,
+			"certDescription": "грыз гранит дизайн задачника eduHund.com и получил",
+			"certType": "сертификат",
+			"certCheck1": "Для проверки подлинности сертификата",
+			"certCheck2": "напишите на",
+			"certSignName": "Olga Pavlova",
+			"certSignPos": "рквдтль безумия",
+			"bgColor": "#A6200E",
+			"primaryColor": "#FFFFFF",
+			"textColor": "#FFFFFF",
+			"signColor": "w",
+			"skillOpacity": "0.77",
+			"mascotOpacity": "0",
+			"progressOpacity": "1",
+			"headerOpacity": "1"
+		}
+	},
+	{
+		"name": "TXT/cert+/colour/mascot/progress",
+		"input": {
+			"data": {
+				"moduleId": "UCC",
+				"moduleName": "Сценарии взаимодействия",
+				"firstName": "Олег",
+				"lastName": "",
+				"certId": "XXX00000000",
+				"certDate": "2023-04-18",
+				"progress": 100
+			},
+			"params": {
+				"lang": "ru",
+				"isColored": false,
+				"isMascot": false,
+				"isProgress": false
+			}
+		},
+		"output": {
+			"moduleId": "UCC",
+			"moduleName": "Сценарии\nвзаимодействия",
+			"firstName": "Олег",
+			"lastName": "",
+			"certId": "XXX00000000",
+			"certDate": "18 апреля 2023",
+			"progress": 100,
+			"certDescription": "грыз гранит дизайн задачника eduHund.com и получил",
+			"certType": "сертификат с отличием",
+			"certCheck1": "Для проверки подлинности сертификата",
+			"certCheck2": "напишите на",
+			"certSignName": "Olga Pavlova",
+			"certSignPos": "рквдтль безумия",
+			"bgColor": "#FFFFFF",
+			"primaryColor": "#295A12",
+			"textColor": "#101010",
+			"signColor": "b",
+			"skillOpacity": "0",
+			"mascotOpacity": "0",
+			"progressOpacity": "0",
+			"headerOpacity": "1"
+		}
+	}
+]

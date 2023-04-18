@@ -74,9 +74,9 @@ async function getDiploma({ req, res }) {
 
 		const params = {
 			lang: "ru",
-			colored: false,
-			mascot: true,
-			progress: true,
+			isColored: false,
+			isMascot: true,
+			isProgress: true,
 		};
 
 		const info = {
