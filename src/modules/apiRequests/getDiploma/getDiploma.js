@@ -9,7 +9,14 @@ const provideData = require("./provideData");
 
 async function getDiploma({ req, res }) {
 	const userId = req?.userId;
-	const moduleId = req?.query?.moduleId;
+	const { moduleId, lang, isColor, isMascot, isProgress } = req?.query;
+
+	const params = {
+		lang,
+		isColor: isColor === "true",
+		isMascot: isMascot === "true",
+		isProgress: isProgress === "true",
+	};
 
 	const requests = [
 		getDBRequest("getUserInfo", {
@@ -39,6 +46,19 @@ async function getDiploma({ req, res }) {
 		const certId =
 			userData?.modules?.[moduleId]?.certId ||
 			(await generateCertId(userId, moduleId, start));
+
+		if (Object.keys(params).length === 0) {
+			const certData = await getDBRequest("getDiploma", {
+				query: { id: certId },
+				returns: ["lang", "isColor", "isMascot", "isProgress"],
+			});
+			Object.assign(params, certData);
+		} else {
+			getDBRequest("setDiploma", {
+				query: { id: certId },
+				data: params,
+			});
+		}
 
 		const firstName = userData.firstName;
 		const lastName = userData.lastName;
@@ -71,13 +91,6 @@ async function getDiploma({ req, res }) {
 		const progress = Math.trunc((score / maxScore) * 100);
 
 		const skills = await generateSkills(moduleId, userId);
-
-		const params = {
-			lang: "ru",
-			isColored: false,
-			isMascot: true,
-			isProgress: true,
-		};
 
 		const info = {
 			moduleId,

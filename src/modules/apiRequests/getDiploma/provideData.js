@@ -36,27 +36,28 @@ function processTexts(lang, moduleId, certType, certDate) {
 }
 
 function processColors(moduleId, progress, params) {
-	const { isColored, isMascot, isProgress } = params;
-	const bgColor = isColored ? colors[moduleId]?.primary : "#FFFFFF";
+	console.log(params);
+	const { isColor, isMascot, isProgress } = params;
+	const bgColor = isColor ? colors[moduleId]?.primary : "#FFFFFF";
 
 	let primaryColor;
 	if (moduleId === "MIO") {
-		primaryColor = isColored ? "#000000" : colors[moduleId]?.primary;
+		primaryColor = isColor ? "#000000" : colors[moduleId]?.primary;
 	} else {
-		primaryColor = isColored ? "#FFFFFF" : colors[moduleId]?.primary;
+		primaryColor = isColor ? "#FFFFFF" : colors[moduleId]?.primary;
 	}
 
-	const textColor = !isColored || moduleId === "MIO" ? "#101010" : "#FFFFFF";
-	const signColor = !isColored || moduleId === "MIO" ? "b" : "w";
+	const textColor = !isColor || moduleId === "MIO" ? "#101010" : "#FFFFFF";
+	const signColor = !isColor || moduleId === "MIO" ? "b" : "w";
 	const skillOpacity = isProgress
-		? isColored
+		? isColor
 			? moduleId === "MIO"
 				? "0.6"
 				: "0.77"
 			: "1"
 		: "0";
 	const mascotOpacity =
-		!isMascot || isColored ? "0" : progress >= 60 ? "1" : "0.3";
+		!isMascot || isColor ? "0" : progress >= 60 ? "1" : "0.3";
 	const progressOpacity = isProgress ? (progress >= 60 ? "1" : "0.3") : "0";
 	const headerOpacity = progress < 60 ? "0.1" : "1";
 
@@ -80,11 +81,6 @@ function provideData(data, params) {
 
 	const textData = processTexts(lang, moduleId, certType, certDate);
 	const colorData = processColors(moduleId, progress, params);
-	console.log({
-		...data,
-		...textData,
-		...colorData,
-	});
 
 	return {
 		...data,

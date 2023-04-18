@@ -1,5 +1,3 @@
-require("dotenv").config();
-
 const { getUserInfo } = require("./getUserInfo/getUserInfo");
 const { getUserState } = require("./getUserState/getUserState");
 const { getUsersList } = require("./getUsersList/getUsersList");
@@ -15,6 +13,8 @@ const { addUserAction } = require("./addUserAction/addUserAction");
 const { setUserInfo } = require("./setUserInfo/setUserInfo");
 const { getCounselor } = require("./getCounselor/getCounselor");
 const { getPaymentInfo } = require("./getPaymentInfo/getPaymentInfo");
+const { getDiploma } = require("./getDiploma/getDiploma");
+const { setDiploma } = require("./setDiploma/setDiploma");
 
 const REQUESTS = {
 	getUserInfo,
@@ -32,6 +32,8 @@ const REQUESTS = {
 	setUserInfo,
 	getCounselor,
 	getPaymentInfo,
+	getDiploma,
+	setDiploma,
 };
 
 function getDBRequest(type, params) {
