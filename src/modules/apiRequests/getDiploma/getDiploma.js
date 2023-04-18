@@ -5,14 +5,7 @@ const { generateCertId } = require("../../../utils/generateCertId");
 const { createCert } = require("../../../utils/certGenerator");
 const { generateMessage } = require("../../../utils/messageGenerator");
 const { addUserAction } = require("../../../modules/statistics/addUserAction");
-
-function setCertType(progress = 0) {
-	if (progress >= 80) {
-		return "сертификат с отличием";
-	} else if (progress >= 60) {
-		return "сертификат";
-	} else return "зачетку";
-}
+const provideData = require("./provideData");
 
 async function getDiploma({ req, res }) {
 	const userId = req?.userId;
@@ -79,8 +72,6 @@ async function getDiploma({ req, res }) {
 
 		const skills = await generateSkills(moduleId, userId);
 
-		const certType = setCertType(progress);
-
 		const params = {
 			lang: "ru",
 			colored: false,
@@ -89,17 +80,19 @@ async function getDiploma({ req, res }) {
 		};
 
 		const info = {
-			code: moduleId,
+			moduleId,
+			moduleName: moduleData?.name,
 			firstName,
 			lastName,
-			certType,
 			certId,
 			certDate,
 			progress,
-			multilineCourseName: moduleData?.name,
+			skills,
 		};
 
-		const fileId = await createCert(moduleId, params, [info, skills]);
+		const fullInfo = provideData(info, params);
+
+		const fileId = await createCert(fullInfo);
 
 		moduleData.firstName = firstName;
 		moduleData.lastName = lastName;

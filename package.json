@@ -20,7 +20,8 @@
 		"node-fetch": "^2.6.9",
 		"pg": "^8.7.3",
 		"sharp": "^0.31.3",
-		"supertest": "^6.3.3"
+		"supertest": "^6.3.3",
+		"svg-content": "^0.1.1"
 	},
 	"devDependencies": {
 		"jest": "^27.4.0"
