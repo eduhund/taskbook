@@ -15,7 +15,7 @@ log4js.configure({
 		default: { appenders: ["out"], level: "debug" },
 		local: { appenders: ["out", "file"], level: "debug" },
 		test: { appenders: ["out", "file"], level: "debug" },
-		prod: { appenders: ["out", "file", "slack"], level: "warn" },
+		prod: { appenders: ["out", "file", "slack"], level: "debug" },
 	},
 });
 
