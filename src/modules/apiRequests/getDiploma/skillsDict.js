@@ -1209,7 +1209,7 @@ const en = {
 			subskills: [
 				{
 					code: "iBase",
-					name: "разбираться в основах",
+					name: "understand the basics",
 					tasks: [
 						"MIO0104",
 						"MIO0105",
@@ -1240,7 +1240,7 @@ const en = {
 				},
 				{
 					code: "iLook",
-					name: "видеть интерфейс глазами пользователя",
+					name: "see the interface through the eyes of the user",
 					tasks: [
 						"MIO0104",
 						"MIO0105",
@@ -1273,7 +1273,7 @@ const en = {
 				},
 				{
 					code: "iDraw",
-					name: "рисовать интерфейс",
+					name: "draw interface",
 					tasks: [
 						"MIO0308",
 						"MIO00310",
@@ -1296,12 +1296,12 @@ const en = {
 				},
 				{
 					code: "iTell",
-					name: "объяснять другим",
+					name: "explain to others",
 					tasks: ["MIO0707", "MIO0909", "MIO0910", "MIO0911"],
 				},
 				{
 					code: "iSelf",
-					name: "саморазвиваться",
+					name: "self-develop",
 					tasks: ["MIO0715"],
 				},
 			],
@@ -1311,7 +1311,7 @@ const en = {
 			subskills: [
 				{
 					code: "aZero",
-					name: "создавать требования с нуля",
+					name: "create requirements from scratch",
 					tasks: [
 						"MIO0302",
 						"MIO0303",
@@ -1326,7 +1326,7 @@ const en = {
 				},
 				{
 					code: "aLook",
-					name: "понимать логику чужого интерфейса",
+					name: "to understand the logic of another's interface",
 					tasks: [
 						"MIO0104",
 						"MIO0105",
@@ -1353,7 +1353,7 @@ const en = {
 				},
 				{
 					code: "aImp",
-					name: "находить места для локальных улучшений",
+					name: "find places for local improvements",
 					tasks: [
 						"MIO0204",
 						"MIO0205",
@@ -1391,7 +1391,7 @@ const en = {
 				},
 				{
 					code: "aDraft",
-					name: "понимать, стоит ли доводить эскизы до ума",
+					name: "understand whether it is worth to polish the sketches",
 					tasks: [
 						"MIO0112",
 						"MIO0113",
@@ -1403,7 +1403,7 @@ const en = {
 				},
 				{
 					code: "aWork",
-					name: "понимать, будет ли интерфейс работать",
+					name: "understand if the interface will work",
 					tasks: [
 						"MIO0114",
 						"MIO0115",
@@ -1419,7 +1419,7 @@ const en = {
 				},
 				{
 					code: "aFix",
-					name: "фиксировать приоритеты",
+					name: "fix priorities",
 					tasks: [
 						"MIO0204",
 						"MIO0205",
@@ -1436,12 +1436,12 @@ const en = {
 				},
 				{
 					code: "aLis",
-					name: "составлять список экранов",
+					name: "list screens",
 					tasks: ["MIO0109", "MIO0110", "MIO0706", "MIO0715", "MIO0904"],
 				},
 				{
 					code: "aPlus",
-					name: "понимать, какие еще экраны нужны системе",
+					name: "understand what other screens the system needs",
 					tasks: ["MIO0109", "MIO0110", "MIO0706", "MIO0715", "MIO0904"],
 				},
 			],
@@ -1451,7 +1451,7 @@ const en = {
 			subskills: [
 				{
 					code: "pSketch",
-					name: "делать быстрые наброски",
+					name: "make quick sketches",
 					tasks: [
 						"MIO0308",
 						"MIO0310",
@@ -1466,12 +1466,12 @@ const en = {
 				},
 				{
 					code: "pMain",
-					name: "рисовать только самое главное, без деталей",
+					name: "draw the important, without details",
 					tasks: ["MIO0913", "MIO0914", "MIO0915"],
 				},
 				{
 					code: "pReq",
-					name: "рисовать чётко по требованиям",
+					name: "draw according to requirements",
 					tasks: [
 						"MIO0308",
 						"MIO0310",
@@ -1485,12 +1485,12 @@ const en = {
 				},
 				{
 					code: "pImp",
-					name: "рисовать небольшие улучшения в интерфейсе",
+					name: "draw small improvements in the interface",
 					tasks: ["MIO0613", "MIO0614", "MIO0703", "MIO0708", "MIO0709"],
 				},
 				{
 					code: "pStart",
-					name: "просто — начать — рисовать",
+					name: "just. start. drawing.",
 					tasks: [
 						"MIO0308",
 						"MIO0310",
@@ -1520,7 +1520,7 @@ const en = {
 			subskills: [
 				{
 					code: "tReq",
-					name: "уточнять требования",
+					name: "clarify requirements",
 					tasks: [
 						"MIO0503",
 						"MIO0504",
@@ -1532,7 +1532,7 @@ const en = {
 				},
 				{
 					code: "tPic",
-					name: "тестировать интерфейс",
+					name: "test interface",
 					tasks: [
 						"MIO0503",
 						"MIO0504",
@@ -1551,12 +1551,12 @@ const en = {
 			subskills: [
 				{
 					code: "dCol",
-					name: "обсудить с коллегой",
+					name: "discuss with a colleague",
 					tasks: ["MIO0503", "MIO0909", "MIO0910", "MIO0911"],
 				},
 				{
 					code: "dTeam",
-					name: "обсудить в команде",
+					name: "discuss in a team",
 					tasks: ["MIO0503", "MIO0909", "MIO0910", "MIO0911"],
 				},
 			],
@@ -1566,22 +1566,22 @@ const en = {
 			subskills: [
 				{
 					code: "mUser",
-					name: "работать для пользователя",
+					name: "work for the user",
 					tasks: ["MIO0907", "MIO0915"],
 				},
 				{
 					code: "mTask",
-					name: "поставить задачу дизайнеру, принять результат",
+					name: "set a task for the designer, accept the result",
 					tasks: ["MIO0904", "MIO0909", "MIO0910"],
 				},
 				{
 					code: "mDev",
-					name: "внедрить дизайн в IT-производство",
+					name: "implement design in IT production",
 					tasks: ["MIO0909", "MIO0910", "MIO0911"],
 				},
 				{
 					code: "mSale",
-					name: "презентовать интерфейс",
+					name: "present interface",
 					tasks: ["MIO0715"],
 				},
 			],
@@ -1591,7 +1591,7 @@ const en = {
 			subskills: [
 				{
 					code: "bNew",
-					name: "нарисовать новый интерфейс",
+					name: "draw a new interface",
 					tasks: [
 						"MIO0412",
 						"MIO0413",
@@ -1605,7 +1605,7 @@ const en = {
 				},
 				{
 					code: "bLeg",
-					name: "заботиться о старой системе",
+					name: "take care of the old system",
 					tasks: [
 						"MIO0613",
 						"MIO0604",
@@ -1625,7 +1625,7 @@ const en = {
 				},
 				{
 					code: "bOK",
-					name: "делать нормально",
+					name: "do okay",
 					tasks: ["MIO0715"],
 				},
 			],
