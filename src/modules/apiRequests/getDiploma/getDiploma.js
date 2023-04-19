@@ -107,7 +107,7 @@ async function getDiploma({ req, res }) {
 
 		const progress = Math.trunc((score / maxScore) * 100);
 
-		const skills = await generateSkills(moduleId, userId, lang);
+		const skills = await generateSkills(moduleId, userId, params.lang);
 
 		const info = {
 			moduleId,
