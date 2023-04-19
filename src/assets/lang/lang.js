@@ -1,6 +1,8 @@
 const ru = require("./dicts/ru.json");
+const en = require("./dicts/en.json");
 const langs = {
 	ru,
+	en,
 };
 
 function getPhrase(lang, intent) {

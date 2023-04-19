@@ -24,7 +24,7 @@ function processTexts(lang, moduleId, certType, certDate) {
 		})
 		.replace(" г.", "");
 	return {
-		moduleName: hyphenate(moduleId),
+		moduleName: hyphenate(lang, moduleId),
 		certDescription: getPhrase(lang, "certDescription"),
 		certType: getPhrase(lang, certType),
 		certCheck1: getPhrase(lang, "certCheck1"),
@@ -36,7 +36,6 @@ function processTexts(lang, moduleId, certType, certDate) {
 }
 
 function processColors(moduleId, progress, params) {
-	console.log(params);
 	const { isColor, isMascot, isProgress } = params;
 	const bgColor = isColor ? colors[moduleId]?.primary : "#FFFFFF";
 
@@ -84,6 +83,7 @@ function provideData(data, params) {
 
 	return {
 		...data,
+		...params,
 		...textData,
 		...colorData,
 	};
