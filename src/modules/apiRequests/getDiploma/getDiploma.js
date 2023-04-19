@@ -5,18 +5,27 @@ const { generateCertId } = require("../../../utils/generateCertId");
 const { createCert } = require("../../../utils/certGenerator");
 const { generateMessage } = require("../../../utils/messageGenerator");
 const { addUserAction } = require("../../../modules/statistics/addUserAction");
+const provideData = require("./provideData");
+const CyrillicToTranslit = require("cyrillic-to-translit-js");
 
-function setCertType(progress = 0) {
-	if (progress >= 80) {
-		return "сертификат с отличием";
-	} else if (progress >= 60) {
-		return "сертификат";
-	} else return "зачетку";
-}
+const cyrillicToTranslit = new CyrillicToTranslit();
 
 async function getDiploma({ req, res }) {
 	const userId = req?.userId;
-	const moduleId = req?.query?.moduleId;
+	const { moduleId, lang, isColor, isMascot, isProgress, isPublic } =
+		req?.query;
+
+	const params = {
+		lang: lang || undefined,
+		isColor: isColor ? isColor === "true" : undefined,
+		isMascot: isMascot ? isMascot === "true" : undefined,
+		isProgress: isProgress ? isProgress === "true" : undefined,
+		isPublic: isPublic ? isPublic === "true" : undefined,
+	};
+
+	for (const key of Object.keys(params)) {
+		if (params[key] === undefined) delete params[key];
+	}
 
 	const requests = [
 		getDBRequest("getUserInfo", {
@@ -47,8 +56,29 @@ async function getDiploma({ req, res }) {
 			userData?.modules?.[moduleId]?.certId ||
 			(await generateCertId(userId, moduleId, start));
 
-		const firstName = userData.firstName;
-		const lastName = userData.lastName;
+		if (Object.keys(params).length === 0) {
+			const certData = await getDBRequest("getDiploma", {
+				query: { id: certId },
+				returns: ["lang", "isColor", "isMascot", "isProgress", "isPublic"],
+			});
+			Object.assign(params, certData);
+		} else {
+			const certData = await getDBRequest("setDiploma", {
+				query: { id: certId },
+				data: params,
+				returns: ["lang", "isColor", "isMascot", "isProgress", "isPublic"],
+			});
+			Object.assign(params, certData?.value);
+		}
+
+		const firstName =
+			lang === "ru"
+				? userData.firstName
+				: cyrillicToTranslit.transform(userData.firstName);
+		const lastName =
+			lang === "ru"
+				? userData.lastName
+				: cyrillicToTranslit.transform(userData.lastName);
 
 		const score = stateData.reduce(
 			(progress, value) => progress + (value?.score || 0),
@@ -77,29 +107,22 @@ async function getDiploma({ req, res }) {
 
 		const progress = Math.trunc((score / maxScore) * 100);
 
-		const skills = await generateSkills(moduleId, userId);
-
-		const certType = setCertType(progress);
-
-		const params = {
-			lang: "ru",
-			colored: false,
-			mascot: true,
-			progress: true,
-		};
+		const skills = await generateSkills(moduleId, userId, lang);
 
 		const info = {
-			code: moduleId,
+			moduleId,
+			moduleName: moduleData?.name,
 			firstName,
 			lastName,
-			certType,
 			certId,
 			certDate,
 			progress,
-			multilineCourseName: moduleData?.name,
+			skills,
 		};
 
-		const fileId = await createCert(moduleId, params, [info, skills]);
+		const fullInfo = provideData(info, params);
+
+		const fileId = await createCert(fullInfo);
 
 		moduleData.firstName = firstName;
 		moduleData.lastName = lastName;
