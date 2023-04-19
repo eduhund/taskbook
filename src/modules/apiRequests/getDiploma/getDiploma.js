@@ -124,6 +124,8 @@ async function getDiploma({ req, res }) {
 
 		const fileId = await createCert(fullInfo);
 
+		Object.assign(moduleData, params);
+
 		moduleData.firstName = firstName;
 		moduleData.lastName = lastName;
 		moduleData.start = start;
