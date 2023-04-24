@@ -15,7 +15,7 @@ async function createPassword({ req, res, next }) {
 	}
 
 	const user = await getDBRequest("setUserInfo", {
-		email,
+		query: { email },
 		data: { pass },
 	});
 

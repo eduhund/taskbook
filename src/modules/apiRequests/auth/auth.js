@@ -31,7 +31,7 @@ async function auth({ req, res }) {
 	const userToken = tokens.setToken(user);
 	lang &&
 		lang !== user.lang &&
-		getDBRequest("setUserInfo", { email, data: { lang } });
+		getDBRequest("setUserInfo", { query: { email }, data: { lang } });
 	log.info(`${user.id}: Auth success!`);
 	const userData = {
 		id: user.id,

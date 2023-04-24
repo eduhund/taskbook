@@ -8,10 +8,12 @@ const {
 } = require("../../../utils/calculators");
 const { generateMessage } = require("../../../utils/messageGenerator");
 const { addUserAction } = require("../../../modules/statistics/addUserAction");
+const { getModuleId } = require("../../../utils/idExtractor");
 
 async function checkTask({ req, res }) {
 	const userId = req?.userId;
 	const { taskId, isChecked, protest } = req.body;
+	const moduleId = getModuleId(taskId);
 
 	const requests = [
 		getDBRequest("getTaskInfo", {
@@ -20,11 +22,16 @@ async function checkTask({ req, res }) {
 		getDBRequest("getStateInfo", {
 			query: { userId, taskId },
 		}),
+		getDBRequest("getUserInfo", {
+			query: { id: userId },
+		}),
 	];
 
 	let score = 0;
 	try {
-		const [taskData, stateData] = await Promise.all(requests);
+		const [taskData, stateData, userData] = await Promise.all(requests);
+
+		let userScore = userData.modules[moduleId].score || 0;
 
 		if (isChecked) {
 			if (protest) {
@@ -34,13 +41,22 @@ async function checkTask({ req, res }) {
 			} else {
 				score = calculateScore(stateData?.data, taskData);
 			}
+			userScore += score;
+		} else {
+			userScore -= stateData?.score;
 		}
 
 		const query = { userId, taskId };
 		getDBRequest("setState", {
 			query,
 			state: { score, isChecked, protest },
-			returns: ["score"],
+		});
+
+		const scorePath = `modules.${moduleId}.score`;
+
+		getDBRequest("setUserInfo", {
+			query: { id: userId },
+			data: { [scorePath]: score },
 		});
 		const data = generateMessage(0, { score });
 

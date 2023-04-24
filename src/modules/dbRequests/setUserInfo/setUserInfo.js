@@ -1,9 +1,9 @@
 const { log } = require("../../../services/logger");
 const { db } = require("../mongo");
 
-async function setUserInfo({ email, data }) {
+async function setUserInfo({ query, data }) {
 	const user = await db.USERS.findOneAndUpdate(
-		{ email },
+		query,
 		{ $set: data },
 		{ upsert: false, returnDocument: "after" }
 	);
