@@ -40,7 +40,15 @@ async function getDiploma({ req, res }) {
 		}),
 		getDBRequest("getModuleInfo", {
 			query: { code: moduleId },
-			returns: ["code", "name", "shortName", "lessons", "totalTasks", "mascot"],
+			returns: [
+				"code",
+				"name",
+				"shortName",
+				"lessons",
+				"totalTasks",
+				"mascot",
+				"lang",
+			],
 		}),
 	];
 
@@ -63,6 +71,11 @@ async function getDiploma({ req, res }) {
 			});
 			Object.assign(params, certData);
 		} else {
+			params.lang = moduleData.lang;
+			params.isColor = false;
+			params.isMascot = true;
+			params.isProgress = true;
+			params.isPublic = false;
 			const certData = await getDBRequest("setDiploma", {
 				query: { id: certId },
 				data: params,
