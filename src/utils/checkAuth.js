@@ -57,10 +57,8 @@ function checkModuleAccess(req, res, next) {
 		startDate = user?.modules?.[moduleId]?.start;
 		deadline = user?.modules?.[moduleId]?.deadline;
 		if (checkDate(startDate, deadline)) {
-			log.info(`${userId}: User have access to module ${moduleId}`);
 			next();
 		} else {
-			log.info(`${userId}: User doesn't have access to module ${moduleId}`);
 			const error = generateMessage(10201);
 			res.status(401).send(error);
 			return error;
@@ -82,10 +80,8 @@ function checkCertAccess(req, res, next) {
 	db.USERS.findOne({ id: userId }).then((user) => {
 		const modules = Object.keys(user?.modules);
 		if (modules.includes(moduleId)) {
-			log.info(`${userId}: User have access to diploma ${moduleId}`);
 			next();
 		} else {
-			log.info(`${userId}: User doesn't have access to diploma ${moduleId}`);
 			const error = generateMessage(10201);
 			res.status(401).send(error);
 			return error;
