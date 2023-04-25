@@ -64,32 +64,26 @@ async function getDiploma({ req, res }) {
 			userData?.modules?.[moduleId]?.certId ||
 			(await generateCertId(userId, moduleId, start));
 
-		if (Object.keys(params).length === 0) {
-			const certData = await getDBRequest("getDiploma", {
-				query: { id: certId },
-				returns: ["lang", "isColor", "isMascot", "isProgress", "isPublic"],
-			});
-			Object.assign(params, certData);
-		} else {
-			params.lang = moduleData.lang;
-			params.isColor = false;
-			params.isMascot = true;
-			params.isProgress = true;
-			params.isPublic = false;
-			const certData = await getDBRequest("setDiploma", {
-				query: { id: certId },
-				data: params,
-				returns: ["lang", "isColor", "isMascot", "isProgress", "isPublic"],
-			});
-			Object.assign(params, certData?.value);
-		}
+		const certData = await getDBRequest("setDiploma", {
+			query: { id: certId },
+			data: params,
+			returns: ["lang", "isColor", "isMascot", "isProgress", "isPublic"],
+		});
+
+		Object.assign(params, certData?.value || {});
+
+		if (params.lang === undefined) params.lang = moduleData.lang;
+		if (params.isColor === undefined) params.isColor = false;
+		if (params.isMascot === undefined) params.isMascot = true;
+		if (params.isProgress === undefined) params.isProgress = true;
+		if (params.isPublic === undefined) params.isPublic = false;
 
 		const firstName =
-			lang === "ru"
+			params.lang === "ru"
 				? userData.firstName
 				: cyrillicToTranslit.transform(userData.firstName);
 		const lastName =
-			lang === "ru"
+			params.lang === "ru"
 				? userData.lastName
 				: cyrillicToTranslit.transform(userData.lastName);
 
@@ -120,7 +114,11 @@ async function getDiploma({ req, res }) {
 
 		const progress = Math.trunc((score / maxScore) * 100);
 
-		const skills = await generateSkills(moduleId, userId, params.lang);
+		const skills = await generateSkills(
+			moduleId,
+			userId,
+			params.lang || moduleData.lang
+		);
 
 		const info = {
 			moduleId,
