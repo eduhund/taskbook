@@ -52,6 +52,7 @@ async function getTask({ req, res }) {
 			taskData,
 			taskState,
 			userId,
+			lang: moduleData?.lang,
 		});
 
 		const preparedUserData = {

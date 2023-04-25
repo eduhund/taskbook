@@ -38,7 +38,7 @@ function validateTaskState(taskState) {
 	};
 }
 
-async function prepareTaskData({ taskData, taskState, userId }) {
+async function prepareTaskData({ taskData, taskState, userId, lang }) {
 	try {
 		if (taskData.type === "practice") {
 			Object.assign(taskData, validateTaskState(taskState || {}));
@@ -47,7 +47,11 @@ async function prepareTaskData({ taskData, taskState, userId }) {
 					if (introItem.type == "richText") {
 						for (const richItem of introItem.value) {
 							if (richItem.parentId) {
-								const value = await getParentContent(userId, richItem.parentId);
+								const value = await getParentContent(
+									userId,
+									richItem.parentId,
+									lang
+								);
 
 								richItem.value = value[0];
 
@@ -61,17 +65,22 @@ async function prepareTaskData({ taskData, taskState, userId }) {
 					}
 
 					if (introItem.parentId) {
-						const value = await getParentContent(userId, introItem.parentId);
+						const value = await getParentContent(
+							userId,
+							introItem.parentId,
+							lang
+						);
 						introItem.value = value[0];
 					}
 				}
-				for (question of content.questions || []) {
+				for (const question of content.questions || []) {
 					if (question?.subtopic) {
 						for (let i = 0; i < question?.subtopic.length; i++) {
 							if (question?.subtopic[i].parentId) {
 								const value = await getParentContent(
 									userId,
-									question?.subtopic[i].parentId
+									question?.subtopic[i].parentId,
+									lang
 								);
 								question.subtopic[i] = value[0];
 							}
@@ -118,7 +127,11 @@ async function prepareTaskData({ taskData, taskState, userId }) {
 					} else {
 						for (variant of question.variants) {
 							if (variant.parentId) {
-								const value = await getParentContent(userId, variant.parentId);
+								const value = await getParentContent(
+									userId,
+									variant.parentId,
+									lang
+								);
 								variant.label = value[0];
 							}
 							if (variant.refs) {
