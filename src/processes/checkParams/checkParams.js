@@ -2,9 +2,8 @@ const { log } = require("@logger");
 const { lowerString, upperString } = require("../../utils/stringProcessor");
 const { hashPass } = require("../../utils/pass");
 const { supportedLangs, defaultLang } = require("../../../config.json");
-const { generateMessage } = require("../../utils/messageGenerator");
 const PATH = require("node:path");
-const STUDENT = require("../../API/student/student");
+const { STUDENT } = require("../../API/student/student");
 
 /*
 const requireParams = {
@@ -42,9 +41,8 @@ function checkParams(req, res, next) {
 
 	for (const param of params) {
 		if (!(param in data)) {
-			res.status(400);
-			res.json(generateMessage(10001));
-			return;
+			const err = { code: 10002 };
+			next(err);
 		}
 	}
 

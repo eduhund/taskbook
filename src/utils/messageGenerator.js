@@ -6,6 +6,11 @@ const ERRORS = [
 	{
 		code: 10001,
 		type: "invalid_request",
+		description: "Invalid path",
+	},
+	{
+		code: 10002,
+		type: "invalid_request",
 		description: "Missing required params",
 	},
 	{

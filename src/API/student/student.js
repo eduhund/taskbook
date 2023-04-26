@@ -1,12 +1,10 @@
-const { checkParams } = require("../../processes/processes");
-
 const STUDENT = [
 	{
 		name: "auth",
 		type: "post",
 		params: ["email", "pass"],
-		exec: [checkParams],
+		exec: [(req, res) => console.log("pow")],
 	},
 ];
 
-module.exports = STUDENT;
+module.exports = { STUDENT };

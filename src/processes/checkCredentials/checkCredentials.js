@@ -1,4 +1,4 @@
-const { log } = require("../../../services/logger");
+const { log } = require("@logger");
 
 const { getDBRequest } = require("../../dbRequests/dbRequests");
 const { accessTokens } = require("../../userTokens/accessTokens");
@@ -7,12 +7,10 @@ const { generateMessage } = require("../../../utils/messageGenerator");
 
 const tokens = accessTokens;
 
-async function auth({ req, res }) {
-	const { email, pass, lang } = req.body;
+async function checkCredentials({ req, res, next }) {
+	const { email, pass } = req.body;
 
-	const user = await getDBRequest("getUserInfo", {
-		query: { email },
-	});
+	const user = "";
 
 	if (!user) {
 		log.info(`${email}: User didn't found!`);
@@ -45,7 +43,7 @@ async function auth({ req, res }) {
 
 	res.status(200).send(data);
 
-	return data;
+	next();
 }
 
-module.exports = auth;
+module.exports = checkCredentials;

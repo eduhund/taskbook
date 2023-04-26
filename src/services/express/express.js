@@ -1,8 +1,10 @@
 const express = require("express");
 const cors = require("cors");
-const { paramsProcessor } = require("../../utils/validate");
+const methodOverride = require("method-override");
 const { PUBLIC } = require("../../modules/apiRequests/apiRequests");
-const STUDENT = require("../../API/student/student");
+const { STUDENT } = require("../../API/student/student");
+const { errorHandler, pathHandler } = require("@utils/errorsHandler");
+const { checkParams } = require("../../processes/processes");
 
 const app = express();
 
@@ -11,7 +13,7 @@ app.use(express.static("static"));
 app.use("/diplomas", express.static("diplomas"));
 app.use(express.json());
 app.use(require("body-parser").urlencoded({ extended: false }));
-app.use(paramsProcessor);
+app.use(checkParams);
 
 // API v.2
 const apiRouter = express.Router();
@@ -30,16 +32,17 @@ for (const request of PUBLIC) {
 const student = express.Router();
 app.use("/v3/student", student);
 
-const METHODS = [...STUDENT];
-
-for (const method of METHODS) {
+for (const method of STUDENT) {
 	const { name, type, exec } = method;
 	switch (type) {
 		case "get":
-			apiRouter.get(name, exec);
+			student.get("/" + name, exec);
 		case "post":
-			apiRouter.post(name, exec);
+			student.post("/" + name, exec);
 	}
 }
+
+app.use(errorHandler);
+app.use(pathHandler);
 
 module.exports = { app };
