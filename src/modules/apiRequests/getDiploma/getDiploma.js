@@ -64,19 +64,25 @@ async function getDiploma({ req, res }) {
 			userData?.modules?.[moduleId]?.certId ||
 			(await generateCertId(userId, moduleId, start));
 
-		const certData = await getDBRequest("setDiploma", {
+		const certData = await getDBRequest("getDiploma", {
 			query: { id: certId },
-			data: params,
 			returns: ["lang", "isColor", "isMascot", "isProgress", "isPublic"],
 		});
 
 		Object.assign(params, certData?.value || {});
+		log.debug(params);
 
 		if (params.lang === undefined) params.lang = moduleData.lang;
 		if (params.isColor === undefined) params.isColor = false;
 		if (params.isMascot === undefined) params.isMascot = true;
 		if (params.isProgress === undefined) params.isProgress = true;
 		if (params.isPublic === undefined) params.isPublic = false;
+
+		getDBRequest("setDiploma", {
+			query: { id: certId },
+			data: params,
+			returns: ["lang", "isColor", "isMascot", "isProgress", "isPublic"],
+		});
 
 		const firstName =
 			params.lang === "ru"
