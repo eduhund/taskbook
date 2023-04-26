@@ -1,4 +1,3 @@
-const { log } = require("../../../services/logger");
 const { db } = require("../mongo");
 
 function getDiploma({ query = {}, returns = [] }) {

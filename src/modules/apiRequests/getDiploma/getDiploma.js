@@ -1,4 +1,4 @@
-const { log } = require("../../../services/logger");
+const { log } = require("@logger");
 const { getDBRequest } = require("../../dbRequests/dbRequests");
 const { generateSkills } = require("./generateSkills");
 const { generateCertId } = require("../../../utils/generateCertId");

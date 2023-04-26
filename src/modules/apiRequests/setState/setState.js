@@ -1,4 +1,4 @@
-const { log } = require("../../../services/logger");
+const { log } = require("@logger");
 
 const { getDBRequest } = require("../../dbRequests/dbRequests");
 const { getFullTaskId } = require("../../../utils/idExtractor");

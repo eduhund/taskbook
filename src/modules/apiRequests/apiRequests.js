@@ -1,4 +1,4 @@
-const { log } = require("../../services/logger");
+const { log } = require("@logger");
 
 const { auth } = require("./auth/auth");
 const { checkPayment } = require("./checkPayment/checkPayment");

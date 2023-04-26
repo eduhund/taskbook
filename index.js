@@ -1,10 +1,11 @@
 require("dotenv").config();
+require("module-alias/register");
 
 const fs = require("fs");
 const https = require("https");
 
-const { log } = require("./services/logger");
-const { app } = require("./services/express");
+const { log } = require("@logger");
+const { app } = require("@express");
 
 const port = process.env.SERVER_PORT || 443;
 

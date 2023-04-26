@@ -1,4 +1,3 @@
-const { log } = require("../../../services/logger");
 const { db } = require("../mongo");
 
 function setComment({ query = {}, data = {}, protest = false, returns = [] }) {

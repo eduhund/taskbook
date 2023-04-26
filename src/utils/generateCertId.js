@@ -1,5 +1,5 @@
 const { db } = require("../modules/dbRequests/mongo");
-const { log } = require("../services/logger");
+const { log } = require("@logger");
 
 function padder(number = 0, count = 1) {
 	return number.toString().padStart(count, "0");

@@ -1,4 +1,4 @@
-const { log } = require("../services/logger");
+const { log } = require("@logger");
 
 function lowerString(string) {
 	try {
