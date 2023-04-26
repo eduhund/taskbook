@@ -1,4 +1,4 @@
-const { log } = require("../../services/logger");
+const { log } = require("@logger");
 const { lowerString, upperString } = require("../../utils/stringProcessor");
 const { hashPass } = require("../../utils/pass");
 const { supportedLangs, defaultLang } = require("../../../config.json");

@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const { paramsProcessor } = require("../../utils/validate");
 const { PUBLIC } = require("../../modules/apiRequests/apiRequests");
-const { STUDENT } = require("../../API/student/student");
+const STUDENT = require("../../API/student/student");
 
 const app = express();
 
@@ -33,12 +33,12 @@ app.use("/v3/student", student);
 const METHODS = [...STUDENT];
 
 for (const method of METHODS) {
-	const { name, type } = method;
+	const { name, type, exec } = method;
 	switch (type) {
 		case "get":
-			apiRouter.get(name, PROCESSES[name]);
+			apiRouter.get(name, exec);
 		case "post":
-			apiRouter.post(name, PROCESSES[name]);
+			apiRouter.post(name, exec);
 	}
 }
 
