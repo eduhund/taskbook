@@ -10,6 +10,9 @@
 | 10104 | invalid_credentials | Invalid refresh token              |
 | 10105 | invalid_credentials | Verify key is invalid or expired   |
 | 10106 | invalid_credentials | Payment didn't found               |
-| 20201 | process_failure     | Error in check credentials process |
-| 20202 | process_failure     | Error in check payment process     |
+| 20201 | process_failure     | Error in check user process        |
+| 20202 | process_failure     | Error in check credentials process |
+| 20203 | process_failure     | Error in check OTK process         |
+| 20204 | process_failure     | Error in check payment process     |
+| 20205 | process_failure     | Error in update pass process       |
 | 20301 | process_failure     | Error in auth user process         |

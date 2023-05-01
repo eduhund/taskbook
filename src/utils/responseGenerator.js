@@ -66,12 +66,27 @@ const ERRORS = [
 	{
 		code: 20201,
 		type: "process_failure",
-		description: "Error in check credentials process",
+		description: "Error in check user process",
 	},
 	{
 		code: 20202,
 		type: "process_failure",
+		description: "Error in check credentials process",
+	},
+	{
+		code: 20203,
+		type: "process_failure",
+		description: "Error in check OTK process",
+	},
+	{
+		code: 20204,
+		type: "process_failure",
 		description: "Error in check payment process",
+	},
+	{
+		code: 20205,
+		type: "process_failure",
+		description: "Error in update pass process",
 	},
 	{
 		code: 20301,

@@ -1,9 +1,9 @@
 const { log } = require("@logger");
-const { generateMessage } = require("@utils/messageGenerator");
+const { responseGenerator } = require("@utils/responseGenerator");
 
 function errorHandler(err, req, res, next) {
 	const { code } = err;
-	const error = generateMessage(code || -1);
+	const error = responseGenerator(code || -1);
 	if (code > 10000 && code < 20000) {
 		log.debug({ input: req?.data, output: err });
 		res.status(400).send(error);
