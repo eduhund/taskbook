@@ -30,7 +30,7 @@ async function checkCredentials(req, res, next) {
 
 		next();
 	} catch (e) {
-		log.error("Error in check credentials process\n", e);
+		log.error(e);
 		const err = { code: 20101 };
 		next(err);
 		return err;

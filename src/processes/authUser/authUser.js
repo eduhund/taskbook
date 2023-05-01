@@ -32,7 +32,7 @@ async function authUser(req, res) {
 
 		log.debug(`${user.id}: Auth success!`);
 	} catch (e) {
-		log.error("Error in auth process\n", e);
+		log.error(e);
 		const err = { code: 20102 };
 		next(err);
 		return err;
