@@ -1,5 +1,7 @@
-const checkParams = require("./checkParams/checkParams");
+const checkCredentials = require("./checkCredentials/checkCredentials");
+const authUser = require("./authUser/authUser");
 
 module.exports = {
-	checkParams,
+	checkCredentials,
+	authUser,
 };

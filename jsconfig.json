@@ -4,7 +4,8 @@
 		"paths": {
 			"@utils/*": ["utils/*"],
 			"@express": ["services/express/express"],
-			"@logger": ["services/logger/logger"]
+			"@logger": ["services/logger/logger"],
+			"@mongo/*": ["services/mongo"]
 		}
 	}
 }

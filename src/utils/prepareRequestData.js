@@ -1,10 +1,10 @@
 const { lowerString, upperString } = require("./stringProcessor");
-const { hashPass } = require(".//pass");
-const { supportedLangs, defaultLang } = require("../../config.json");
+const { hashPass } = require("./pass");
+const { lang } = require("../../config.json");
 const PATH = require("node:path");
 const { STUDENT } = require("../API/student/student");
 
-function prepareData(req, res, next) {
+function prepareRequestData(req, res, next) {
 	const { path, query, body } = req;
 	const data = Object.assign({}, body || {}, query || {});
 	req.data = data;
@@ -28,7 +28,7 @@ function prepareData(req, res, next) {
 	const keyHandlers = {
 		email: lowerString,
 		pass: hashPass,
-		lang: (value) => (supportedLangs.includes(value) ? value : defaultLang),
+		lang: (value) => (lang.supported.includes(value) ? value : lang.default),
 		moduleId: upperString,
 		lessonId: upperString,
 		taskId: upperString,
@@ -37,11 +37,11 @@ function prepareData(req, res, next) {
 
 	for (const [key, value] of Object.entries(data)) {
 		if (key in keyHandlers) {
-			params[key] = keyHandlers[key](value);
+			data[key] = keyHandlers[key](value);
 		}
 	}
 
 	next();
 }
 
-module.exports = prepareData;
+module.exports = prepareRequestData;

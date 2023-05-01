@@ -6,12 +6,14 @@ const https = require("https");
 
 const { log } = require("@logger");
 const { app } = require("@express");
+const mongo = require("@mongo/mongo");
 
 const port = process.env.SERVER_PORT || 443;
 
 const options = {};
 
 try {
+	mongo.start();
 	options.cert = fs.readFileSync(process.env.SSL_CERT);
 	options.key = fs.readFileSync(process.env.SSL_KEY);
 } catch (e) {

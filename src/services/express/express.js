@@ -3,7 +3,7 @@ const cors = require("cors");
 const { PUBLIC } = require("../../modules/apiRequests/apiRequests");
 const { STUDENT } = require("../../API/student/student");
 const { errorHandler, pathHandler } = require("@utils/errorsHandler");
-const prepareData = require("../../utils/prepareData");
+const prepareRequestData = require("../../utils/prepareRequestData");
 
 const app = express();
 
@@ -12,7 +12,7 @@ app.use(express.static("static"));
 app.use("/diplomas", express.static("diplomas"));
 app.use(express.json());
 app.use(require("body-parser").urlencoded({ extended: false }));
-app.use(prepareData);
+app.use(prepareRequestData);
 
 // API v.2
 const apiRouter = express.Router();

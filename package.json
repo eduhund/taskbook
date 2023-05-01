@@ -32,6 +32,7 @@
 		"@root": ".",
 		"@utils": "./src/utils",
 		"@express": "./src/services/express/express",
-		"@logger": "./src/services/logger/logger"
+		"@logger": "./src/services/logger/logger",
+		"@mongo": "./src/services/mongo"
 	}
 }
