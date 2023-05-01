@@ -13,8 +13,6 @@ function getProjection(returns) {
 function database(collection, method, data) {
 	const { query, set, returns = [], options = {} } = data;
 
-	console.log(data);
-
 	const projection = getProjection(returns);
 
 	const moreOptions = {

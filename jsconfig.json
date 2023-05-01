@@ -3,7 +3,7 @@
 		"baseUrl": "./src",
 		"paths": {
 			"@utils/*": ["utils/*"],
-			"@express": ["services/express/express"],
+			"@express/*": ["services/express"],
 			"@logger": ["services/logger/logger"],
 			"@mongo/*": ["services/mongo"]
 		}

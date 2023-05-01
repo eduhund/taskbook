@@ -31,7 +31,7 @@
 	"_moduleAliases": {
 		"@root": ".",
 		"@utils": "./src/utils",
-		"@express": "./src/services/express/express",
+		"@express": "./src/services/express",
 		"@logger": "./src/services/logger/logger",
 		"@mongo": "./src/services/mongo"
 	}

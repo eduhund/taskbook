@@ -1,11 +1,26 @@
 const express = require("express");
 const cors = require("cors");
+const fs = require("fs");
+const https = require("https");
+const { log } = require("@logger");
+
 const { PUBLIC } = require("../../modules/apiRequests/apiRequests");
 const { STUDENT } = require("../../API/student/student");
 const { errorHandler, pathHandler } = require("@utils/errorsHandler");
 const prepareRequestData = require("../../utils/prepareRequestData");
 
+const port = process.env.SERVER_PORT || 443;
+
 const app = express();
+
+const options = {};
+
+try {
+	options.cert = fs.readFileSync(process.env.SSL_CERT);
+	options.key = fs.readFileSync(process.env.SSL_KEY);
+} catch {
+	throw new Error("Can't download SSL certificates!");
+}
 
 app.use(cors());
 app.use(express.static("static"));
@@ -44,4 +59,18 @@ for (const method of STUDENT) {
 app.use(errorHandler);
 app.use(pathHandler);
 
-module.exports = { app };
+const server = https.createServer(options, app);
+
+function start() {
+	return new Promise((resolve, reject) => {
+		server.listen(port, (err) => {
+			if (err) {
+				return reject(err);
+			}
+			log.info("Server starts on port", port);
+			return resolve();
+		});
+	});
+}
+
+module.exports = { start };

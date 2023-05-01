@@ -1,6 +1,6 @@
-const { checkCredentials, authUser } = require("../src/processes/processes");
+const prepareRequestData = require("../src/utils/prepareRequestData");
 
-describe("Check credentials process", () => {
+describe("Check params middleware", () => {
 	let mockRequest;
 	let mockResponse;
 	let nextFunction = jest.fn();
@@ -13,22 +13,30 @@ describe("Check credentials process", () => {
 		};
 	});
 
-	test("Wrong email", async () => {
+	test("without params, no required", async () => {
+		mockRequest = {
+			path: "/v3/students/echo",
+			query: {},
+		};
+		prepareRequestData(mockRequest, mockResponse, nextFunction);
+
+		expect(nextFunction).toBeCalledTimes(1);
+	});
+
+	test("without params, have required", async () => {
 		const expectedResponse = {
 			OK: false,
 			error: {
-				code: 10101,
-				type: "invalid_credentials",
-				description: "User didn't found",
+				code: 10001,
+				description: "Missing required params",
+				type: "invalid_request",
 			},
 		};
 		mockRequest = {
-			body: {
-				email: "exapmle@mail.com",
-				pass: "123",
-			},
+			path: "/v3/students/auth",
+			query: {},
 		};
-		checkCredentials(mockRequest, mockResponse, nextFunction);
+		prepareRequestData(mockRequest, mockResponse, nextFunction);
 
 		expect(mockResponse.json).toBeCalledWith(expectedResponse);
 	});
@@ -48,7 +56,7 @@ describe("Check credentials process", () => {
 				email: "test@mail.com",
 			},
 		};
-		checkParams(mockRequest, mockResponse, nextFunction);
+		prepareRequestData(mockRequest, mockResponse, nextFunction);
 
 		expect(mockResponse.json).toBeCalledWith(expectedResponse);
 	});
@@ -61,7 +69,7 @@ describe("Check credentials process", () => {
 				pass: "123",
 			},
 		};
-		checkParams(mockRequest, mockResponse, nextFunction);
+		prepareRequestData(mockRequest, mockResponse, nextFunction);
 
 		expect(nextFunction).toBeCalledTimes(1);
 	});
