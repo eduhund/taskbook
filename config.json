@@ -2,9 +2,5 @@
 	"lang": {
 		"supported": ["ru", "en"],
 		"default": "en"
-	},
-	"path": {
-		"express": "./src/services/express",
-		"logger": "./src/services/logger"
 	}
 }

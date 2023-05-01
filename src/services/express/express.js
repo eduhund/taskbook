@@ -1,10 +1,9 @@
 const express = require("express");
 const cors = require("cors");
-const methodOverride = require("method-override");
 const { PUBLIC } = require("../../modules/apiRequests/apiRequests");
 const { STUDENT } = require("../../API/student/student");
 const { errorHandler, pathHandler } = require("@utils/errorsHandler");
-const { checkParams } = require("../../processes/processes");
+const prepareData = require("../../utils/prepareData");
 
 const app = express();
 
@@ -13,7 +12,7 @@ app.use(express.static("static"));
 app.use("/diplomas", express.static("diplomas"));
 app.use(express.json());
 app.use(require("body-parser").urlencoded({ extended: false }));
-app.use(checkParams);
+app.use(prepareData);
 
 // API v.2
 const apiRouter = express.Router();
