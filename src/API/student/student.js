@@ -1,4 +1,8 @@
-const { checkCredentials, authUser } = require("../../processes/processes");
+const {
+	checkCredentials,
+	checkPayment,
+	authUser,
+} = require("../../processes/processes");
 
 const STUDENT = [
 	{
@@ -6,6 +10,12 @@ const STUDENT = [
 		type: "post",
 		params: ["email", "pass"],
 		exec: [checkCredentials, authUser],
+	},
+	{
+		name: "checkPayment",
+		type: "get",
+		params: ["paymentId"],
+		exec: [checkPayment, authUser],
 	},
 ];
 

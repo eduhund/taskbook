@@ -10,6 +10,7 @@ async function checkCredentials(req, res, next) {
 
 		const user = await database("users", "getOne", {
 			query: { email },
+			returns: ["id", "email", "firstName", "lastName", "lang"],
 		});
 
 		if (!user) {
@@ -31,7 +32,7 @@ async function checkCredentials(req, res, next) {
 		next();
 	} catch (e) {
 		log.error(e);
-		const err = { code: 20101 };
+		const err = { code: 20201 };
 		next(err);
 		return err;
 	}

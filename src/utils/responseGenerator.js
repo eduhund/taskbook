@@ -24,6 +24,16 @@ const ERRORS = [
 		description: "Invalid password",
 	},
 	{
+		code: 10103,
+		type: "invalid_credentials",
+		description: "Access token is invalid or expired",
+	},
+	{
+		code: 10104,
+		type: "invalid_credentials",
+		description: "Invalid refresh token",
+	},
+	{
 		code: 10105,
 		type: "invalid_credentials",
 		description: "Verify key is invalid or expired",
@@ -54,9 +64,19 @@ const ERRORS = [
 		description: "Module with this ID is not exist",
 	},
 	{
-		code: 20101,
+		code: 20201,
 		type: "process_failure",
 		description: "Error in check credentials process",
+	},
+	{
+		code: 20202,
+		type: "process_failure",
+		description: "Error in check payment process",
+	},
+	{
+		code: 20301,
+		type: "process_failure",
+		description: "Error in auth user process",
 	},
 ];
 
