@@ -39,7 +39,4 @@ function tokenMachine() {
 
 const accessTokens = tokenMachine();
 
-module.exports.tokenMachine = tokenMachine;
-module.exports.accessTokens = accessTokens;
-
-module.exports.getToken = getToken;
+module.exports = accessTokens;

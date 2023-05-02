@@ -1,16 +1,13 @@
 const { log } = require("@logger");
 
 const database = require("../../services/mongo/requests");
-const { accessTokens } = require("../../utils/tokenGenerator");
-const { generateMessage } = require("../../utils/messageGenerator");
-
-const tokens = accessTokens;
+const { setToken } = require("../../services/tokens/tokens");
 
 async function authUser(data, next) {
 	try {
 		const { lang, user } = data;
 
-		const userToken = tokens.setToken(user);
+		const userToken = setToken(user);
 		lang &&
 			lang !== user.lang &&
 			database("users", "setOne", {

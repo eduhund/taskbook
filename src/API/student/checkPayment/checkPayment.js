@@ -1,5 +1,5 @@
 const {
-	checkUser,
+	getUser,
 	checkTransaction,
 	authUser,
 } = require("../../../processes/processes");
@@ -11,13 +11,13 @@ async function checkPayment(req, res, next) {
 		const transactionIsValid = await checkTransaction(data, next);
 		if (!transactionIsValid) return;
 
-		const userExists = await checkUser(data, next);
+		const userExists = await getUser(data, next);
 		if (!userExists) return;
 
 		const content = await authUser(data);
 		next({ code: 0, content });
 	} catch {
-		const err = { code: 20202 };
+		const err = { code: 20203 };
 		next(err);
 	}
 }

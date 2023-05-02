@@ -1,5 +1,5 @@
 const {
-	checkUser,
+	getUser,
 	checkCredentials,
 	authUser,
 } = require("../../../processes/processes");
@@ -8,7 +8,7 @@ async function auth(req, res, next) {
 	try {
 		const { data } = req;
 
-		const userExists = await checkUser(data, next);
+		const userExists = await getUser(data, next);
 		if (!userExists) return;
 
 		const credentialsValid = await checkCredentials(data, next);

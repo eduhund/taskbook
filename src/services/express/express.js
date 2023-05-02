@@ -6,8 +6,9 @@ const { log } = require("@logger");
 
 const { PUBLIC } = require("../../modules/apiRequests/apiRequests");
 const { STUDENT } = require("../../API/student/student");
-const { errorHandler, pathHandler } = require("@utils/errorsHandler");
-const prepareRequestData = require("../../utils/prepareRequestData");
+const { responseHandler, pathHandler } = require("./responses");
+const prepareRequestData = require("@utils/prepareRequestData");
+const { checkAuth } = require("./security");
 
 const port = process.env.SERVER_PORT || 443;
 
@@ -44,6 +45,7 @@ for (const request of PUBLIC) {
 
 // API v.3
 const student = express.Router();
+app.use(checkAuth);
 app.use("/v3/student", student);
 
 for (const method of STUDENT) {
@@ -56,7 +58,7 @@ for (const method of STUDENT) {
 	}
 }
 
-app.use(errorHandler);
+app.use(responseHandler);
 app.use(pathHandler);
 
 const server = https.createServer(options, app);

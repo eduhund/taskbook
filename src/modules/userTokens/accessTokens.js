@@ -1,27 +1,27 @@
-const { getToken } = require("../../utils/tokenGenerator");
+const { getToken } = require("../../services/tokens/tokens");
 
 function tokenMachine() {
-  const tokens = {};
-  function checkToken(token) {
-    return tokens?.[token];
-  }
+	const tokens = {};
+	function checkToken(token) {
+		return tokens?.[token];
+	}
 
-  function setToken(user) {
-    const newToken = getToken();
-    tokens[newToken.accessToken] = {
-      id: user?.id,
-    };
-    return newToken;
-  }
+	function setToken(user) {
+		const newToken = getToken();
+		tokens[newToken.accessToken] = {
+			id: user?.id,
+		};
+		return newToken;
+	}
 
-  function checkList() {
-    return tokens;
-  }
-  return {
-    checkToken,
-    setToken,
-    checkList,
-  };
+	function checkList() {
+		return tokens;
+	}
+	return {
+		checkToken,
+		setToken,
+		checkList,
+	};
 }
 
 const accessTokens = tokenMachine();

@@ -1,6 +1,7 @@
 const auth = require("./auth/auth");
 const checkPayment = require("./checkPayment/checkPayment");
 const createPass = require("./createPass/createPass");
+const getMe = require("./getMe/getMe");
 
 const STUDENT = [
 	{
@@ -21,14 +22,12 @@ const STUDENT = [
 		params: ["email", "pass", "key"],
 		exec: createPass,
 	},
-	/*
 	{
 		name: "getMe",
 		type: "get",
 		params: [],
-		exec: [getUser],
+		exec: getMe,
 	},
-	*/
 ];
 
 module.exports = { STUDENT };
