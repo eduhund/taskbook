@@ -25,12 +25,13 @@ function database(collection, method, data) {
 		getOne: () => {
 			return getCollection(collection).findOne(query, { projection });
 		},
-		setOne: () => {
-			return getCollection(collection).findOneAndUpdate(
+		setOne: async () => {
+			const data = await getCollection(collection).findOneAndUpdate(
 				query,
 				{ $set: set },
 				{ projection, ...moreOptions }
 			);
+			return data?.value || null;
 		},
 	};
 
