@@ -8,6 +8,7 @@ async function getMe(req, res, next) {
 		if (!userExists) return;
 
 		const content = data.user;
+		delete content.pass;
 		next({ code: 0, content });
 	} catch {
 		const err = { code: 20204 };
