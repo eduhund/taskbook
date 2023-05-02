@@ -13,7 +13,7 @@ const dict = {
 		TXT: "Non-secret\nSecrets of Text Writing",
 		UCC: "Use cases\nin Interface Design",
 		COM: "Composition\nin Interface Design",
-		HSE: "Digital Mentor for Team\nLeaders and Novice\nManagers",
+		HSE: "Hard Skills\nfor Managers",
 	},
 };
 
