@@ -1,31 +1,34 @@
-const {
-	checkUser,
-	checkCredentials,
-	checkPayment,
-	checkOTK,
-	authUser,
-	updatePass,
-} = require("../../processes/processes");
+const auth = require("./auth/auth");
+const checkPayment = require("./checkPayment/checkPayment");
+const createPass = require("./createPass/createPass");
 
 const STUDENT = [
 	{
 		name: "auth",
 		type: "post",
 		params: ["email", "pass"],
-		exec: [checkUser, checkCredentials, authUser],
+		exec: auth,
 	},
 	{
 		name: "checkPayment",
 		type: "get",
 		params: ["paymentId"],
-		exec: [checkPayment, checkUser, authUser],
+		exec: checkPayment,
 	},
 	{
 		name: "createPass",
 		type: "post",
 		params: ["email", "pass", "key"],
-		exec: [checkOTK, updatePass, authUser],
+		exec: createPass,
 	},
+	/*
+	{
+		name: "getMe",
+		type: "get",
+		params: [],
+		exec: [getUser],
+	},
+	*/
 ];
 
 module.exports = { STUDENT };

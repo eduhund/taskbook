@@ -6,9 +6,9 @@ const { generateMessage } = require("../../utils/messageGenerator");
 
 const tokens = accessTokens;
 
-async function authUser(req, res) {
+async function authUser(data, next) {
 	try {
-		const { lang, user } = req.data;
+		const { lang, user } = data;
 
 		const userToken = tokens.setToken(user);
 		lang &&
@@ -26,16 +26,14 @@ async function authUser(req, res) {
 			lang: lang || user.lang,
 			token: userToken,
 		};
-		const data = generateMessage(0, userData);
-
-		res.status(200).send(data);
 
 		log.debug(`${user.id}: Auth success!`);
+
+		return userData;
 	} catch (e) {
 		log.error(e);
 		const err = { code: 20301 };
 		next(err);
-		return err;
 	}
 }
 
