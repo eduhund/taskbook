@@ -45,7 +45,7 @@ for (const request of PUBLIC) {
 
 // API v.3
 const student = express.Router();
-app.use(checkAuth);
+//app.use(checkAuth);
 app.use("/v3/student", student);
 
 for (const method of STUDENT) {

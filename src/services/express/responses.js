@@ -88,7 +88,7 @@ const ERRORS = [
 	{
 		code: 20205,
 		type: "process_failure",
-		description: "Error in update pass process",
+		description: "Error in get module process",
 	},
 	{
 		code: 20301,

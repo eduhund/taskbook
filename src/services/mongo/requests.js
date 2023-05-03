@@ -33,11 +33,18 @@ function database(collection, method, data) {
 			);
 			return data?.value || null;
 		},
+		getMany: async () => {
+			const data = await getCollection(collection).find(query, {
+				projection,
+				...moreOptions,
+			});
+			return data.toArray() || [];
+		},
 	};
 
 	try {
 		return requests[method]();
-	} catch {
+	} catch (e) {
 		throw new Error("Error with database");
 	}
 }

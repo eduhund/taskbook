@@ -1,7 +1,11 @@
+const { checkAuth } = require("../../../services/express/security");
 const { getUser } = require("../../../processes/processes");
 
 async function getMe(req, res, next) {
 	try {
+		const isAuth = checkAuth(req, res, next);
+		if (!isAuth) return;
+
 		const { data } = req;
 
 		const userExists = await getUser(data, next);
