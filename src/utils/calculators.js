@@ -33,6 +33,12 @@ function calculateScore(state = {}, task = {}) {
 	return validateScore(sum, task?.maxScore);
 }
 
+function calculateUserScore(state = []) {
+	return state.reduce((sum, item) => {
+		return (sum += item.score || 0);
+	}, 0);
+}
+
 /**
  * Calculating total user's score for whole module
  * @param {*} state
@@ -115,11 +121,19 @@ function calculateDeadline(date, duration, prolongations = []) {
 	return dateFinish.toISOString().split("T")[0];
 }
 
+function calculateDoneTasks(state = {}) {
+	return state.reduce((sum, item) => {
+		return item.isChecked ? ++sum : sum;
+	}, 0);
+}
+
 module.exports = {
 	calculateScore,
+	calculateUserScore,
 	calculateMaxScore,
 	calculateModuleMaxScore,
 	calculateDefaultScore,
 	calculateTotalScore,
 	calculateDeadline,
+	calculateDoneTasks,
 };

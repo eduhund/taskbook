@@ -6,6 +6,7 @@ const authUser = require("./authUser/authUser");
 const updatePass = require("./updatePass/updatePass");
 const getModuleInfo = require("./getModuleInfo/getModuleInfo");
 const getStateInfo = require("./getStateInfo/getStateInfo");
+const prepareData = require("./prepareData/prepareData");
 
 module.exports = {
 	getUser,
@@ -16,4 +17,5 @@ module.exports = {
 	updatePass,
 	getModuleInfo,
 	getStateInfo,
+	prepareData,
 };

@@ -1,4 +1,8 @@
-const { getModuleInfo, getStateInfo } = require("../../../processes/processes");
+const {
+	getModuleInfo,
+	getStateInfo,
+	prepareData,
+} = require("../../../processes/processes");
 const { checkAuth } = require("../../../services/express/security");
 
 async function getModule(req, res, next) {
@@ -12,9 +16,9 @@ async function getModule(req, res, next) {
 
 		isAuth && (await getStateInfo(data));
 
-		//const content = prepareData("module", data, isAuth);
+		const content = prepareData("module", data, isAuth);
 
-		next({ code: 0, content: data });
+		next({ code: 0, content });
 	} catch {
 		const err = { code: 20205 };
 		next(err);
