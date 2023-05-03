@@ -3,6 +3,7 @@ const {
 	calculateModuleMaxScore,
 	calculateDoneTasks,
 } = require("../../utils/calculators");
+const { getNextTaskId } = require("../../utils/getNextTaskId");
 
 function prepareModuleData(data, isAuth) {
 	const { module, state } = data;
@@ -32,6 +33,8 @@ function prepareModuleData(data, isAuth) {
 		};
 	});
 	const scoped = { intro, final, lessons };
+	const nextTaskId = getNextTaskId(moduleData, moduleState);
+
 	const progress = {
 		score: calculateUserScore(state),
 		maxScore: calculateModuleMaxScore(module.lessons),
