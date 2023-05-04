@@ -3,11 +3,11 @@ const { log } = require("@logger");
 const database = require("../../services/mongo/requests");
 
 async function getStateInfo(data) {
-	const { userId, module } = data;
-	const moduleId = module.code;
+	const { userId, moduleId, lessonId, taskId } = data;
+	const id = moduleId || lessonId || taskId;
 	const query = {
 		userId,
-		taskId: { $regex: `^${moduleId}` },
+		taskId: { $regex: `^${id}` },
 	};
 
 	const stateData = await database("state", "getMany", {

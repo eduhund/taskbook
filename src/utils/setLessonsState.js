@@ -10,8 +10,6 @@ function setLessonsState(lessons = {}, nextTaskId) {
 		};
 	});
 
-	console.log(lessonsState);
-
 	const currentLessonId = getLessonId(nextTaskId);
 
 	const currentLessonIndex = Object.keys(lessons).indexOf(currentLessonId);

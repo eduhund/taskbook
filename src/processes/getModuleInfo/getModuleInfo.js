@@ -12,7 +12,7 @@ async function getModuleInfo(data, next) {
 
 	if (!moduleData) {
 		log.info(`${moduleId}: Module didn't found!`);
-		next({ code: 10201 });
+		next({ code: 10301 });
 		return false;
 	}
 

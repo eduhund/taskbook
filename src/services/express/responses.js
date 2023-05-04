@@ -91,9 +91,9 @@ const ERRORS = [
 		description: "Error in get module process",
 	},
 	{
-		code: 20301,
+		code: 20206,
 		type: "process_failure",
-		description: "Error in auth user process",
+		description: "Error in get lesson process",
 	},
 ];
 

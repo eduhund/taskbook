@@ -3,6 +3,7 @@ const checkPayment = require("./checkPayment/checkPayment");
 const createPass = require("./createPass/createPass");
 const getMe = require("./getMe/getMe");
 const getModule = require("./getModule/getModule");
+const getLesson = require("./getLesson/getLesson");
 
 const STUDENT = [
 	{
@@ -34,6 +35,12 @@ const STUDENT = [
 		type: "get",
 		params: [],
 		exec: getModule,
+	},
+	{
+		name: "getLesson",
+		type: "get",
+		params: [],
+		exec: getLesson,
 	},
 ];
 

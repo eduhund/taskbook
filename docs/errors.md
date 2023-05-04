@@ -18,3 +18,4 @@
 | 20203 | process_failure     | Error in check payment process     |
 | 20204 | process_failure     | Error in get me process            |
 | 20205 | process_failure     | Error in get module process        |
+| 20206 | process_failure     | Error in get lesson process        |
