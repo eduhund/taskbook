@@ -53,17 +53,17 @@ const ERRORS = [
 	{
 		code: 10301,
 		type: "not_found",
-		description: "Task with this ID is not exist",
+		description: "Module didn't found",
 	},
 	{
 		code: 10302,
 		type: "not_found",
-		description: "Lesson with this ID is not exist",
+		description: "Lesson didn't found",
 	},
 	{
 		code: 10303,
 		type: "not_found",
-		description: "Module with this ID is not exist",
+		description: "Task didn't found",
 	},
 	{
 		code: 20201,

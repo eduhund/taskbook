@@ -10,7 +10,9 @@
 | 10104 | invalid_credentials | Invalid refresh token              |
 | 10105 | invalid_credentials | Verify key is invalid or expired   |
 | 10106 | invalid_credentials | Payment didn't found               |
-| 10201 | miss_content        | Module didn't found                |
+| 10301 | miss_content        | Module didn't found                |
+| 10302 | miss_content        | Lesson didn't found                |
+| 10303 | miss_content        | Task didn't found                  |
 | 20201 | process_failure     | Error in auth user process         |
 | 20202 | process_failure     | Error in create pass process       |
 | 20203 | process_failure     | Error in check payment process     |
