@@ -19,8 +19,8 @@ async function getModule(req, res, next) {
 		const content = await prepareData("module", data, isAuth);
 
 		next({ code: 0, content });
-	} catch {
-		const err = { code: 20205 };
+	} catch (e) {
+		const err = { code: 20205, trace: e };
 		next(err);
 	}
 }

@@ -3,7 +3,7 @@ const { getDBRequest } = require("../../dbRequests/dbRequests");
 
 const { calculateTotalScore } = require("../../../utils/calculators");
 const { getNextTaskId } = require("../../../utils/getNextTaskId");
-const { setLessonsState } = require("./setLessonsState");
+const setLessonsState = require("../../../utils/setLessonsState");
 const { getNumberOfDoneTasks } = require("./getNumberOfDoneTasks");
 const { generateMessage } = require("../../../utils/messageGenerator");
 const { addUserAction } = require("../../../modules/statistics/addUserAction");

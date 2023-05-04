@@ -5,6 +5,7 @@ const {
 	calculateDoneTasks,
 } = require("../../utils/calculators");
 const { getNextTaskId } = require("../../utils/getNextTaskId");
+const setLessonsState = require("@utils/setLessonsState");
 
 async function prepareModuleData(data, isAuth) {
 	const { module, state } = data;
@@ -26,15 +27,11 @@ async function prepareModuleData(data, isAuth) {
 
 	const { intro, final } = module;
 
-	const lessons = Object.entries(module.lessons).map(([id, value]) => {
-		return {
-			id,
-			title: value?.title,
-			description: value?.description,
-		};
-	});
-	const scoped = { intro, final, lessons };
 	const nextTaskId = getNextTaskId(module, state);
+
+	const lessons = setLessonsState(module.lessons, nextTaskId);
+
+	const scoped = { intro, final, lessons };
 
 	const progress = {
 		score: calculateUserScore(state),

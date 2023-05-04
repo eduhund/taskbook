@@ -1,4 +1,4 @@
-const prepareRequestData = require("../src/utils/prepareRequestData");
+const prepareRequestData = require("../src/services/express/prepareRequestData");
 
 describe("Check params middleware", () => {
 	let mockRequest;

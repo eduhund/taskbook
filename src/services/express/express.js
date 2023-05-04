@@ -7,7 +7,7 @@ const { log } = require("@logger");
 const { PUBLIC } = require("../../modules/apiRequests/apiRequests");
 const { STUDENT } = require("../../API/student/student");
 const { responseHandler, pathHandler } = require("./responses");
-const prepareRequestData = require("@utils/prepareRequestData");
+const prepareRequestData = require("./prepareRequestData");
 const { checkAuth } = require("./security");
 
 const port = process.env.SERVER_PORT || 443;

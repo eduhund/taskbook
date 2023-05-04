@@ -107,7 +107,7 @@ function responseGenerator(code, data = {}) {
 }
 
 function responseHandler(message, req, res, next) {
-	const { code, content } = message;
+	const { code, content, trace } = message;
 	const { data } = req;
 	if (!code) {
 		log.debug({ input: data, output: message });
@@ -116,10 +116,12 @@ function responseHandler(message, req, res, next) {
 	}
 	const error = responseGenerator(code || -1);
 	if (code > 10000 && code < 20000) {
-		log.debug({ input: data, output: error });
+		log.debug(trace);
+		log.warn({ input: data, output: error });
 		res.status(400).send(error);
 		return;
 	} else {
+		log.debug(trace);
 		log.error({ input: data, output: error });
 		res.status(500).send(error);
 		return;
