@@ -8,6 +8,7 @@ const { checkAuth } = require("../../../services/express/security");
 async function getLesson(req, res, next) {
 	try {
 		const isAuth = checkAuth(req, res, next);
+		if (!isAuth) return;
 
 		const { data } = req;
 

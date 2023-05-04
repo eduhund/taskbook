@@ -10,7 +10,7 @@ async function getStateInfo(data) {
 		taskId: { $regex: `^${id}` },
 	};
 
-	const stateData = await database("state", "getMany", {
+	const stateData = await database("state", taskId ? "getOne" : "getMany", {
 		query,
 	});
 
