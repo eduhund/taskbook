@@ -4,6 +4,7 @@
 | ----- | ------------------- | ---------------------------------- |
 | 10001 | invalid_request     | Invalid path                       |
 | 10002 | invalid_request     | Missing required params            |
+| 10003 | invalid_request     | Param can't be empty               |
 | 10101 | invalid_credentials | User didn't found                  |
 | 10102 | invalid_credentials | Invalid password                   |
 | 10103 | invalid_credentials | Access token is invalid or expired |
@@ -19,3 +20,4 @@
 | 20204 | process_failure     | Error in get me process            |
 | 20205 | process_failure     | Error in get module process        |
 | 20206 | process_failure     | Error in get lesson process        |
+| 20207 | process_failure     | Error in set state process         |

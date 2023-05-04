@@ -5,6 +5,7 @@ const getMe = require("./getMe/getMe");
 const getModule = require("./getModule/getModule");
 const getLesson = require("./getLesson/getLesson");
 const getTask = require("./getTask/getTask");
+const setState = require("./setState/setState");
 
 const STUDENT = [
 	{
@@ -34,20 +35,26 @@ const STUDENT = [
 	{
 		name: "getModule",
 		type: "get",
-		params: [],
+		params: ["moduleId"],
 		exec: getModule,
 	},
 	{
 		name: "getLesson",
 		type: "get",
-		params: [],
+		params: ["lessonId"],
 		exec: getLesson,
 	},
 	{
 		name: "getTask",
 		type: "get",
-		params: [],
+		params: ["taskId"],
 		exec: getTask,
+	},
+	{
+		name: "setState",
+		type: "post",
+		params: ["userId", "taskId", "newState"],
+		exec: setState,
 	},
 ];
 

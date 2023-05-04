@@ -33,6 +33,15 @@ function prepareRequestData(req, res, next) {
 		lessonId: upperString,
 		taskId: upperString,
 		questionId: upperString,
+		state: (value) => {
+			if (typeof (value === "object" && Object.keys(value).length !== 0)) {
+				return value;
+			} else {
+				const err = { code: 10003 };
+				next(err);
+				return err;
+			}
+		},
 	};
 
 	for (const [key, value] of Object.entries(data)) {

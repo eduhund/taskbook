@@ -95,6 +95,11 @@ const ERRORS = [
 		type: "process_failure",
 		description: "Error in get lesson process",
 	},
+	{
+		code: 20207,
+		type: "process_failure",
+		description: "Error in set state process",
+	},
 ];
 
 function responseGenerator(code, data = {}) {

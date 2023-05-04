@@ -9,6 +9,7 @@ const getLessonInfo = require("./getLessonInfo/getLessonInfo");
 const getTaskInfo = require("./getTaskInfo/getTaskInfo");
 const getStateInfo = require("./getStateInfo/getStateInfo");
 const prepareData = require("./prepareData/prepareData");
+const setTaskState = require("./setTaskState/setTaskState");
 
 module.exports = {
 	getUser,
@@ -22,4 +23,5 @@ module.exports = {
 	getTaskInfo,
 	getStateInfo,
 	prepareData,
+	setTaskState,
 };

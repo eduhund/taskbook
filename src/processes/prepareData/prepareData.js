@@ -10,7 +10,7 @@ const { getLessonId } = require("@utils/idExtractor");
 const { getParentContent } = require("../../utils/getParentContent");
 const { setVisibility } = require("../../utils/visibilityControl");
 const { refAnswerRight } = require("../../utils/refAnswerRight");
-const setState = require("../setState/setState");
+const setTaskState = require("../setTaskState/setTaskState");
 
 async function prepareModuleData(data, isAuth, next) {
 	const { module, state } = data;
@@ -199,10 +199,10 @@ async function prepareTaskData(data, next) {
 				}
 			} else {
 				const path = "data." + question.id + ".isVisible";
-				await setState({
+				await setTaskState({
 					userId,
 					taskId,
-					newState: {
+					state: {
 						[path]: true,
 					},
 				});

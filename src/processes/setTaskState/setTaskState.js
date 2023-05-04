@@ -2,7 +2,7 @@ const { log } = require("@logger");
 
 const database = require("../../services/mongo/requests");
 
-async function setState(data) {
+async function setTaskState(data) {
 	const { taskId, userId, newState } = data;
 	const update = await database("state", "setOne", {
 		query: { taskId, userId },
@@ -10,11 +10,11 @@ async function setState(data) {
 	});
 
 	if (!update) {
-		log.debug(`${taskId}: A problem with !`);
+		log.debug(`${taskId}: A problem with setting new task state!`);
 		throw new Error();
 	}
 
-	return true;
+	return update;
 }
 
-module.exports = setState;
+module.exports = setTaskState;
