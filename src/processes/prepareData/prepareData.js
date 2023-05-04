@@ -1,3 +1,4 @@
+const getTaskInfo = require("../getTaskInfo/getTaskInfo");
 const {
 	calculateUserScore,
 	calculateModuleMaxScore,
@@ -5,12 +6,10 @@ const {
 } = require("../../utils/calculators");
 const { getNextTaskId } = require("../../utils/getNextTaskId");
 
-function prepareModuleData(data, isAuth) {
+async function prepareModuleData(data, isAuth) {
 	const { module, state } = data;
 
-	const content = {};
-
-	const main = {
+	const content = {
 		id: module.code,
 		name: module.name,
 		shortName: module.shortName,
@@ -23,6 +22,8 @@ function prepareModuleData(data, isAuth) {
 		buyLink: module.buyLink,
 	};
 
+	if (!isAuth) return content;
+
 	const { intro, final } = module;
 
 	const lessons = Object.entries(module.lessons).map(([id, value]) => {
@@ -33,15 +34,19 @@ function prepareModuleData(data, isAuth) {
 		};
 	});
 	const scoped = { intro, final, lessons };
-	const nextTaskId = getNextTaskId(moduleData, moduleState);
+	const nextTaskId = getNextTaskId(module, state);
 
 	const progress = {
 		score: calculateUserScore(state),
 		maxScore: calculateModuleMaxScore(module.lessons),
 		doneTasks: calculateDoneTasks(state),
 		totalTasks: module.totalTasks,
+		nextTask: await getTaskInfo({
+			taskId: nextTaskId,
+			returns: ["id", "name", "type"],
+		}),
 	};
-	Object.assign(content, main, isAuth && scoped, isAuth && progress);
+	Object.assign(content, scoped, progress);
 	return content;
 }
 

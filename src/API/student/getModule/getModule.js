@@ -16,7 +16,7 @@ async function getModule(req, res, next) {
 
 		isAuth && (await getStateInfo(data));
 
-		const content = prepareData("module", data, isAuth);
+		const content = await prepareData("module", data, isAuth);
 
 		next({ code: 0, content });
 	} catch {
