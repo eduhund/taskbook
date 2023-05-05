@@ -134,7 +134,7 @@ function validateTaskState(taskState) {
 	};
 }
 
-async function prepareTaskData(data, next) {
+async function prepareTaskData(data) {
 	const { userId, taskId, task, state } = data;
 	const taskState = validateTaskState(state);
 	for (const content of task.content) {
@@ -235,6 +235,10 @@ async function prepareTaskData(data, next) {
 	return task;
 }
 
+async function prepareDiplomaData(data) {
+	return data;
+}
+
 function prepareData(type, data, isAuth, next) {
 	switch (type) {
 		case "module":
@@ -243,6 +247,8 @@ function prepareData(type, data, isAuth, next) {
 			return prepareLessonData(data, next);
 		case "task":
 			return prepareTaskData(data, next);
+		case "diploma":
+			return prepareDiplomaData(data, next);
 	}
 }
 
