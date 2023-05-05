@@ -100,6 +100,11 @@ const ERRORS = [
 		type: "process_failure",
 		description: "Error in set state process",
 	},
+	{
+		code: 20208,
+		type: "process_failure",
+		description: "Error in set comment process",
+	},
 ];
 
 function responseGenerator(code, data = {}) {

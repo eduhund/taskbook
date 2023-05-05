@@ -11,7 +11,7 @@ function getProjection(returns) {
 }
 
 function database(collection, method, data) {
-	const { query, set, returns = [], options = {} } = data;
+	const { query, set, push, returns = [], options = {} } = data;
 
 	const projection = getProjection(returns);
 
@@ -29,6 +29,14 @@ function database(collection, method, data) {
 			const data = await getCollection(collection).findOneAndUpdate(
 				query,
 				{ $set: set },
+				{ projection, ...moreOptions }
+			);
+			return data?.value || null;
+		},
+		pushOne: async () => {
+			const data = await getCollection(collection).findOneAndUpdate(
+				query,
+				{ $push: push },
 				{ projection, ...moreOptions }
 			);
 			return data?.value || null;

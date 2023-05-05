@@ -10,6 +10,7 @@ const getTaskInfo = require("./getTaskInfo/getTaskInfo");
 const getStateInfo = require("./getStateInfo/getStateInfo");
 const prepareData = require("./prepareData/prepareData");
 const setTaskState = require("./setTaskState/setTaskState");
+const pushComment = require("./pushComment/pushComment");
 
 module.exports = {
 	getUser,
@@ -24,4 +25,5 @@ module.exports = {
 	getStateInfo,
 	prepareData,
 	setTaskState,
+	pushComment,
 };
