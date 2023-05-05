@@ -4,6 +4,13 @@ const {
 	setTaskState,
 } = require("../../../processes/processes");
 const { checkAuth } = require("../../../services/express/security");
+const {
+	getVisibilityUpdateList,
+} = require("../../../modules/apiRequests/setState/getVisibilityUpdateList");
+const {
+	updateDependenciesTasks,
+} = require("../../../modules/apiRequests/setState/updateDependenciesTasks");
+const database = require("../../../services/mongo/requests");
 
 async function setState(req, res, next) {
 	try {
@@ -17,6 +24,18 @@ async function setState(req, res, next) {
 				const path = "data." + key + ".state";
 				data.newState[path] = value;
 				delete data.newState[key];
+
+				const tasks = await database("tasks", "getMany", {
+					query: {
+						"content.questions.depends.parentId": { $regex: questionId },
+						"content.questions.depends.type": "visibility",
+					},
+					returns: ["id", "content"],
+				});
+
+				const questions = getVisibilityUpdateList(tasks, key);
+
+				await updateDependenciesTasks(data.userId, questions, value);
 			}
 		}
 
