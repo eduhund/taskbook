@@ -105,6 +105,11 @@ const ERRORS = [
 		type: "process_failure",
 		description: "Error in set comment process",
 	},
+	{
+		code: 20209,
+		type: "process_failure",
+		description: "Error in get diploma process",
+	},
 ];
 
 function responseGenerator(code, data = {}) {
