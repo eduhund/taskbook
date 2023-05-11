@@ -2,7 +2,7 @@ const { log } = require("@logger");
 
 const database = require("../../services/mongo/requests");
 
-async function getUser(data, next) {
+async function getUserInfo(data, next) {
 	const { email, userId } = data;
 	const query = { email, id: userId };
 	Object.keys(query).forEach((key) => !query[key] && delete query[key]);
@@ -22,4 +22,4 @@ async function getUser(data, next) {
 	return true;
 }
 
-module.exports = getUser;
+module.exports = getUserInfo;

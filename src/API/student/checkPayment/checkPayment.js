@@ -1,5 +1,5 @@
 const {
-	getUser,
+	getUserInfo,
 	checkTransaction,
 	authUser,
 } = require("../../../processes/processes");
@@ -11,7 +11,7 @@ async function checkPayment(req, res, next) {
 		const transactionIsValid = await checkTransaction(data, next);
 		if (!transactionIsValid) return;
 
-		const userExists = await getUser(data, next);
+		const userExists = await getUserInfo(data, next);
 		if (!userExists) return;
 
 		const content = await authUser(data);

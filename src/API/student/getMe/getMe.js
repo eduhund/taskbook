@@ -1,5 +1,5 @@
 const { checkAuth } = require("../../../services/express/security");
-const { getUser } = require("../../../processes/processes");
+const { getUserInfo } = require("../../../processes/processes");
 
 async function getMe(req, res, next) {
 	try {
@@ -8,7 +8,7 @@ async function getMe(req, res, next) {
 
 		const { data } = req;
 
-		const userExists = await getUser(data, next);
+		const userExists = await getUserInfo(data, next);
 		if (!userExists) return;
 
 		const content = data.user;

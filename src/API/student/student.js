@@ -8,67 +8,80 @@ const getTask = require("./getTask/getTask");
 const setState = require("./setState/setState");
 const setComment = require("./setComment/setComment");
 const getDiploma = require("./getDiploma/getDiploma");
+const getCounselor = require("./getCounselor/getCounselor");
 
 const STUDENT = [
 	{
 		name: "auth",
 		type: "post",
 		params: ["email", "pass"],
-		exec: auth,
+		exec: [auth],
 	},
 	{
 		name: "checkPayment",
 		type: "get",
 		params: ["paymentId"],
-		exec: checkPayment,
+		exec: [checkPayment],
 	},
 	{
 		name: "createPass",
 		type: "post",
 		params: ["email", "pass", "key"],
-		exec: createPass,
+		exec: [createPass],
 	},
 	{
 		name: "getMe",
 		type: "get",
+		wall: true,
 		params: [],
-		exec: getMe,
+		exec: [getMe],
 	},
 	{
 		name: "getModule",
 		type: "get",
 		params: ["moduleId"],
-		exec: getModule,
+		exec: [getModule],
 	},
 	{
 		name: "getLesson",
 		type: "get",
+		wall: true,
 		params: ["lessonId"],
-		exec: getLesson,
+		exec: [getLesson],
 	},
 	{
 		name: "getTask",
 		type: "get",
+		wall: true,
 		params: ["taskId"],
-		exec: getTask,
+		exec: [getTask],
 	},
 	{
 		name: "setState",
 		type: "post",
+		wall: true,
 		params: ["taskId", "newState"],
-		exec: setState,
+		exec: [setState],
 	},
 	{
 		name: "setComment",
 		type: "post",
+		wall: true,
 		params: ["taskId", "comment"],
-		exec: setComment,
+		exec: [setComment],
 	},
 	{
 		name: "getDiploma",
 		type: "get",
+		wall: true,
 		params: ["moduleId"],
-		exec: getDiploma,
+		exec: [getDiploma],
+	},
+	{
+		name: "getCounselor",
+		type: "get",
+		params: ["lang"],
+		exec: [getCounselor],
 	},
 ];
 

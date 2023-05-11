@@ -110,6 +110,11 @@ const ERRORS = [
 		type: "process_failure",
 		description: "Error in get diploma process",
 	},
+	{
+		code: 20210,
+		type: "process_failure",
+		description: "Error in get counselor process",
+	},
 ];
 
 function responseGenerator(code, data = {}) {

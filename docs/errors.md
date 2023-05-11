@@ -23,3 +23,4 @@
 | 20207 | process_failure     | Error in set state process         |
 | 20208 | process_failure     | Error in set comment process       |
 | 20209 | process_failure     | Error in get diploma process       |
+| 20210 | process_failure     | Error in get counselor process     |

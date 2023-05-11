@@ -1,4 +1,4 @@
-const getUser = require("./getUser/getUser");
+const getUserInfo = require("./getUserInfo/getUserInfo");
 const checkCredentials = require("./checkCredentials/checkCredentials");
 const checkTransaction = require("./checkTransaction/checkTransaction");
 const checkOTK = require("./checkOTK/checkOTK");
@@ -8,13 +8,14 @@ const getModuleInfo = require("./getModuleInfo/getModuleInfo");
 const getLessonInfo = require("./getLessonInfo/getLessonInfo");
 const getTaskInfo = require("./getTaskInfo/getTaskInfo");
 const getStateInfo = require("./getStateInfo/getStateInfo");
+const getCounselorInfo = require("./getCounselorInfo/getCounselorInfo");
 const prepareData = require("./prepareData/prepareData");
 const setTaskState = require("./setTaskState/setTaskState");
 const pushComment = require("./pushComment/pushComment");
 const setDiploma = require("./setDiploma/setDiploma");
 
 module.exports = {
-	getUser,
+	getUserInfo,
 	checkCredentials,
 	checkTransaction,
 	checkOTK,
@@ -24,6 +25,7 @@ module.exports = {
 	getLessonInfo,
 	getTaskInfo,
 	getStateInfo,
+	getCounselorInfo,
 	prepareData,
 	setTaskState,
 	pushComment,

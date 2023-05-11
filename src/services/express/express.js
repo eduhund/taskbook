@@ -49,7 +49,8 @@ const student = express.Router();
 app.use("/v3/student", student);
 
 for (const method of STUDENT) {
-	const { name, type, exec } = method;
+	const { name, type, wall, exec } = method;
+	if (wall) exec.unshift(checkAuth);
 	switch (type) {
 		case "get":
 			student.get("/" + name, exec);
