@@ -1,5 +1,8 @@
 const { log } = require("../../../services/logger");
-const { calculateModuleMaxScore } = require("../../../utils/calculators");
+const {
+	calculateModuleMaxScore,
+	calculateDeadline,
+} = require("../../../utils/calculators");
 const { getDBRequest } = require("../../dbRequests/dbRequests");
 const { generateMessage } = require("../../../utils/messageGenerator");
 const { addUserAction } = require("../../../modules/statistics/addUserAction");
@@ -42,7 +45,7 @@ async function getModuleFinal({ req, res }) {
 			return error;
 		}
 
-		moduleData.deadline = userData?.modules?.[moduleId]?.deadline;
+		moduleData.deadline = calculateDeadline(userData?.modules?.[moduleId]);
 
 		moduleData.maxScore = calculateModuleMaxScore(moduleData.lessons);
 
