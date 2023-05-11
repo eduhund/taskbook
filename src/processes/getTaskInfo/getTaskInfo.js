@@ -1,12 +1,12 @@
 const { log } = require("@logger");
 
-const database = require("../../services/mongo/requests");
+const DB = require("../../services/mongo/requests");
 
 async function getTaskInfo(data, next) {
 	const { taskId, returns } = data;
 	const query = { id: taskId };
 
-	const taskData = await database("tasks", "getOne", {
+	const taskData = await DB.getOne("tasks", {
 		query,
 		returns,
 	});

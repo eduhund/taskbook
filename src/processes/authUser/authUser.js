@@ -1,6 +1,6 @@
 const { log } = require("@logger");
 
-const database = require("../../services/mongo/requests");
+const DB = require("../../services/mongo/requests");
 const { setToken } = require("../../services/tokens/tokens");
 
 async function authUser(data, next) {
@@ -10,7 +10,7 @@ async function authUser(data, next) {
 		const userToken = setToken(user);
 		lang &&
 			lang !== user.lang &&
-			database("users", "setOne", {
+			DB.setOne("users", {
 				query: { email: user.email },
 				set: { lang },
 			});

@@ -1,10 +1,10 @@
 const { log } = require("@logger");
 
-const database = require("../../services/mongo/requests");
+const DB = require("../../services/mongo/requests");
 
 async function setTaskState(data) {
 	const { taskId, userId, newState } = data;
-	const update = await database("state", "setOne", {
+	const update = await DB.setOne("state", {
 		query: { taskId, userId },
 		set: newState,
 	});

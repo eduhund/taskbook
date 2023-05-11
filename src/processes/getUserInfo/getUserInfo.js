@@ -1,13 +1,13 @@
 const { log } = require("@logger");
 
-const database = require("../../services/mongo/requests");
+const DB = require("../../services/mongo/requests");
 
 async function getUserInfo(data, next) {
 	const { email, userId } = data;
 	const query = { email, id: userId };
 	Object.keys(query).forEach((key) => !query[key] && delete query[key]);
 
-	const user = await database("users", "getOne", {
+	const user = await DB.getOne("users", {
 		query,
 	});
 

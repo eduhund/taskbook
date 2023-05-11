@@ -1,12 +1,12 @@
 const { log } = require("@logger");
 
-const database = require("../../services/mongo/requests");
+const DB = require("../../services/mongo/requests");
 
 async function getModuleInfo(data, next) {
 	const { moduleId } = data;
 	const query = { code: moduleId };
 
-	const moduleData = await database("modules", "getOne", {
+	const moduleData = await DB.getOne("modules", {
 		query,
 	});
 

@@ -1,6 +1,6 @@
 const { log } = require("@logger");
 
-const database = require("../../services/mongo/requests");
+const DB = require("../../services/mongo/requests");
 
 async function getStateInfo(data) {
 	const { userId, moduleId, lessonId, taskId } = data;
@@ -10,9 +10,9 @@ async function getStateInfo(data) {
 		taskId: { $regex: `^${id}` },
 	};
 
-	const stateData = await database("state", taskId ? "getOne" : "getMany", {
-		query,
-	});
+	const stateData = taskId
+		? await DB.getOne("state", { query })
+		: await DB.getMany("state", { query });
 
 	data.state = stateData;
 

@@ -6,7 +6,7 @@ const DB_NAME = process.env.DATABASE_NAME;
 
 const mongoClient = new MongoClient(DB_URL);
 
-function getCollection(name) {
+async function getCollection(name) {
 	return mongoClient.db(DB_NAME).collection(name);
 }
 

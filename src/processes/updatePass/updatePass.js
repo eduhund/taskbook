@@ -1,10 +1,10 @@
 const { log } = require("@logger");
 
-const database = require("../../services/mongo/requests");
+const DB = require("../../services/mongo/requests");
 
 async function updatePass(data, next) {
 	const { email, pass } = data;
-	const user = await database("users", "setOne", {
+	const user = await DB.setOne("users", {
 		query: { email },
 		set: { pass },
 	});

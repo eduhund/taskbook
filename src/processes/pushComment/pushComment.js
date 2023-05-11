@@ -1,6 +1,6 @@
 const { log } = require("@logger");
 
-const database = require("../../services/mongo/requests");
+const DB = require("../../services/mongo/requests");
 
 async function pushComment(data) {
 	const { taskId, userId, comment } = data;
@@ -11,7 +11,7 @@ async function pushComment(data) {
 		readedByTeacher: false,
 	};
 
-	const update = await database("state", "pushOne", {
+	const update = await DB.setOne("state", {
 		query: { taskId, userId },
 		push: {
 			comments: {

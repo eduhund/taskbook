@@ -1,6 +1,6 @@
 const { log } = require("@logger");
 
-const database = require("../../services/mongo/requests");
+const DB = require("../../services/mongo/requests");
 const { getModuleId, getLessonId } = require("@utils/idExtractor");
 
 async function getLessonInfo(data, next) {
@@ -11,7 +11,7 @@ async function getLessonInfo(data, next) {
 
 	const query = { code: moduleId };
 
-	const moduleData = await database("modules", "getOne", {
+	const moduleData = await DB.getOne("modules", {
 		query,
 	});
 

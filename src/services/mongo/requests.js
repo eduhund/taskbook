@@ -10,51 +10,53 @@ function getProjection(returns) {
 	return projection;
 }
 
-function database(collection, method, data) {
-	const { query, set, push, returns = [], options = {} } = data;
-
-	const projection = getProjection(returns);
-
-	const moreOptions = {
+function getOptions(returns, options) {
+	return {
+		projetion: getProjection(returns),
 		upsert: options.insertNew || false,
 		returnDocument: "after",
 		returnNewDocument: true,
 	};
-
-	const requests = {
-		getOne: () => {
-			return getCollection(collection).findOne(query, { projection });
-		},
-		setOne: async () => {
-			const data = await getCollection(collection).findOneAndUpdate(
-				query,
-				{ $set: set },
-				{ projection, ...moreOptions }
-			);
-			return data?.value || null;
-		},
-		pushOne: async () => {
-			const data = await getCollection(collection).findOneAndUpdate(
-				query,
-				{ $push: push },
-				{ projection, ...moreOptions }
-			);
-			return data?.value || null;
-		},
-		getMany: async () => {
-			const data = await getCollection(collection).find(query, {
-				projection,
-				...moreOptions,
-			});
-			return data.toArray() || [];
-		},
-	};
-
-	try {
-		return requests[method]();
-	} catch (e) {
-		throw new Error("Error with database");
-	}
 }
 
-module.exports = database;
+const DB = {
+	insertOne: (collection, data) => {
+		const { query } = data;
+
+		return getCollection(collection).insertOne(query);
+	},
+	getOne: (collection, data) => {
+		const { query, returns = [] } = data;
+
+		const projection = getProjection(returns);
+
+		return getCollection(collection).findOne(query, { projection });
+	},
+	setOne: async (collection, data) => {
+		const { query, set, push, returns = [], options = {} } = data;
+
+		const allOptions = getOptions(returns, options);
+
+		const response = await getCollection(collection).findOneAndUpdate(
+			query,
+			(set && { $set: set }) || (push && { $push: push }),
+			allOptions
+		);
+		return response?.value || null;
+	},
+
+	getMany: async (collection, data) => {
+		const { query, returns = [] } = data;
+
+		const projection = getProjection(returns);
+
+		const response = await getCollection(collection)
+			.find(query, {
+				projection,
+			})
+			.toArray();
+		return response || [];
+	},
+};
+
+module.exports = DB;

@@ -1,11 +1,11 @@
 const { log } = require("@logger");
 
-const database = require("../../services/mongo/requests");
+const DB = require("../../services/mongo/requests");
 
 async function checkTransaction(data, next) {
 	const { paymentId } = data;
 
-	const payment = await database("payments", "getOne", {
+	const payment = await DB.getOne("payments", {
 		query: { paymentId },
 	});
 
