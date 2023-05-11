@@ -65,7 +65,7 @@ async function setState(req, res, next) {
 
 		next({ code: 0, content: newState });
 	} catch (e) {
-		const err = { code: 20207, trace: e };
+		const err = { code: 20208, trace: e };
 		next(err);
 	}
 }

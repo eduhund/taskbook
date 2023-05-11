@@ -7,6 +7,9 @@ async function setTaskState(data) {
 	const update = await DB.setOne("state", {
 		query: { taskId, userId },
 		set: newState,
+		options: {
+			insertNew: true,
+		},
 	});
 
 	if (!update) {

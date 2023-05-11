@@ -111,24 +111,15 @@ async function prepareLessonData(data, next) {
 
 function validateTaskState(taskState) {
 	var {
-		isChecked,
-		score,
-		inProcess,
-		protest,
-		isHintActive,
-		isOurVarActive,
-		isSolutionActive,
-		comments,
-	} = taskState;
-
-	isChecked = isChecked || false;
-	score = score >= 0 ? score : null;
-	inProcess = inProcess || false;
-	protest = protest || false;
-	isHintActive = isHintActive || false;
-	isOurVarActive = isOurVarActive || false;
-	isSolutionActive = isSolutionActive || false;
-	comments = comments || [];
+		isChecked = false,
+		score = null,
+		inProcess = false,
+		protest = false,
+		isHintActive = false,
+		isOurVarActive = false,
+		isSolutionActive = false,
+		comments = [],
+	} = taskState || {};
 
 	return {
 		isChecked,
@@ -210,7 +201,7 @@ async function prepareTaskData(data) {
 				await setTaskState({
 					userId,
 					taskId,
-					state: {
+					newState: {
 						[path]: true,
 					},
 				});

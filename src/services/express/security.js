@@ -1,16 +1,23 @@
 const { checkToken } = require("../../services/tokens/tokens");
 
-function checkAuth(req, res, next) {
-	const token = req?.headers?.accesstoken;
-	const userId = checkToken(token)?.id;
+const trustedMachines = process.env.TRUSTED || [];
 
-	if (!userId) {
-		next({ code: 10103 });
-		return false;
-	}
+function checkAuth(wall) {
+	return (req, res, next) => {
+		if (!wall || trustedMachines.includes(req.ip)) {
+			next();
+			return;
+		}
+		const token = req?.headers?.accesstoken;
+		const userId = checkToken(token)?.id;
 
-	req.data.userId = userId;
-	return true;
+		if (!userId) {
+			next({ code: 10103 });
+		}
+
+		req.data.userId = userId;
+		next();
+	};
 }
 
 module.exports = { checkAuth };

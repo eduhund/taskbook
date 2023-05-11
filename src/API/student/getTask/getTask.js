@@ -23,7 +23,7 @@ async function getTask(req, res, next) {
 			next({ code: 0, content: taskData });
 		}
 	} catch (e) {
-		const err = { code: 20206, trace: e };
+		const err = { code: 20207, trace: e };
 		next(err);
 	}
 }

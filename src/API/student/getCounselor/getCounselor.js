@@ -8,7 +8,7 @@ async function getCounselor(req, res, next) {
 
 		next({ code: 0, content });
 	} catch {
-		const err = { code: 20210 };
+		const err = { code: 20211 };
 		next(err);
 	}
 }

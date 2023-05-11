@@ -98,20 +98,25 @@ const ERRORS = [
 	{
 		code: 20207,
 		type: "process_failure",
-		description: "Error in set state process",
+		description: "Error in get task process",
 	},
 	{
 		code: 20208,
 		type: "process_failure",
-		description: "Error in set comment process",
+		description: "Error in set state process",
 	},
 	{
 		code: 20209,
 		type: "process_failure",
-		description: "Error in get diploma process",
+		description: "Error in set comment process",
 	},
 	{
 		code: 20210,
+		type: "process_failure",
+		description: "Error in get diploma process",
+	},
+	{
+		code: 20211,
 		type: "process_failure",
 		description: "Error in get counselor process",
 	},

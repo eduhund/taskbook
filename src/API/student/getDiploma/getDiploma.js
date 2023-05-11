@@ -24,7 +24,7 @@ async function getDiploma(req, res, next) {
 
 		next({ code: 0, content });
 	} catch (e) {
-		const err = { code: 20209, trace: e };
+		const err = { code: 20210, trace: e };
 		next(err);
 	}
 }

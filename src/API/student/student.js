@@ -15,13 +15,13 @@ const STUDENT = [
 		name: "auth",
 		type: "post",
 		params: ["email", "pass"],
-		exec: [auth],
+		exec: auth,
 	},
 	{
 		name: "checkPayment",
 		type: "get",
 		params: ["paymentId"],
-		exec: [checkPayment],
+		exec: checkPayment,
 	},
 	{
 		name: "createPass",
@@ -34,7 +34,7 @@ const STUDENT = [
 		type: "get",
 		wall: true,
 		params: [],
-		exec: [getMe],
+		exec: getMe,
 	},
 	{
 		name: "getModule",

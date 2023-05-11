@@ -12,7 +12,7 @@ async function setState(req, res, next) {
 
 		next({ code: 0, content: comments });
 	} catch (e) {
-		const err = { code: 20208, trace: e };
+		const err = { code: 20209, trace: e };
 		next(err);
 	}
 }

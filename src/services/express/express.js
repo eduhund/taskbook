@@ -23,7 +23,6 @@ try {
 	throw new Error("Can't download SSL certificates!");
 }
 
-app.use(cors());
 app.use(express.static("static"));
 app.use("/diplomas", express.static("diplomas"));
 app.use(express.json());
@@ -50,12 +49,11 @@ app.use("/v3/student", student);
 
 for (const method of STUDENT) {
 	const { name, type, wall, exec } = method;
-	if (wall) exec.unshift(checkAuth);
 	switch (type) {
 		case "get":
-			student.get("/" + name, exec);
+			student.get("/" + name, checkAuth(wall), exec);
 		case "post":
-			student.post("/" + name, exec);
+			student.post("/" + name, checkAuth(wall), exec);
 	}
 }
 
