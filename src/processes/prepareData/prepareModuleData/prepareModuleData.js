@@ -1,14 +1,22 @@
 const getTaskInfo = require("../../getTaskInfo/getTaskInfo");
+const { setLessonsState } = require("../../setListState/setListState");
 const {
 	calculateUserScore,
 	calculateModuleMaxScore,
 	calculateDoneTasks,
 } = require("@utils/calculators");
 const { getNextTaskId } = require("@utils/getNextTaskId");
-const setLessonsState = require("@utils/setLessonsState");
 
-async function prepareModuleData(data, next) {
+/***
+ * Function prepares module data to send to user.
+ *
+ * @param {Object} data Throught API object
+ *
+ * @returns {Object} Module content
+ */
+async function prepareModuleData(data) {
 	const { module, state, isAuth } = data;
+	const { intro, final } = module;
 
 	const content = {
 		id: module.code,
@@ -23,9 +31,9 @@ async function prepareModuleData(data, next) {
 		buyLink: module.buyLink,
 	};
 
-	if (!isAuth) return content;
-
-	const { intro, final } = module;
+	if (!isAuth) {
+		return content;
+	}
 
 	const nextTaskId = getNextTaskId(module, state);
 
@@ -43,8 +51,8 @@ async function prepareModuleData(data, next) {
 			returns: ["id", "name", "type"],
 		}),
 	};
-	Object.assign(content, scoped, progress);
-	return content;
+
+	return Object.assign(content, scoped, progress);
 }
 
 module.exports = prepareModuleData;
