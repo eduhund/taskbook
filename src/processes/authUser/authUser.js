@@ -1,37 +1,29 @@
-const { log } = require("@logger");
+const DB = require("@mongo/requests");
+const { setToken } = require("@tokenMachine/tokenMachine");
 
-const DB = require("../../services/mongo/requests");
-const { setToken } = require("../../services/tokenMachine/tokenMachine");
+/***
+ * Function provides user's access token.
+ * If user pushed to request a UI language, change it too.
+ *
+ * @param {Object} data Throught API object
+ * @param {Function} next Express middleware next function
+ *
+ * @returns {Object} User data on success
+ */
+async function authUser(data) {
+	const { lang, user } = data;
 
-async function authUser(data, next) {
-	try {
-		const { lang, user } = data;
+	user.token = setToken(user);
 
-		const userToken = setToken(user);
-		lang &&
-			lang !== user.lang &&
-			DB.setOne("users", {
-				query: { email: user.email },
-				set: { lang },
-			});
-
-		const userData = {
-			id: user.id,
-			email: user.email,
-			firstName: user.firstName,
-			lastName: user.lastName,
-			lang: lang || user.lang,
-			token: userToken,
-		};
-
-		log.debug(`${user.id}: Auth success!`);
-
-		return userData;
-	} catch (e) {
-		log.error(e);
-		const err = { code: 20301 };
-		next(err);
+	if (lang && lang !== user.lang) {
+		await DB.setOne("users", {
+			query: { email: user.email },
+			set: { lang },
+		});
+		user.lang = lang;
 	}
+
+	return user;
 }
 
 module.exports = authUser;
