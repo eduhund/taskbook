@@ -1,8 +1,14 @@
-const { log } = require("@logger");
-
-const DB = require("../../services/mongo/requests");
+const DB = require("@mongo/requests");
 const { getModuleId, getLessonId } = require("@utils/idExtractor");
 
+/***
+ * Function provides data for module's specific lesson.
+ *
+ * @param {Object} data Throught API object
+ * @param {Function} next Express middleware next function
+ *
+ * @returns {Object | undefined} Lesson's data on success; undefined on fail
+ */
 async function getLessonInfo(data, next) {
 	const fullLessonId = data.lessonId;
 
@@ -11,29 +17,23 @@ async function getLessonInfo(data, next) {
 
 	const query = { code: moduleId };
 
-	const moduleData = await DB.getOne("modules", {
-		query,
-	});
+	const moduleData = await DB.getOne("modules", { query });
 
 	if (!moduleData) {
-		log.info(`${moduleId}: Module didn't found!`);
 		next({ code: 10301 });
-		return false;
+		return;
 	}
 
-	const lessonData = Object.entries(moduleData.lessons).find(
-		([id]) => id === lessonId
-	);
+	const lessonData = moduleData.lessons[lessonId];
 
 	if (!lessonData) {
-		log.info(`${fullLessonId}: Lesson didn't found!`);
 		next({ code: 10302 });
-		return false;
+		return;
 	}
 
-	data.lesson = lessonData[1];
+	data.lesson = lessonData;
 
-	return true;
+	return lessonData;
 }
 
 module.exports = getLessonInfo;
