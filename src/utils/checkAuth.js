@@ -8,6 +8,7 @@ const trustedAddress = process.env.TRUSTED;
 
 function checkAuth(req, res, next) {
 	if (trustedAddress.includes(req.ip)) {
+		req.userId = req?.query?.userId || req?.body?.userId;
 		next();
 		return;
 	}
