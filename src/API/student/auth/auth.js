@@ -1,8 +1,8 @@
-const { log } = require("@logger");
 const { getUserInfo, checkCredentials, authUser } = require("@processes");
 
 /***
  * auth StudentAPI method.
+ * https://api.eduhund.com/docs/student#auth
  *
  * @since 0.6.0
  *
@@ -27,8 +27,7 @@ async function auth(req, res, next) {
 		next({ code: 0, content });
 		return content;
 	} catch (e) {
-		log.debug(e);
-		const err = { code: 20201 };
+		const err = { code: 20201, trace: e };
 		next(err);
 		return;
 	}

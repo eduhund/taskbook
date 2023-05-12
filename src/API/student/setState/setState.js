@@ -1,8 +1,4 @@
-const {
-	getTaskInfo,
-	getStateInfo,
-	setTaskState,
-} = require("../../../processes/processes");
+const { getTaskInfo, getStateInfo, setTaskState } = require("@processes");
 const { checkAuth } = require("../../../services/express/security");
 const {
 	getVisibilityUpdateList,
@@ -10,13 +6,22 @@ const {
 const {
 	updateDependenciesTasks,
 } = require("../../../modules/apiRequests/setState/updateDependenciesTasks");
-const database = require("../../../services/mongo/requests");
+const DB = require("../../../services/mongo/requests");
 
+/***
+ * setState StudentAPI method.
+ * https://api.eduhund.com/docs/student#setState
+ *
+ * @since 0.6.0
+ *
+ * @param {Object} req Express request object
+ * @param {Object} res Express response object
+ * @param {Function} next Express middleware next function
+ *
+ * @returns {Object | undefined} New task's state on success; undefined on fail
+ */
 async function setState(req, res, next) {
 	try {
-		const isAuth = checkAuth(req, res, next);
-		if (!isAuth) return;
-
 		const { data } = req;
 
 		for (const [key, value] of Object.entries(data.newState)) {
@@ -25,7 +30,7 @@ async function setState(req, res, next) {
 				data.newState[path] = value;
 				delete data.newState[key];
 
-				const tasks = await database("tasks", "getMany", {
+				const tasks = await DB.getMany("tasks", {
 					query: {
 						"content.questions.depends.parentId": { $regex: questionId },
 						"content.questions.depends.type": "visibility",
@@ -39,7 +44,7 @@ async function setState(req, res, next) {
 			}
 		}
 
-		const taskData = await getTaskInfo(data, next);
+		const taskData = await getTaskInfo(data);
 		if (!taskData) return;
 
 		const taskState = await getStateInfo(data);
@@ -60,13 +65,15 @@ async function setState(req, res, next) {
 			}
 		}
 
-		const newState = await setTaskState(data, next);
+		const newState = await setTaskState(data);
 		delete newState.comments;
 
 		next({ code: 0, content: newState });
+		return newState;
 	} catch (e) {
 		const err = { code: 20208, trace: e };
 		next(err);
+		return;
 	}
 }
 

@@ -1,30 +1,36 @@
-const {
-	getTaskInfo,
-	getStateInfo,
-	prepareData,
-} = require("../../../processes/processes");
-const { checkAuth } = require("../../../services/express/security");
+const { getTaskInfo, getStateInfo, prepareData } = require("@processes");
 
+/***
+ * getTask StudentAPI method.
+ * https://api.eduhund.com/docs/student#getTask
+ *
+ * @since 0.6.0
+ *
+ * @param {Object} req Express request object
+ * @param {Object} res Express response object
+ * @param {Function} next Express middleware next function
+ *
+ * @returns {Object | undefined} Task data on success; undefined on fail
+ */
 async function getTask(req, res, next) {
 	try {
-		const isAuth = checkAuth(req, res, next);
-		if (!isAuth) return;
-
 		const { data } = req;
 
 		const taskData = await getTaskInfo(data, next);
 		if (!taskData) return;
 
+		let content = taskData;
 		if (taskData.type === "practice") {
 			await getStateInfo(data);
-			const content = await prepareData("task", data, isAuth, next);
-			next({ code: 0, content });
-		} else {
-			next({ code: 0, content: taskData });
+			content = await prepareData("task", data);
 		}
+
+		next({ code: 0, content });
+		return content;
 	} catch (e) {
 		const err = { code: 20207, trace: e };
 		next(err);
+		return;
 	}
 }
 

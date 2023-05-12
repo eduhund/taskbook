@@ -20,8 +20,8 @@ const { createCert } = require("../../utils/certGenerator");
 const provideData = require("../../API/student/getDiploma/provideData");
 const CyrillicToTranslit = require("cyrillic-to-translit-js");
 
-async function prepareModuleData(data, isAuth, next) {
-	const { module, state } = data;
+async function prepareModuleData(data, next) {
+	const { module, state, isAuth } = data;
 
 	const content = {
 		id: module.code,
@@ -51,19 +51,16 @@ async function prepareModuleData(data, isAuth, next) {
 		maxScore: calculateModuleMaxScore(module.lessons),
 		doneTasks: calculateDoneTasks(state),
 		totalTasks: module.totalTasks,
-		nextTask: await getTaskInfo(
-			{
-				taskId: nextTaskId,
-				returns: ["id", "name", "type"],
-			},
-			next
-		),
+		nextTask: await getTaskInfo({
+			taskId: nextTaskId,
+			returns: ["id", "name", "type"],
+		}),
 	};
 	Object.assign(content, scoped, progress);
 	return content;
 }
 
-async function prepareLessonData(data, next) {
+async function prepareLessonData(data) {
 	const fullLessonId = data.lessonId;
 	const lessonId = getLessonId(fullLessonId);
 	const { lesson, state } = data;
@@ -77,13 +74,10 @@ async function prepareLessonData(data, next) {
 	const { intro, final, maxScore } = lesson;
 
 	const tasksPromises = lesson.tasks.map(async (taskId) => {
-		const taskInfo = await getTaskInfo(
-			{
-				taskId,
-				returns: ["id", "name", "type"],
-			},
-			next
-		);
+		const taskInfo = await getTaskInfo({
+			taskId,
+			returns: ["id", "name", "type"],
+		});
 		if (taskInfo.type === "practice") {
 			const taskState = state.find((item) => item.taskId === taskId);
 			taskInfo.score = taskState?.score || 0;
@@ -346,16 +340,16 @@ async function prepareDiplomaData(data) {
 	};
 }
 
-function prepareData(type, data, isAuth, next) {
+function prepareData(type, data) {
 	switch (type) {
 		case "module":
-			return prepareModuleData(data, isAuth, next);
+			return prepareModuleData(data);
 		case "lesson":
-			return prepareLessonData(data, next);
+			return prepareLessonData(data);
 		case "task":
-			return prepareTaskData(data, next);
+			return prepareTaskData(data);
 		case "diploma":
-			return prepareDiplomaData(data, next);
+			return prepareDiplomaData(data);
 	}
 }
 
