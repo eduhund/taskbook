@@ -1,8 +1,13 @@
-const { log } = require("@logger");
-
 const DB = require("../../services/mongo/requests");
 
-async function getCounselorInfo(data, next) {
+/***
+ * Function provides data for student counselor.
+ *
+ * @param {Object} data Throught API object
+ *
+ * @returns {Object} Counselor data
+ */
+async function getCounselorInfo(data) {
 	const { lang } = data;
 	const query = { lang };
 
@@ -11,8 +16,7 @@ async function getCounselorInfo(data, next) {
 	});
 
 	if (!counselor) {
-		log.debug(`Can't find counselor data for language ${lang}!`);
-		throw new Error();
+		throw new Error(`Can't find the counselor for language ${lang}`);
 	}
 
 	data.counselor = counselor;
