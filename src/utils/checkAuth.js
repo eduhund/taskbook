@@ -7,6 +7,7 @@ const { generateMessage } = require("./messageGenerator");
 const trustedAddress = process.env.TRUSTED;
 
 function checkAuth(req, res, next) {
+	console.log(req.ip);
 	if (trustedAddress.includes(req.ip)) {
 		req.userId = req?.query?.userId || req?.body?.userId;
 		next();
