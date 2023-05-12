@@ -2,10 +2,14 @@
 	"compilerOptions": {
 		"baseUrl": "./src",
 		"paths": {
-			"@utils/*": ["utils/*"],
-			"@express/*": ["services/express"],
+			"@StudentAPI": ["API/student/student"],
+			"@assets/*": ["assets"],
+			"@express": ["services/express/express"],
 			"@logger": ["services/logger/logger"],
-			"@mongo/*": ["services/mongo"]
+			"@mongo": ["services/mongo/mongo"],
+			"@tokenMachine/*": ["services/tokenMachine"],
+			"@processes": ["processes/processes"],
+			"@utils/*": ["utils/*"]
 		}
 	}
 }

@@ -1,4 +1,4 @@
-const { checkToken } = require("../../services/tokens/tokens");
+const { checkToken } = require("../tokenMachine/tokenMachine");
 
 const trustedMachines = process.env.TRUSTED || [];
 

@@ -30,9 +30,13 @@
 	},
 	"_moduleAliases": {
 		"@root": ".",
-		"@utils": "./src/utils",
-		"@express": "./src/services/express",
+		"@StudentAPI": "./src/API/student/student",
+		"@assets": "./src/assets",
+		"@express": "./src/services/express/express",
 		"@logger": "./src/services/logger/logger",
-		"@mongo": "./src/services/mongo"
+		"@mongo": "./src/services/mongo/mongo",
+		"@tokenMachine": "./src/services/tokenMachine",
+		"@processes": "./src/processes/processes",
+		"@utils": "./src/utils"
 	}
 }

@@ -1,6 +1,6 @@
 const { log } = require("@logger");
 
-const { checkKey } = require("../../services/otk/requests");
+const { checkKey } = require("../../services/tokenMachine/OTK");
 
 async function checkOTK(data, next) {
 	const { key } = data;

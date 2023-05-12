@@ -1,4 +1,4 @@
-const { getToken } = require("../../services/tokens/tokens");
+const { getToken } = require("../../services/tokenMachine/tokenMachine");
 
 function tokenMachine() {
 	const tokens = {};

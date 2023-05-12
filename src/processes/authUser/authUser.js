@@ -1,7 +1,7 @@
 const { log } = require("@logger");
 
 const DB = require("../../services/mongo/requests");
-const { setToken } = require("../../services/tokens/tokens");
+const { setToken } = require("../../services/tokenMachine/tokenMachine");
 
 async function authUser(data, next) {
 	try {

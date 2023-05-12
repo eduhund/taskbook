@@ -1,7 +1,7 @@
 const { log } = require("@logger");
 
 const { getDBRequest } = require("../../dbRequests/dbRequests");
-const { checkKey } = require("../../../services/otk/requests");
+const { checkKey } = require("../../../services/tokenMachine/OTK");
 const { generateMessage } = require("../../../utils/messageGenerator");
 
 async function createPassword({ req, res, next }) {
