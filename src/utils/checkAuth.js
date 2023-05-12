@@ -4,7 +4,13 @@ const { accessTokens } = require("../modules/userTokens/accessTokens");
 const { getModuleId } = require("./idExtractor");
 const { generateMessage } = require("./messageGenerator");
 
+const trustedAddress = process.env.TRUSTED;
+
 function checkAuth(req, res, next) {
+	if (trustedAddress.includes(req.ip)) {
+		next();
+		return;
+	}
 	const token = req?.query?.accessToken || req?.body?.accessToken;
 	const userId = accessTokens.checkList()?.[token]?.id;
 
