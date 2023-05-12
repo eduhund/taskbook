@@ -28,7 +28,7 @@ async function getDiploma(req, res, next) {
 
 		await getStateInfo(data);
 
-		const content = await prepareData("diploma", data);
+		const content = await prepareData.certificateData(data);
 
 		next({ code: 0, content });
 		return content;

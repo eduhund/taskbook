@@ -21,7 +21,7 @@ async function getModule(req, res, next) {
 
 		data.isAuth && (await getStateInfo(data));
 
-		const content = await prepareData("module", data);
+		const content = await prepareData.moduleData(data);
 
 		next({ code: 0, content });
 		return content;

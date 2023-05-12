@@ -19,9 +19,9 @@ async function getLesson(req, res, next) {
 		const lessonData = await getLessonInfo(data, next);
 		if (!lessonData) return;
 
-		isAuth && (await getStateInfo(data));
+		await getStateInfo(data);
 
-		const content = await prepareData("lesson", data, isAuth, next);
+		const content = await prepareData.lessonData(data);
 
 		next({ code: 0, content });
 		return content;

@@ -22,7 +22,7 @@ async function getTask(req, res, next) {
 		let content = taskData;
 		if (taskData.type === "practice") {
 			await getStateInfo(data);
-			content = await prepareData("task", data);
+			content = await prepareData.taskData(data);
 		}
 
 		next({ code: 0, content });
