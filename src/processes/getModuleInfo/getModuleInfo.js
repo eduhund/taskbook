@@ -1,24 +1,27 @@
-const { log } = require("@logger");
+const DB = require("@mongo/requests");
 
-const DB = require("../../services/mongo/requests");
-
+/***
+ * Function provides module's main data.
+ *
+ * @param {Object} data Throught API object
+ * @param {Function} next Express middleware next function
+ *
+ * @returns {Object | undefined} Lesson's data on success; undefined on fail
+ */
 async function getModuleInfo(data, next) {
 	const { moduleId } = data;
 	const query = { code: moduleId };
 
-	const moduleData = await DB.getOne("modules", {
-		query,
-	});
+	const moduleData = await DB.getOne("modules", { query });
 
 	if (!moduleData) {
-		log.info(`${moduleId}: Module didn't found!`);
 		next({ code: 10301 });
 		return false;
 	}
 
 	data.module = moduleData;
 
-	return true;
+	return moduleData;
 }
 
 module.exports = getModuleInfo;
