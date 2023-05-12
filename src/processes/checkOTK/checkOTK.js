@@ -1,13 +1,18 @@
-const { log } = require("@logger");
+const { checkKey } = require("@tokenMachine/otk");
 
-const { checkKey } = require("../../services/tokenMachine/OTK");
-
+/***
+ * Function checks one-time key for password change.
+ *
+ * @param {Object} data Throught API object
+ * @param {Function} next Express middleware next function
+ *
+ * @returns {boolean} Check result
+ */
 async function checkOTK(data, next) {
 	const { key } = data;
 
 	const verify = await checkKey(key);
 	if (!verify) {
-		log.debug(`${key}: OTK didn't found!`);
 		next({ code: 10105 });
 		return false;
 	}
