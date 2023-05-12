@@ -1,7 +1,13 @@
-const { log } = require("@logger");
-
 const DB = require("../../services/mongo/requests");
 
+/***
+ * Function checks user transaction.
+ *
+ * @param {Object} data Throught API object
+ * @param {Function} next Express middleware next function
+ *
+ * @returns {boolean} Check result
+ */
 async function checkTransaction(data, next) {
 	const { paymentId } = data;
 
@@ -10,7 +16,6 @@ async function checkTransaction(data, next) {
 	});
 
 	if (!payment) {
-		log.debug(`${paymentId}: Payment didn't found!`);
 		next({ code: 10106 });
 		return false;
 	}
