@@ -1,5 +1,4 @@
 const { getTaskInfo, getStateInfo, setTaskState } = require("@processes");
-const { checkAuth } = require("../../../services/express/security");
 const {
 	getVisibilityUpdateList,
 } = require("../../../modules/apiRequests/setState/getVisibilityUpdateList");

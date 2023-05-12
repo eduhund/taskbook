@@ -4,9 +4,9 @@
 		"paths": {
 			"@StudentAPI": ["API/student/student"],
 			"@assets/*": ["assets"],
-			"@express": ["services/express/express"],
+			"@express/*": ["services/express"],
 			"@logger": ["services/logger/logger"],
-			"@mongo": ["services/mongo/mongo"],
+			"@mongo/*": ["services/mongo"],
 			"@tokenMachine/*": ["services/tokenMachine"],
 			"@processes": ["processes/processes"],
 			"@utils/*": ["utils/*"]

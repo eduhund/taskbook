@@ -32,9 +32,9 @@
 		"@root": ".",
 		"@StudentAPI": "./src/API/student/student",
 		"@assets": "./src/assets",
-		"@express": "./src/services/express/express",
+		"@express": "./src/services/express",
 		"@logger": "./src/services/logger/logger",
-		"@mongo": "./src/services/mongo/mongo",
+		"@mongo": "./src/services/mongo",
 		"@tokenMachine": "./src/services/tokenMachine",
 		"@processes": "./src/processes/processes",
 		"@utils": "./src/utils"

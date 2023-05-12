@@ -2,8 +2,8 @@ require("dotenv").config();
 require("module-alias/register");
 
 const { log } = require("@logger");
-const mongo = require("@mongo");
-const server = require("@express");
+const mongo = require("@mongo/mongo");
+const server = require("@express/express");
 
 async function start() {
 	try {

@@ -191,9 +191,13 @@ module.exports = {
 	// watchman: true,
 
 	moduleNameMapper: {
-		"@utils": "<rootDir>/src/utils",
-		"@express": "<rootDir>/src/services/express/express",
+		"@StudentAPI": "<rootDir>/src/API/student/student",
+		"@assets": "<rootDir>/src/assets",
+		"@express": "<rootDir>/src/services/express",
 		"@logger": "<rootDir>/src/services/logger/logger",
 		"@mongo": "<rootDir>/src/services/mongo",
+		"@tokenMachine": "<rootDir>/src/services/tokenMachine",
+		"@processes": "<rootDir>/src/processes/processes",
+		"@utils": "<rootDir>/src/utils",
 	},
 };
