@@ -1,7 +1,12 @@
-const { log } = require("@logger");
+const DB = require("@mongo/requests");
 
-const DB = require("../../services/mongo/requests");
-
+/***
+ * Function set new sertificate params.
+ *
+ * @param {Object} data Throught API object
+ *
+ * @returns {Object} New sertificate state
+ */
 async function setDiploma(data) {
 	const { query, params } = data;
 	const update = await DB.setOne("certs", {
@@ -10,8 +15,7 @@ async function setDiploma(data) {
 	});
 
 	if (!update) {
-		log.debug(`${query?.id}: A problem with setting diploma state!`);
-		throw new Error();
+		throw new Error(`${query?.id}: A problem with setting diploma state!`);
 	}
 
 	return update;

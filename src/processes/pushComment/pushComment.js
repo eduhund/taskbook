@@ -1,7 +1,12 @@
-const { log } = require("@logger");
+const DB = require("@mongo/requests");
 
-const DB = require("../../services/mongo/requests");
-
+/***
+ * Function added new comment to the task.
+ *
+ * @param {Object} data Throught API object
+ *
+ * @returns {Array} Array of task's comments with the new one
+ */
 async function pushComment(data) {
 	const { taskId, userId, comment } = data;
 
@@ -23,8 +28,7 @@ async function pushComment(data) {
 	});
 
 	if (!update) {
-		log.debug(`${taskId}: A problem pushing new comment to DB!`);
-		throw new Error();
+		throw new Error(`${taskId}: A problem pushing new comment to DB!`);
 	}
 
 	return update;

@@ -1,7 +1,13 @@
-const { log } = require("@logger");
+const DB = require("@mongo/requests");
 
-const DB = require("../../services/mongo/requests");
-
+/***
+ * Function provides task data.
+ *
+ * @param {Object} data Throught API object
+ * @param {Function} next Express middleware next function
+ *
+ * @returns {Object | undefined} Task data on success; undefined on fail
+ */
 async function getTaskInfo(data, next) {
 	const { taskId, returns } = data;
 	const query = { id: taskId };
@@ -12,9 +18,8 @@ async function getTaskInfo(data, next) {
 	});
 
 	if (!taskData) {
-		log.info(`${taskData}: Task didn't found!`);
 		next({ code: 10203 });
-		return false;
+		return;
 	}
 
 	data.task = taskData;

@@ -1,7 +1,12 @@
-const { log } = require("@logger");
-
 const DB = require("../../services/mongo/requests");
 
+/***
+ * Function provides state data for requested item (full module | lesson | task).
+ *
+ * @param {Object} data Throught API object
+ *
+ * @returns {Array | Object} State data for task or array of state data objects
+ */
 async function getStateInfo(data) {
 	const { userId, moduleId, lessonId, taskId } = data;
 	const id = moduleId || lessonId || taskId;
@@ -16,7 +21,7 @@ async function getStateInfo(data) {
 
 	data.state = stateData;
 
-	return true;
+	return stateData;
 }
 
 module.exports = getStateInfo;

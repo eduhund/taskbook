@@ -1,7 +1,12 @@
-const { log } = require("@logger");
+const DB = require("@mongo/requests");
 
-const DB = require("../../services/mongo/requests");
-
+/***
+ * Function set new task state.
+ *
+ * @param {Object} data Throught API object
+ *
+ * @returns {Object} New task state
+ */
 async function setTaskState(data) {
 	const { taskId, userId, newState } = data;
 	const update = await DB.setOne("state", {
@@ -13,8 +18,7 @@ async function setTaskState(data) {
 	});
 
 	if (!update) {
-		log.debug(`${taskId}: A problem with setting new task state!`);
-		throw new Error();
+		throw new Error(`${taskId}: A problem with setting new task state!`);
 	}
 
 	return update;

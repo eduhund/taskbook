@@ -1,8 +1,13 @@
-const { log } = require("@logger");
+const DB = require("@mongo/requests");
 
-const DB = require("../../services/mongo/requests");
-
-async function updatePass(data, next) {
+/***
+ * Function set new password for user.
+ *
+ * @param {Object} data Throught API object
+ *
+ * @returns {Object} User data
+ */
+async function updatePass(data) {
 	const { email, pass } = data;
 	const user = await DB.setOne("users", {
 		query: { email },
@@ -10,13 +15,12 @@ async function updatePass(data, next) {
 	});
 
 	if (!user) {
-		log.debug(`${email}: User didn't found when was updating pass!`);
-		throw new Error();
+		throw new Error(`${email}: User didn't found when pass updating !`);
 	}
 
 	data.user = user;
 
-	return true;
+	return user;
 }
 
 module.exports = updatePass;

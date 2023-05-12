@@ -1,25 +1,34 @@
-const { log } = require("@logger");
+const DB = require("@mongo/requests");
 
-const DB = require("../../services/mongo/requests");
-
+/***
+ * Function provides main user info.
+ *
+ * @param {Object} data Throught API object
+ * @param {Function} next Express middleware next function
+ *
+ * @returns {Object | undefined} User data on success; undefined in fail
+ */
 async function getUserInfo(data, next) {
 	const { email, userId } = data;
 	const query = { email, id: userId };
-	Object.keys(query).forEach((key) => !query[key] && delete query[key]);
+	Object.keys(query).forEach((key) => {
+		if (!query[key]) {
+			delete query[key];
+		}
+	});
 
 	const user = await DB.getOne("users", {
 		query,
 	});
 
 	if (!user) {
-		log.info(`${email}: User didn't found!`);
 		next({ code: 10101 });
-		return false;
+		return;
 	}
 
 	data.user = user;
 
-	return true;
+	return user;
 }
 
 module.exports = getUserInfo;
