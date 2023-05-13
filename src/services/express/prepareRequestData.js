@@ -62,7 +62,7 @@ function prepareRequestData(req, res, next) {
 		const { requiredParams = [], otherParams = [] } = STUDENT.find(
 			(item) => item.name === methodName
 		);
-		const allParams = [...requiredParams, ...otherParams];
+		const allParams = [...requiredParams, ...otherParams, "userId"];
 
 		for (const param of requiredParams) {
 			if (!(param in data)) {

@@ -12,7 +12,7 @@ function getProjection(returns) {
 
 function getOptions(returns, options) {
 	return {
-		projetion: getProjection(returns),
+		projection: getProjection(returns),
 		upsert: options.insertNew || false,
 		returnDocument: "after",
 		returnNewDocument: true,
@@ -42,6 +42,7 @@ const DB = {
 			(set && { $set: set }) || (push && { $push: push }),
 			allOptions
 		);
+
 		return response?.value || null;
 	},
 

@@ -13,8 +13,9 @@ function checkAuth(wall) {
 	return (req, res, next) => {
 		if (!wall || trustedMachines.includes(req.ip)) {
 			next();
-			return false;
+			return true;
 		}
+
 		const token = req?.headers?.accesstoken;
 		const userId = checkToken(token)?.id;
 		if (!userId) {

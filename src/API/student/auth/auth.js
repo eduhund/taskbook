@@ -2,7 +2,7 @@ const {
 	getUserInfo,
 	checkCredentials,
 	authUser,
-	prepareData,
+	prepareUserData,
 } = require("@processes");
 
 /***
@@ -29,7 +29,7 @@ async function auth(req, res, next) {
 
 		await authUser(data);
 
-		const content = prepareData.userData(data);
+		const content = prepareUserData(data);
 
 		next({ code: 0, content });
 		return content;

@@ -212,7 +212,7 @@ async function updateDependenciesTasks(userId, questionId, tasks, state) {
 		}
 		await DB.setOne("state", {
 			query,
-			state: data,
+			set: data,
 		});
 	}
 	return;
