@@ -1,56 +1,90 @@
-const { lowerString, upperString } = require("../../utils/stringProcessor");
-const { hashPass } = require("../../utils/pass");
+const { lowerString, upperString } = require("@utils/stringProcessor");
+const { hashPass } = require("@utils/pass");
 const { lang } = require("../../../config.json");
 const PATH = require("node:path");
-const { STUDENT } = require("../../API/student/student");
+const { STUDENT } = require("@StudentAPI");
 
+/***
+ * Function validates lang param.
+ *
+ * @param {String} userLang Requested user language code
+ *
+ * @returns {String} User language code or default language code
+ */
+function validateLang(userLang) {
+	return lang.supported.includes(userLang) ? userLang : lang.default;
+}
+
+/***
+ * Function validates state param.
+ *
+ * @param {Object} state Changed items in task's state
+ * @param {Function} next Express middleware next function
+ *
+ * @returns {Object} Updated state of the task
+ */
+function validateState(state, next) {
+	if (typeof (state === "object" && Object.keys(state).length !== 0)) {
+		return state;
+	} else {
+		const err = { code: 10003 };
+		next(err);
+		return;
+	}
+}
+
+const keyHandlers = {
+	email: lowerString,
+	pass: hashPass,
+	lang: validateLang,
+	moduleId: upperString,
+	lessonId: upperString,
+	taskId: upperString,
+	questionId: upperString,
+	state: validateState,
+};
+
+/***
+ * Function check all incoming API params: required and optional.
+ * It validates them and delet unnecessary params.
+ *
+ * @param {Object} req Express request object
+ * @param {Object} res Express response object
+ * @param {Function} next Express middleware next function
+ *
+ * @returns {Object | undefined} Prepared data on success; undefined on fail
+ */
 function prepareRequestData(req, res, next) {
 	const { path, query, body } = req;
 	const data = Object.assign({}, body || {}, query || {});
-	req.data = data;
-	const method = PATH.parse(path)?.name;
+	const methodName = PATH.parse(path)?.name;
+	const { requiredParams, otherParams } = STUDENT.find(
+		(item) => item.name === methodName
+	);
+	const allParams = [...requiredParams, ...otherParams];
 
-	const params = STUDENT.find((item) => item.name === method)?.params || [];
-
-	if (!params) {
-		next();
-		return;
-	}
-
-	for (const param of params) {
+	for (const param of requiredParams) {
 		if (!(param in data)) {
 			const err = { code: 10002 };
 			next(err);
-			return err;
+			return;
 		}
 	}
-
-	const keyHandlers = {
-		email: lowerString,
-		pass: hashPass,
-		lang: (value) => (lang.supported.includes(value) ? value : lang.default),
-		moduleId: upperString,
-		lessonId: upperString,
-		taskId: upperString,
-		questionId: upperString,
-		state: (value) => {
-			if (typeof (value === "object" && Object.keys(value).length !== 0)) {
-				return value;
-			} else {
-				const err = { code: 10003 };
-				next(err);
-				return err;
-			}
-		},
-	};
 
 	for (const [key, value] of Object.entries(data)) {
+		if (!allParams.includes(key)) {
+			delete data[key];
+		}
+
 		if (key in keyHandlers) {
-			data[key] = keyHandlers[key](value);
+			data[key] = keyHandlers[key](value, next);
 		}
 	}
 
+	req.data = data;
+
 	next();
+	return data;
 }
 
 module.exports = prepareRequestData;

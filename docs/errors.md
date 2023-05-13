@@ -4,7 +4,7 @@
 | ----- | ------------------- | ---------------------------------- |
 | 10001 | invalid_request     | Invalid path                       |
 | 10002 | invalid_request     | Missing required params            |
-| 10003 | invalid_request     | Param can't be empty               |
+| 10003 | invalid_request     | Param is invalid                   |
 | 10101 | invalid_credentials | User didn't found                  |
 | 10102 | invalid_credentials | Invalid password                   |
 | 10103 | invalid_credentials | Access token is invalid or expired |
