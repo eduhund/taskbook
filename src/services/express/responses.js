@@ -66,6 +66,11 @@ const ERRORS = [
 		description: "Task didn't found",
 	},
 	{
+		code: 20101,
+		type: "validate_failure",
+		description: "Error request params validate",
+	},
+	{
 		code: 20201,
 		type: "process_failure",
 		description: "Error in auth process",

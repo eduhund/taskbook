@@ -8,11 +8,11 @@ const { checkPass } = require("@utils/pass");
  *
  * @returns {boolean} Check result
  */
-async function checkCredentials(data, next) {
+function checkCredentials(data, next) {
 	const { user, pass } = data;
 	const isPassValid = checkPass(user, pass);
 
-	if (isPassValid) {
+	if (!isPassValid) {
 		next({ code: 10102 });
 		return false;
 	}

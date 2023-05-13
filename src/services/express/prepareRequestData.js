@@ -55,36 +55,42 @@ const keyHandlers = {
  * @returns {Object | undefined} Prepared data on success; undefined on fail
  */
 function prepareRequestData(req, res, next) {
-	const { path, query, body } = req;
-	const data = Object.assign({}, body || {}, query || {});
-	const methodName = PATH.parse(path)?.name;
-	const { requiredParams, otherParams } = STUDENT.find(
-		(item) => item.name === methodName
-	);
-	const allParams = [...requiredParams, ...otherParams];
+	try {
+		const { path, query, body } = req;
+		const data = Object.assign({}, body || {}, query || {});
+		const methodName = PATH.parse(path)?.name;
+		const { requiredParams = [], otherParams = [] } = STUDENT.find(
+			(item) => item.name === methodName
+		);
+		const allParams = [...requiredParams, ...otherParams];
 
-	for (const param of requiredParams) {
-		if (!(param in data)) {
-			const err = { code: 10002 };
-			next(err);
-			return;
+		for (const param of requiredParams) {
+			if (!(param in data)) {
+				const err = { code: 10002 };
+				next(err);
+				return;
+			}
 		}
+
+		for (const [key, value] of Object.entries(data)) {
+			if (!allParams.includes(key)) {
+				delete data[key];
+			}
+
+			if (key in keyHandlers) {
+				data[key] = keyHandlers[key](value, next);
+			}
+		}
+
+		req.data = data;
+
+		next();
+		return data;
+	} catch (e) {
+		const err = { code: 20101, trace: e };
+		next(err);
+		return;
 	}
-
-	for (const [key, value] of Object.entries(data)) {
-		if (!allParams.includes(key)) {
-			delete data[key];
-		}
-
-		if (key in keyHandlers) {
-			data[key] = keyHandlers[key](value, next);
-		}
-	}
-
-	req.data = data;
-
-	next();
-	return data;
 }
 
 module.exports = prepareRequestData;

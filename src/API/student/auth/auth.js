@@ -1,4 +1,9 @@
-const { getUserInfo, checkCredentials, authUser } = require("@processes");
+const {
+	getUserInfo,
+	checkCredentials,
+	authUser,
+	prepareData,
+} = require("@processes");
 
 /***
  * auth StudentAPI method.
@@ -19,10 +24,12 @@ async function auth(req, res, next) {
 		const userExists = await getUserInfo(data, next);
 		if (!userExists) return;
 
-		const credentialsValid = await checkCredentials(data, next);
+		const credentialsValid = checkCredentials(data, next);
 		if (!credentialsValid) return;
 
-		const content = await authUser(data);
+		await authUser(data);
+
+		const content = prepareData.userData(data);
 
 		next({ code: 0, content });
 		return content;
