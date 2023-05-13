@@ -2,6 +2,14 @@ const getPhrase = require("@assets/lang/lang");
 const { getFullTaskId, getFullQuestionId } = require("@utils/idExtractor");
 const DB = require("@mongo/requests");
 
+/***
+ * Modify string, if parent task isn't solved
+ *
+ * @param {String} taskId Task ID
+ * @param {String} lang User lang
+ *
+ * @returns {Array} Modified string and strange bool
+ */
 async function getTaskName(taskId, lang) {
 	const taskData = await DB.getOne("task", { query: { id: taskId } });
 	if (!taskData) {
@@ -11,6 +19,14 @@ async function getTaskName(taskId, lang) {
 	return [taskName, false];
 }
 
+/***
+ * Serve all tasks, that will be updated
+ *
+ * @param {Array} tasks Tasks list
+ * @param {String} questionId Reference question ID
+ *
+ * @returns {Array} Task list to modify
+ */
 function getVisibilityUpdateList(tasks, questionId) {
 	const list = [];
 	for (const task of tasks) {
@@ -46,10 +62,19 @@ function getVisibilityUpdateList(tasks, questionId) {
 	return list;
 }
 
-async function setVisibility(userId, id, childId) {
+/***
+ * Update question visibility
+ *
+ * @param {String} userId User ID
+ * @param {String} contentId Question or Variant ID
+ * @param {String} childId Question ID to modify
+ *
+ * @returns {Boolean} New question visibility
+ */
+async function setVisibility(userId, contentId, childId) {
 	const idLength = id.length;
-	const taskId = getFullTaskId(id);
-	const questionId = getFullQuestionId(id);
+	const taskId = getFullTaskId(contentId);
+	const questionId = getFullQuestionId(contentId);
 	const path = "data." + childId + ".isVisible";
 	const state = await DB.getOne("state", {
 		query: {
@@ -62,7 +87,7 @@ async function setVisibility(userId, id, childId) {
 	switch (idLength) {
 		case 13:
 			const answer = (state?.data?.[questionId]?.state || []).find(
-				(answer) => answer.id == id
+				(answer) => answer.id === contentId
 			);
 			if (answer?.isSelected && state?.data?.[questionId]?.isVisible)
 				isVisible = true;
@@ -83,6 +108,15 @@ async function setVisibility(userId, id, childId) {
 	return isVisible;
 }
 
+/***
+ * Replace question content to previous user's answers
+ *
+ * @param {String} userId User ID
+ * @param {String} contentId Question or Variant ID
+ * @param {String} lang User's lang
+ *
+ * @returns {String} New question content
+ */
 async function getParentContent(userId, contentId, lang) {
 	const taskId = getFullTaskId(contentId);
 	const taskState = await DB.getOne("state", {
@@ -108,9 +142,11 @@ async function getParentContent(userId, contentId, lang) {
 
 /**
  * Switch variant right status
- * @param {string} userId
- * @param {array} refs
- * @returns {boolean} variant result status
+ *
+ * @param {String} userId User ID
+ * @param {Array} refs List of references
+ *
+ * @returns {Boolean} Responsive variant status
  */
 async function refAnswerRight(userId, refs = []) {
 	for (const ref of refs) {
@@ -139,6 +175,16 @@ async function refAnswerRight(userId, refs = []) {
 	}
 }
 
+/**
+ * Update all task depends
+ *
+ * @param {String} userId User ID
+ * @param {String} questionId Question ID
+ * @param {Array} tasks List of tasks
+ * @param {Object} refs Task's state object
+ *
+ * @returns {undefined}
+ */
 async function updateDependenciesTasks(userId, questionId, tasks, state) {
 	const questions = getVisibilityUpdateList(tasks, questionId);
 	if (questions.length === 0) {

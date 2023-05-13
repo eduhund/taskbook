@@ -1,4 +1,8 @@
-const { getLessonInfo, getStateInfo, prepareData } = require("@processes");
+const {
+	getLessonInfo,
+	getStateInfo,
+	prepareLessonData,
+} = require("@processes");
 
 /***
  * getLesson StudentAPI method.
@@ -21,7 +25,7 @@ async function getLesson(req, res, next) {
 
 		await getStateInfo(data);
 
-		const content = await prepareData.lessonData(data);
+		const content = await prepareLessonData(data);
 
 		next({ code: 0, content });
 		return content;

@@ -1,4 +1,4 @@
-const { getUserInfo, prepareData } = require("@processes");
+const { getUserInfo, prepareUserData } = require("@processes");
 
 /***
  * getMe StudentAPI method.
@@ -19,7 +19,7 @@ async function getMe(req, res, next) {
 		const userExists = await getUserInfo(data, next);
 		if (!userExists) return;
 
-		const content = prepareData.userData(data);
+		const content = prepareUserData(data);
 
 		next({ code: 0, content });
 		return content;

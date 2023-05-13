@@ -5,6 +5,13 @@ const {
 } = require("../../updateContent/updateContent");
 const setTaskState = require("../../setTaskState/setTaskState");
 
+/***
+ * Normilize State object
+ *
+ * @param {Object} taskState Task state params
+ *
+ * @returns {Object} Normilize state object
+ */
 function validateTaskState(taskState) {
 	return ({
 		isChecked = false,
@@ -18,6 +25,13 @@ function validateTaskState(taskState) {
 	} = taskState || {});
 }
 
+/***
+ * Function prepares task data for response
+ *
+ * @param {Object} data Throught API obhect
+ *
+ * @returns {Object} Task object
+ */
 async function prepareTaskData(data) {
 	const { userId, taskId, task, state } = data;
 	const taskState = validateTaskState(state);

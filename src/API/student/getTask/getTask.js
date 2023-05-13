@@ -1,4 +1,4 @@
-const { getTaskInfo, getStateInfo, prepareData } = require("@processes");
+const { getTaskInfo, getStateInfo, prapareTaskData } = require("@processes");
 
 /***
  * getTask StudentAPI method.
@@ -22,7 +22,7 @@ async function getTask(req, res, next) {
 		let content = taskData;
 		if (taskData.type === "practice") {
 			await getStateInfo(data);
-			content = await prepareData.taskData(data);
+			content = await prapareTaskData(data);
 		}
 
 		next({ code: 0, content });

@@ -1,11 +1,10 @@
-const { getTaskInfo, getStateInfo, setTaskState } = require("@processes");
 const {
-	getVisibilityUpdateList,
-} = require("../../../modules/apiRequests/setState/getVisibilityUpdateList");
-const {
+	getTaskInfo,
+	getStateInfo,
+	setTaskState,
 	updateDependenciesTasks,
-} = require("../../../modules/apiRequests/setState/updateDependenciesTasks");
-const DB = require("../../../services/mongo/requests");
+} = require("@processes");
+const DB = require("@mongo/requests");
 
 /***
  * setState StudentAPI method.

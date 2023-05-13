@@ -7,7 +7,7 @@ const getLesson = require("./getLesson/getLesson");
 const getTask = require("./getTask/getTask");
 const setState = require("./setState/setState");
 const setComment = require("./setComment/setComment");
-const getDiploma = require("./getDiploma/getDiploma");
+const getCertificate = require("./getCertificate/getCertificate");
 const getCounselor = require("./getCounselor/getCounselor");
 
 const STUDENT = [
@@ -76,7 +76,7 @@ const STUDENT = [
 		type: "get",
 		wall: true,
 		requiredParams: ["moduleId"],
-		exec: [getDiploma],
+		exec: [getCertificate],
 	},
 	{
 		name: "getCounselor",

@@ -1,7 +1,7 @@
 const {
 	getModuleInfo,
 	getStateInfo,
-	prepareData,
+	prepareCertificateData,
 	getUserInfo,
 } = require("@processes");
 
@@ -17,7 +17,7 @@ const {
  *
  * @returns {Object | undefined} Certificate data on success; undefined on fail
  */
-async function getDiploma(req, res, next) {
+async function getCertificate(req, res, next) {
 	try {
 		const { data } = req;
 
@@ -28,7 +28,7 @@ async function getDiploma(req, res, next) {
 
 		await getStateInfo(data);
 
-		const content = await prepareData.certificateData(data);
+		const content = await prepareCertificateData(data);
 
 		next({ code: 0, content });
 		return content;
@@ -39,4 +39,4 @@ async function getDiploma(req, res, next) {
 	}
 }
 
-module.exports = getDiploma;
+module.exports = getCertificate;

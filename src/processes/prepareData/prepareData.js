@@ -1,15 +1,15 @@
-const userData = require("./prepareUserData/prepareUserData");
-const moduleData = require("./prepareModuleData/prepareModuleData");
-const lessonData = require("./prepareLessonData/prepareLessonData");
-const taskData = require("./prepareTaskData/prapareTaskData");
-const certificateData = require("./prepareCertificateData/prepareCertificateData");
+const prepareUserData = require("./prepareUserData/prepareUserData");
+const prepareModuleData = require("./prepareModuleData/prepareModuleData");
+const prepareLessonData = require("./prepareLessonData/prepareLessonData");
+const prapareTaskData = require("./prepareTaskData/prapareTaskData");
+const prepareCertificateData = require("./prepareCertificateData/prepareCertificateData");
 
 const prepareData = {
-	userData,
-	moduleData,
-	lessonData,
-	taskData,
-	certificateData,
+	prepareUserData,
+	prepareModuleData,
+	prepareLessonData,
+	prapareTaskData,
+	prepareCertificateData,
 };
 
 module.exports = prepareData;

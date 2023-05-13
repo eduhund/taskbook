@@ -1,4 +1,8 @@
-const { getModuleInfo, getStateInfo, prepareData } = require("@processes");
+const {
+	getModuleInfo,
+	getStateInfo,
+	prepareModuleData,
+} = require("@processes");
 
 /***
  * getModule StudentAPI method.
@@ -21,7 +25,7 @@ async function getModule(req, res, next) {
 
 		data.isAuth && (await getStateInfo(data));
 
-		const content = await prepareData.moduleData(data);
+		const content = await prepareModuleData(data);
 
 		next({ code: 0, content });
 		return content;
