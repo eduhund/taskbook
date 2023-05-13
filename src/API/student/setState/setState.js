@@ -37,9 +37,7 @@ async function setState(req, res, next) {
 					returns: ["id", "content"],
 				});
 
-				const questions = getVisibilityUpdateList(tasks, key);
-
-				await updateDependenciesTasks(data.userId, questions, value);
+				await updateDependenciesTasks(data.userId, key, tasks, value);
 			}
 		}
 

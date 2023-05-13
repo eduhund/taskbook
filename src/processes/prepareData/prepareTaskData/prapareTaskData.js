@@ -1,10 +1,12 @@
-const { getParentContent } = require("@utils/getParentContent");
-const { setVisibility } = require("@utils/visibilityControl");
-const { refAnswerRight } = require("@utils/refAnswerRight");
+const {
+	setVisibility,
+	getParentContent,
+	refAnswerRight,
+} = require("../../updateContent/updateContent");
 const setTaskState = require("../../setTaskState/setTaskState");
 
 function validateTaskState(taskState) {
-	var {
+	return ({
 		isChecked = false,
 		score = null,
 		inProcess = false,
@@ -13,18 +15,7 @@ function validateTaskState(taskState) {
 		isOurVarActive = false,
 		isSolutionActive = false,
 		comments = [],
-	} = taskState || {};
-
-	return {
-		isChecked,
-		score,
-		inProcess,
-		protest,
-		isHintActive,
-		isOurVarActive,
-		isSolutionActive,
-		comments,
-	};
+	} = taskState || {});
 }
 
 async function prepareTaskData(data) {

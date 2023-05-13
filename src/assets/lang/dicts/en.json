@@ -1,4 +1,5 @@
 {
+	"prevTaskFirst": "Solve the problem {{phrase}} first",
 	"certType": "Сertificate",
 	"certType+": "Diploma",
 	"certType++": "Diploma cum laude",

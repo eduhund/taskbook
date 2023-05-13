@@ -10,6 +10,7 @@ const getTaskInfo = require("./getTaskInfo/getTaskInfo");
 const getStateInfo = require("./getStateInfo/getStateInfo");
 const getCounselorInfo = require("./getCounselorInfo/getCounselorInfo");
 const prepareData = require("./prepareData/prepareData");
+const updateContent = require("./updateContent/updateContent");
 const setTaskState = require("./setTaskState/setTaskState");
 const pushComment = require("./pushComment/pushComment");
 const setDiploma = require("./setDiploma/setDiploma");
@@ -27,6 +28,7 @@ module.exports = {
 	getStateInfo,
 	getCounselorInfo,
 	prepareData,
+	updateContent,
 	setTaskState,
 	pushComment,
 	setDiploma,

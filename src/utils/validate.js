@@ -1,3 +1,5 @@
+// Deprecated
+
 const { lowerString, upperString } = require("./stringProcessor");
 const { hashPass } = require("../utils/pass");
 const { supportedLangs, defaultLang } = require("../../config.json");

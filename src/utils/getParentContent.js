@@ -1,40 +1,39 @@
+// Deprecated
+
+const getPhrase = require("@assets/lang/lang");
 const { getFullTaskId, getFullQuestionId } = require("./idExtractor");
-const { db } = require("../modules/dbRequests/mongo");
+const DB = require("@mongo/requests");
 
-function selLang(lang, phrase) {
-	if (lang === "ru") return `Сделайте вначале задачу ${phrase}`;
-	else return `Solve the problem ${phrase} first`;
+async function getTaskName(taskId, lang) {
+	const taskData = await DB.getOne("task", { query: { id: taskId } });
+	if (!taskData) {
+		throw new Error(`getParentContent: Can't find task woth ID ${taskId}`);
+	}
+	const taskName = getPhrase(lang, "prevTaskFirst", taskData.name);
+	return [taskName, false];
 }
 
-function getTaskName(taskId, lang) {
-	return db.TASKS.findOne({ id: taskId }).then((result) => {
-		return [selLang(lang, result?.name), false];
-	});
-}
-
-function getParentContent(userId, contentId, lang) {
+async function getParentContent(userId, contentId, lang) {
 	const taskId = getFullTaskId(contentId);
-	return db.STATE.findOne({
-		userId,
-		taskId,
-	}).then((result) => {
-		if (result?.isChecked) {
-			try {
-				const questionId = getFullQuestionId(contentId);
-				const parentContent = result.data?.[questionId]?.state;
-				if (parentContent?.value) {
-					return [parentContent?.value, true];
-				} else {
-					const selectedAnswers = parentContent
-						.filter((item) => item.isSelected)
-						.map((item) => item.label);
-					return [selectedAnswers.join(", ") || "", true];
-				}
-			} catch {
-				return [undefined, false];
-			}
-		} else return getTaskName(taskId, lang);
+	const taskState = await DB.getOne("state", {
+		query: {
+			userId,
+			taskId,
+		},
 	});
+
+	if (taskState?.isChecked) {
+		const questionId = getFullQuestionId(contentId);
+		const parentContent = taskState.data?.[questionId]?.state;
+		if (parentContent?.value) {
+			return [parentContent?.value, true];
+		} else {
+			const selectedAnswers = parentContent
+				.filter((item) => item.isSelected)
+				.map((item) => item.label);
+			return [selectedAnswers.join(", ") || "", true];
+		}
+	} else return getTaskName(taskId, lang);
 }
 
 module.exports.getParentContent = getParentContent;
