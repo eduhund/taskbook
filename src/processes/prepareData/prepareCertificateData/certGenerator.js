@@ -20,4 +20,4 @@ async function createCert(data) {
 	return fileId;
 }
 
-module.exports.createCert = createCert;
+module.exports = createCert;

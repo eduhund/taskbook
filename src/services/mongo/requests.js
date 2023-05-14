@@ -20,6 +20,11 @@ function getOptions(returns, options) {
 }
 
 const DB = {
+	count: (collection, data) => {
+		const { query } = data;
+
+		return getCollection(collection).countDocuments(query) || 0;
+	},
 	insertOne: (collection, data) => {
 		const { query } = data;
 

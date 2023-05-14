@@ -90,4 +90,4 @@ async function generateSkills(moduleId, userId, lang) {
 	return skills;
 }
 
-module.exports.generateSkills = generateSkills;
+module.exports = generateSkills;

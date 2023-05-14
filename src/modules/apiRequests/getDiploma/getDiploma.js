@@ -1,7 +1,9 @@
 const { log } = require("@logger");
 const { getDBRequest } = require("../../dbRequests/dbRequests");
 const { generateSkills } = require("./generateSkills");
-const { generateCertId } = require("../../../utils/generateCertId");
+const {
+	generateCertId,
+} = require("../../../processes/prepareData/prepareCertificateData/generateCertId");
 const { createCert } = require("../../../utils/certGenerator");
 const { generateMessage } = require("../../../utils/messageGenerator");
 const { addUserAction } = require("../../../modules/statistics/addUserAction");

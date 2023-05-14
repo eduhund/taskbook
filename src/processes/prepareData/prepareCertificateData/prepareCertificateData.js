@@ -1,10 +1,8 @@
 const setDiploma = require("../../setDiploma/setDiploma");
-const {
-	generateSkills,
-} = require("../../../API/student/getCertificate/generateSkills");
-const { generateCertId } = require("@utils/generateCertId");
-const { createCert } = require("@utils/certGenerator");
-const provideData = require("../../../API/student/getCertificate/provideData");
+const generateSkills = require("./generateSkills");
+const generateCertId = require("./generateCertId");
+const createCert = require("./certGenerator");
+const provideData = require("./provideData");
 const CyrillicToTranslit = require("cyrillic-to-translit-js");
 
 async function prepareCertificateData(data) {

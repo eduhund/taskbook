@@ -59,9 +59,8 @@ function prepareRequestData(req, res, next) {
 		const { path, query, body } = req;
 		const data = Object.assign({}, body || {}, query || {});
 		const methodName = PATH.parse(path)?.name;
-		const { requiredParams = [], otherParams = [] } = STUDENT.find(
-			(item) => item.name === methodName
-		);
+		const { requiredParams = [], otherParams = [] } =
+			STUDENT.find((item) => item.name === methodName) || {};
 		const allParams = [...requiredParams, ...otherParams, "userId"];
 
 		for (const param of requiredParams) {

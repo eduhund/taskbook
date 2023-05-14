@@ -72,7 +72,7 @@ const STUDENT = [
 		exec: [setComment],
 	},
 	{
-		name: "getDiploma",
+		name: "getCertificate",
 		type: "get",
 		wall: true,
 		requiredParams: ["moduleId"],
