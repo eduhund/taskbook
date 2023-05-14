@@ -6,7 +6,7 @@ const getModule = require("./getModule/getModule");
 const getLesson = require("./getLesson/getLesson");
 const getTask = require("./getTask/getTask");
 const setState = require("./setState/setState");
-const setComment = require("./setComment/setComment");
+const addComment = require("./addComment/addComment");
 const getCertificate = require("./getCertificate/getCertificate");
 const getCounselor = require("./getCounselor/getCounselor");
 
@@ -65,17 +65,18 @@ const STUDENT = [
 		exec: [setState],
 	},
 	{
-		name: "setComment",
+		name: "addComment",
 		type: "post",
 		wall: true,
 		requiredParams: ["taskId", "comment"],
-		exec: [setComment],
+		exec: [addComment],
 	},
 	{
 		name: "getCertificate",
 		type: "get",
 		wall: true,
 		requiredParams: ["moduleId"],
+		otherParams: ["isColor", "isMascot", "isResult", "isPublic"],
 		exec: [getCertificate],
 	},
 	{

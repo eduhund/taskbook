@@ -1,8 +1,8 @@
 const { pushComment } = require("@processes");
 
 /***
- * setComment StudentAPI method.
- * https://api.eduhund.com/docs/student#setComment
+ * addComment StudentAPI method.
+ * https://api.eduhund.com/docs/student#addComment
  *
  * @since 0.6.0
  *
@@ -12,7 +12,7 @@ const { pushComment } = require("@processes");
  *
  * @returns {Object | undefined} Comments list on success; undefined on fail
  */
-async function setComment(req, res, next) {
+async function addComment(req, res, next) {
 	try {
 		const { data } = req;
 
@@ -27,4 +27,4 @@ async function setComment(req, res, next) {
 	}
 }
 
-module.exports = setComment;
+module.exports = addComment;
