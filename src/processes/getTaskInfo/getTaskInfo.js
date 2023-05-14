@@ -18,7 +18,7 @@ async function getTaskInfo(data, next) {
 	});
 
 	if (!taskData) {
-		next({ code: 10203 });
+		next({ code: 10303 });
 		return;
 	}
 

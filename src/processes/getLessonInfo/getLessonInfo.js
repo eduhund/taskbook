@@ -20,7 +20,7 @@ async function getLessonInfo(data, next) {
 	const moduleData = await DB.getOne("modules", { query });
 
 	if (!moduleData) {
-		next({ code: 10301 });
+		next({ code: 10302 });
 		return;
 	}
 

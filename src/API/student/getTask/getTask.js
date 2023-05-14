@@ -22,15 +22,15 @@ async function getTask(req, res, next) {
 	try {
 		const { data } = req;
 
-		const taskData = await getTaskInfo(data, next);
-		if (!taskData) return;
-
 		await getUserInfo(data);
 
 		if (!checkModuleAccess(data)) {
 			next({ code: 10201 });
 			return;
 		}
+
+		const taskData = await getTaskInfo(data, next);
+		if (!taskData) return;
 
 		let content = taskData;
 		if (taskData.type === "practice") {
