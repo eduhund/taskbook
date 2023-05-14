@@ -53,7 +53,8 @@ const tasksTextProcessor = {
 		}
 
 		if (this.question?.rightAnswer) {
-			return state?.state?.value == this.question?.rightAnswer
+			return String(state?.state?.value).toLowerCase() ===
+				String(this.question?.rightAnswer).toLowerCase()
 				? this.question?.price
 				: 0;
 		}
