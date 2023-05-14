@@ -1,4 +1,5 @@
 const {
+	checkFinalAccess,
 	getModuleInfo,
 	getStateInfo,
 	prepareCertificateData,
@@ -22,8 +23,11 @@ async function getCertificate(req, res, next) {
 		const { data } = req;
 
 		const dataPromises = [getUserInfo(data), getModuleInfo(data)];
-
 		const [userData, moduleData] = await Promise.all(dataPromises);
+		if (!checkFinalAccess(data)) {
+			next({ code: 10201 });
+			return;
+		}
 		if (!(userData && moduleData)) return;
 
 		await getStateInfo(data);

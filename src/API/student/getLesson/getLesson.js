@@ -1,4 +1,6 @@
 const {
+	checkModuleAccess,
+	getUserInfo,
 	getLessonInfo,
 	getStateInfo,
 	prepareLessonData,
@@ -22,6 +24,13 @@ async function getLesson(req, res, next) {
 
 		const lessonData = await getLessonInfo(data, next);
 		if (!lessonData) return;
+
+		await getUserInfo(data);
+
+		if (!checkModuleAccess(data)) {
+			next({ code: 10201 });
+			return;
+		}
 
 		await getStateInfo(data);
 

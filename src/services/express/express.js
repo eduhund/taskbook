@@ -27,7 +27,6 @@ app.use(express.static("static"));
 app.use("/diplomas", express.static("diplomas"));
 app.use(express.json());
 app.use(require("body-parser").urlencoded({ extended: false }));
-app.use(prepareRequestData);
 
 // API v.2
 const apiRouter = express.Router();
@@ -51,9 +50,9 @@ for (const method of STUDENT) {
 	const { name, type, wall, exec } = method;
 	switch (type) {
 		case "get":
-			student.get("/" + name, checkAuth(wall), exec);
+			student.get("/" + name, checkAuth(wall), prepareRequestData, exec);
 		case "post":
-			student.post("/" + name, checkAuth(wall), exec);
+			student.post("/" + name, checkAuth(wall), prepareRequestData, exec);
 	}
 }
 

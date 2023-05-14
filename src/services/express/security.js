@@ -11,6 +11,7 @@ const trustedMachines = process.env.TRUSTED || [];
  */
 function checkAuth(wall) {
 	return (req, res, next) => {
+		req.data = {};
 		if (!wall || trustedMachines.includes(req.ip)) {
 			next();
 			return true;
@@ -23,8 +24,12 @@ function checkAuth(wall) {
 			return false;
 		}
 
-		req.data.userId = userId;
-		req.data.isAuth = true;
+		req.data = {
+			userId,
+			isAuth: true,
+			wall,
+		};
+
 		next();
 		return true;
 	};

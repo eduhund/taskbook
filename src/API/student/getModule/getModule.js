@@ -1,4 +1,6 @@
 const {
+	checkFinalAccess,
+	getUserInfo,
 	getModuleInfo,
 	getStateInfo,
 	prepareModuleData,
@@ -23,7 +25,11 @@ async function getModule(req, res, next) {
 		const moduleData = await getModuleInfo(data, next);
 		if (!moduleData) return;
 
-		data.isAuth && (await getStateInfo(data));
+		if (data.isAuth) {
+			await getUserInfo(data);
+			await checkFinalAccess(data);
+			await getStateInfo(data);
+		}
 
 		const content = await prepareModuleData(data);
 

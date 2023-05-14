@@ -1,4 +1,6 @@
 const {
+	checkModuleAccess,
+	getUserInfo,
 	getTaskInfo,
 	getStateInfo,
 	setTaskState,
@@ -21,6 +23,13 @@ const DB = require("@mongo/requests");
 async function setState(req, res, next) {
 	try {
 		const { data } = req;
+
+		await getUserInfo(data);
+
+		if (!checkModuleAccess(data)) {
+			next({ code: 10201 });
+			return;
+		}
 
 		for (const [key, value] of Object.entries(data.newState)) {
 			if (/[A-Za-z]{3}\d{8}/.test(key)) {

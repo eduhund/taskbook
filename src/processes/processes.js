@@ -1,5 +1,6 @@
 const getUserInfo = require("./getUserInfo/getUserInfo");
 const checkCredentials = require("./checkCredentials/checkCredentials");
+const checkAccess = require("./checkAccess/checkAccess");
 const checkTransaction = require("./checkTransaction/checkTransaction");
 const checkOTK = require("./checkOTK/checkOTK");
 const authUser = require("./authUser/authUser");
@@ -18,6 +19,7 @@ const setDiploma = require("./setDiploma/setDiploma");
 module.exports = {
 	getUserInfo,
 	checkCredentials,
+	...checkAccess,
 	checkTransaction,
 	checkOTK,
 	authUser,

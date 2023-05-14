@@ -1,4 +1,10 @@
-const { getTaskInfo, getStateInfo, prapareTaskData } = require("@processes");
+const {
+	checkModuleAccess,
+	getUserInfo,
+	getTaskInfo,
+	getStateInfo,
+	prapareTaskData,
+} = require("@processes");
 
 /***
  * getTask StudentAPI method.
@@ -18,6 +24,13 @@ async function getTask(req, res, next) {
 
 		const taskData = await getTaskInfo(data, next);
 		if (!taskData) return;
+
+		await getUserInfo(data);
+
+		if (!checkModuleAccess(data)) {
+			next({ code: 10201 });
+			return;
+		}
 
 		let content = taskData;
 		if (taskData.type === "practice") {

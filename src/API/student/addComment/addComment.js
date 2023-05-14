@@ -1,4 +1,4 @@
-const { pushComment } = require("@processes");
+const { checkModuleAccess, pushComment } = require("@processes");
 
 /***
  * addComment StudentAPI method.
@@ -15,6 +15,11 @@ const { pushComment } = require("@processes");
 async function addComment(req, res, next) {
 	try {
 		const { data } = req;
+
+		if (!checkModuleAccess(data)) {
+			next({ code: 10202 });
+			return;
+		}
 
 		const content = await pushComment(data, next);
 

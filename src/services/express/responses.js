@@ -51,6 +51,11 @@ const ERRORS = [
 		description: "You don't have access to this content",
 	},
 	{
+		code: 10202,
+		type: "access_denied",
+		description: "You don't have access to add comments",
+	},
+	{
 		code: 10301,
 		type: "not_found",
 		description: "Module didn't found",

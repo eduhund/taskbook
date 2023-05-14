@@ -56,33 +56,36 @@ const keyHandlers = {
  */
 function prepareRequestData(req, res, next) {
 	try {
-		const { path, query, body } = req;
-		const data = Object.assign({}, body || {}, query || {});
+		const { data = {}, path, query = {}, body = {}, headers } = req;
+		const reqData = { ...query, ...body };
 		const methodName = PATH.parse(path)?.name;
 		const { requiredParams = [], otherParams = [] } =
 			STUDENT.find((item) => item.name === methodName) || {};
-		const allParams = [...requiredParams, ...otherParams, "userId"];
+		const allParams = [...requiredParams, ...otherParams];
+
+		if (data?.wall && !headers?.accesstoken) {
+			requiredParams.push("userId");
+		}
 
 		for (const param of requiredParams) {
-			if (!(param in data)) {
+			if (!(param in reqData)) {
 				const err = { code: 10002 };
 				next(err);
 				return;
 			}
 		}
 
-		for (const [key, value] of Object.entries(data)) {
+		for (const [key, value] of Object.entries(reqData)) {
 			if (!allParams.includes(key)) {
-				delete data[key];
+				delete reqData[key];
 			}
 
 			if (key in keyHandlers) {
-				data[key] = keyHandlers[key](value, next);
+				reqData[key] = keyHandlers[key](value, next);
 			}
 		}
 
-		req.data = data;
-
+		req.data = Object.assign(data, reqData);
 		next();
 		return data;
 	} catch (e) {
