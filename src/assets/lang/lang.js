@@ -17,7 +17,7 @@ function setString(phrase, values = {}) {
 	return string;
 }
 
-function getPhrase(lang, intent, data) {
+function getPhrase(lang, intent, data = {}) {
 	const phrase = (langs[lang] ?? {})[intent];
 	if (!phrase) {
 		throw new Error("Can't find a phrase with intent " + intent);

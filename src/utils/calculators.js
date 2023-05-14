@@ -1,6 +1,13 @@
 const { getTaskProcessor } = require("./taskProcessor");
-const { log } = require("@logger");
 
+/**
+ * Validate user's score
+ *
+ * @param {Number} score Task's score
+ * @param {Number} maxScore Task's max score
+ *
+ * @returns {Number} Current score
+ */
 function validateScore(score, maxScore) {
 	if (!score) {
 		return 0;
@@ -8,10 +15,12 @@ function validateScore(score, maxScore) {
 }
 
 /**
- * Calculating current user score
- * @param {*} state
- * @param {*} task
- * @returns {*} current score
+ * Calculate current user score
+ *
+ * @param {Object} state Task's score
+ * @param {Object} task Task's data
+ *
+ * @returns {Number} Current score
  */
 function calculateScore(state = {}, task = {}) {
 	const questionsById = {};
@@ -33,6 +42,13 @@ function calculateScore(state = {}, task = {}) {
 	return validateScore(sum, task?.maxScore);
 }
 
+/**
+ * Calculate amount user's score
+ *
+ * @param {Object} state Task's score
+ *
+ * @returns {Number} Current score
+ */
 function calculateUserScore(state = []) {
 	return state.reduce((sum, item) => {
 		return (sum += item.score || 0);
@@ -40,8 +56,11 @@ function calculateUserScore(state = []) {
 }
 
 /**
- * Calculating total user's score for whole module
+ * Calculate total user's score for whole module
+ * Deprecatad
+ *
  * @param {*} state
+ *
  * @returns total score
  */
 function calculateTotalScore(state = {}) {
@@ -53,9 +72,12 @@ function calculateTotalScore(state = {}) {
 }
 
 /**
- * Calculating maximum score for the task
- * @param {*} task
- * @returns task's maximum score
+ * Calculate maximum score for the task
+ * Deprecated
+ *
+ * @param {Object} task Task's data
+ *
+ * @returns {Number} Task's maximum score
  */
 function calculateMaxScore(task = {}) {
 	const maxScore = task?.content?.reduce(
@@ -73,9 +95,11 @@ function calculateMaxScore(task = {}) {
 }
 
 /**
- * Calculating maximum score for the task
- * @param {*} task
- * @returns task's maximum score
+ * Calculate maximum score for the whole module
+ *
+ * @param {Object} lessons Lesson's object
+ *
+ * @returns {Number} Modules's maximum score
  */
 function calculateModuleMaxScore(lessons = {}) {
 	let maxScore = 0;
@@ -87,9 +111,11 @@ function calculateModuleMaxScore(lessons = {}) {
 }
 
 /**
- * Calculate initial task score
- * @param {*} content
- * @returns {*} Initial task score
+ * Calculate initial task's score
+ *
+ * @param {Array} content Task's content list
+ *
+ * @returns {Number} Initial task's score
  */
 function calculateDefaultScore(content = []) {
 	const defaultScore = content?.reduce(
@@ -113,6 +139,15 @@ function calculateDefaultScore(content = []) {
 	return defaultScore;
 }
 
+/**
+ * Calculate deadline for user's module
+ *
+ * @param {String} date Date of start
+ * @param {Number} duration Days number of access
+ * @param {Array} prolongations List of users's prolongations
+ *
+ * @returns {String} Date of deadline
+ */
 function calculateDeadline(date, duration, prolongations = []) {
 	const dateStart = new Date(date);
 	const dateFinish = new Date(
@@ -121,7 +156,14 @@ function calculateDeadline(date, duration, prolongations = []) {
 	return dateFinish.toISOString().split("T")[0];
 }
 
-function calculateDoneTasks(state = {}) {
+/**
+ * Calculate number of the solved tasks
+ *
+ * @param {String} state State list
+ *
+ * @returns {Number} Number of the solved tasks
+ */
+function calculateDoneTasks(state = []) {
 	return state.reduce((sum, item) => {
 		return item.isChecked ? ++sum : sum;
 	}, 0);
