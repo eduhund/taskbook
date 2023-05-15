@@ -6,6 +6,8 @@
 
 ### User
 
+A basic type, representing the user (for now, only student). In general use object does not contain any sensitive information, on auth sessions (see auth, checkPayment and createPass methods) it provides an additional item _token_.
+
 | Item      | Description                 | Type             | Required |
 | --------- | --------------------------- | ---------------- | -------- |
 | id        | Unique User ID              | UserID           | true     |
@@ -14,8 +16,11 @@
 | lastName  | User last name              | string           | true     |
 | lang      | User lang                   | _"en"_ \| _"ru"_ | true     |
 | modules   | List of active user modules | Array[ModuleID]  | true     |
+| token     | Authorization object        | Object           | false    |
 
 ### Module
+
+All data about the module. If the user was authorized, data contains information about his/her solving status and inner content, otherwise — only main info.
 
 | Item             | Description                                     | Type                                                    | Required |
 | ---------------- | ----------------------------------------------- | ------------------------------------------------------- | -------- |
@@ -43,6 +48,8 @@
 
 ### Lesson
 
+Content of specific lesson plus short user summary.
+
 | Item        | Description                                      | Type           | Required |
 | ----------- | ------------------------------------------------ | -------------- | -------- |
 | id          | Lesson ID                                        | LessonID       | true     |
@@ -58,6 +65,8 @@
 | totalTasks  | Total number of practice tasks in the lesson     | number         | true     |
 
 ### Task
+
+Whole task information with the user's current status of solving and controls state.
 
 | Item        | Description                                                                     | Type                                     | Required |
 | ----------- | ------------------------------------------------------------------------------- | ---------------------------------------- | -------- |
@@ -82,6 +91,8 @@
 
 ### Content
 
+The inner main content of any task.
+
 | Item      | Description                               | Type            | Required |
 | --------- | ----------------------------------------- | --------------- | -------- |
 | id        | Unique Content ID                         | FullContentID   | true     |
@@ -90,6 +101,8 @@
 | img       | List of content images                    | Array[Image]    | false    |
 
 ### Element
+
+The basic block of any text data in the taskbook. This is the custom implementation, based on HTML tags.
 
 | Item     | Description                                | Type                                                                                                                                 | Required |
 | -------- | ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------ | -------- |
@@ -101,6 +114,8 @@
 
 ### ListItem
 
+Child in any list element.
+
 | Item     | Description                                       | Type                           | Required |
 | -------- | ------------------------------------------------- | ------------------------------ | -------- |
 | id       | Unique Element ID                                 | FullElementID                  | true     |
@@ -110,6 +125,8 @@
 | parentId | ID of the item, which value we want to use        | FullElementId \| FullVariantId | false    |
 
 ### RichTextItem
+
+Items of the rich-formatting element.
 
 | Item     | Description                                | Type                                                                                                         | Required |
 | -------- | ------------------------------------------ | ------------------------------------------------------------------------------------------------------------ | -------- |
@@ -121,6 +138,8 @@
 
 ### Image
 
+Image element.
+
 | Item       | Description                                                         | Type                | Required |
 | ---------- | ------------------------------------------------------------------- | ------------------- | -------- |
 | id         | Unique Element ID                                                   | FullElementID       | true     |
@@ -129,6 +148,8 @@
 | thumbnails | List of alt resolution of the image                                 | Array[string (URL)] | false    |
 
 ### Question
+
+In practice tasks, the main content element.
 
 | Item        | Description                                                                          | Type                                                                          | Required |
 | ----------- | ------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------- | -------- |
@@ -146,6 +167,8 @@
 
 ### Variant
 
+When the question is selectable, contains one of the question's variants.
+
 | Item       | Description                                                                     | Type                       | Required |
 | ---------- | ------------------------------------------------------------------------------- | -------------------------- | -------- |
 | id         | Unique Variant ID                                                               | FullVariantID              | true     |
@@ -158,6 +181,8 @@
 | parentId   | ID of the item, which value we want to use                                      | FullElementId \| variantId | false    |
 
 ### State
+
+The object is representing the current state of the task. Returns after any of the task's parameters is changing.
 
 | Item             | Description                             | Type                                                            | Required |
 | ---------------- | --------------------------------------- | --------------------------------------------------------------- | -------- |
@@ -174,6 +199,8 @@
 
 ### VariantState
 
+In the Task state, keep the state of the specific question.
+
 | Item       | Description                                                                     | Type              | Required |
 | ---------- | ------------------------------------------------------------------------------- | ----------------- | -------- |
 | id         | Unique Variant ID                                                               | string            | true     |
@@ -185,13 +212,17 @@
 
 ### Comment
 
-| Item    | Description                         | Type               | Required |
-| ------- | ----------------------------------- | ------------------ | -------- |
-| ts      | Date & time stamp                   | number (timestamp) | true     |
-| message | Text value of the student’s comment | string             | true     |
-| protest | Is student disagree with teacher    | boolean            | false    |
+User's comment for a specific task.
+
+| Item          | Description                         | Type               | Required |
+| ------------- | ----------------------------------- | ------------------ | -------- |
+| ts            | Date & time stamp                   | number (timestamp) | true     |
+| message       | Text value of the student’s comment | string             | true     |
+| readByTeacher | Status of comment                   | boolean            | false    |
 
 ### Feature
+
+One of the items describes the module's features.
 
 | Item  | Description               | Type                      | Required |
 | ----- | ------------------------- | ------------------------- | -------- |
@@ -200,12 +231,16 @@
 
 ### ParentContent
 
+The object provides to replace some content with any other data.
+
 | Item     | Description                                             | Type                           | Required |
 | -------- | ------------------------------------------------------- | ------------------------------ | -------- |
 | parentId | ID of the item, which value we want to use              | FullElementId \| FullVariantId | true     |
 | altText  | Default text (if the system can’t download target value | string                         | false    |
 
 ### Reference
+
+When the question solution chain with previous student answers, this object contains the ids of the referenced answers.
 
 | Item       | Description                      | Type                       | Required |
 | ---------- | -------------------------------- | -------------------------- | -------- |
@@ -214,12 +249,16 @@
 
 ### Depend
 
+In some content, this option allows it to depend on the state of some other content (for now, only "visibility" is supported).
+
 | Item     | Description                                | Type                           | Required |
 | -------- | ------------------------------------------ | ------------------------------ | -------- |
 | type     | Connection type of the depend              | _“visibility”_                 | true     |
 | parentId | ID of the item, which value we want to use | FullElementId \| FullVariantId | true     |
 
 ### Certificate
+
+The type provides all information about the user's certificate of a specific module.
 
 | Item       | Description                   | Type             | Required |
 | ---------- | ----------------------------- | ---------------- | -------- |
@@ -244,6 +283,8 @@
 
 ### Skill
 
+In the certificate, the result combines some of the skills. This object contains one of them.
+
 | Item      | Description                | Type         | Required |
 | --------- | -------------------------- | ------------ | -------- |
 | name      | Skill name                 | string       | true     |
@@ -253,12 +294,16 @@
 
 ### Counselor
 
+Data for user's FAQ.
+
 | Item  | Description   | Type        | Required |
 | ----- | ------------- | ----------- | -------- |
 | lang  | Skill name    | string      | true     |
 | pages | List of pages | Array[Page] | true     |
 
 ### Page
+
+Content for FAQ's specific page.
 
 | Item    | Description                 | Type           | Required |
 | ------- | --------------------------- | -------------- | -------- |
@@ -498,7 +543,7 @@ Updated task's comment list.
 
 #### Description
 
-This method returns lits of comments for the task.
+This method returns a list of comments for the task.
 
 #### Parameters
 
@@ -539,7 +584,7 @@ This method update (or initiate) the state of the question. When it is the first
 
 #### Description
 
-This method returns list of available modules.
+This method returns the list of available modules.
 
 #### Parameters
 

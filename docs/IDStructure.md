@@ -31,18 +31,18 @@ _Notice: if content (text, img, etc.) used in top level of data (for example, mo
 
 Prefix “U” and seven digits. Example: U0000001
 
-### Diploma
+### Certificate
 
-|             | Principe                            | Example | Max. value |
-| ----------- | ----------------------------------- | ------- | ---------- |
-| ModuleId    | Three uppercase letters [A-Z]       | MIO     | —          |
-| Start year  | Two digits, starts with 01 [0-9]    | 01      | 99         |
-| Start month | Two digits, starts with 01 [0-9]    | 01      | 12         |
-| DiplomaId   | Four digits, starts with 0001 [0-9] | 0001    | 9999       |
+|               | Principe                            | Example | Max. value |
+| ------------- | ----------------------------------- | ------- | ---------- |
+| ModuleId      | Three uppercase letters [A-Z]       | MIO     | —          |
+| Start year    | Two digits, starts with 01 [0-9]    | 01      | 99         |
+| Start month   | Two digits, starts with 01 [0-9]    | 01      | 12         |
+| CertificateId | Four digits, starts with 0001 [0-9] | 0001    | 9999       |
 
 Example: XXX23041234
 
 <aside>
-📣 The four-digit number of diploma will orderly generate in first request to this diploma.
+📣 The four-digit number of certificate will orderly generate in first request to this diploma.
 
 </aside>
