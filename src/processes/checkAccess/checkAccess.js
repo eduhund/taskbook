@@ -15,9 +15,9 @@ function checkDate(start, deadline) {
  * @returns {boolean} Check result
  */
 function checkModuleAccess(data) {
-	const { user, module, lesson, task } = data;
+	const { user, moduleId, lessonId, taskId, questionId } = data;
 
-	const cutModuleId = module?.code || getModuleId(lesson?.id || task?.id);
+	const cutModuleId = moduleId || getModuleId(lessonId || taskId || questionId);
 
 	const startDate = user?.modules?.[cutModuleId]?.start;
 	const deadline = user?.modules?.[cutModuleId]?.deadline;
@@ -33,10 +33,10 @@ function checkModuleAccess(data) {
  * @returns {boolean} Check result
  */
 function checkFinalAccess(data) {
-	const { user, module } = data;
+	const { user, moduleId } = data;
 
 	const modules = Object.keys(user?.modules);
-	return modules.includes(module.code);
+	return modules.includes(moduleId);
 }
 
 module.exports = { checkModuleAccess, checkFinalAccess };

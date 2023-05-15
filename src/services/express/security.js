@@ -12,23 +12,28 @@ const trustedMachines = process.env.TRUSTED || [];
 function checkAuth(wall) {
 	return (req, res, next) => {
 		req.data = {};
-		if (!wall || trustedMachines.includes(req.ip)) {
-			next();
-			return true;
+
+		const isTrustedMachine = trustedMachines.includes(req.ip);
+
+		if (wall && isTrustedMachine) {
+			req.data = {
+				isAuth: true,
+			};
 		}
 
-		const token = req?.headers?.accesstoken;
-		const userId = checkToken(token)?.id;
-		if (!userId) {
-			next({ code: 10103 });
-			return false;
+		if (wall && !isTrustedMachine) {
+			const token = req?.headers?.accesstoken;
+			const userId = checkToken(token)?.id;
+			if (!userId) {
+				next({ code: 10103 });
+				return false;
+			}
+			req.data = {
+				userId,
+				isAuth: true,
+				wall,
+			};
 		}
-
-		req.data = {
-			userId,
-			isAuth: true,
-			wall,
-		};
 
 		next();
 		return true;

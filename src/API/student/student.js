@@ -40,6 +40,7 @@ const STUDENT = [
 	{
 		name: "getModule",
 		type: "get",
+		wall: true,
 		requiredParams: ["moduleId"],
 		exec: [getModule],
 	},

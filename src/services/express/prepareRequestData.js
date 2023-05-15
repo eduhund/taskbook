@@ -61,9 +61,15 @@ function prepareRequestData(req, res, next) {
 		const methodName = PATH.parse(path)?.name;
 		const { requiredParams = [], otherParams = [] } =
 			STUDENT.find((item) => item.name === methodName) || {};
-		const allParams = [...requiredParams, ...otherParams];
+		const allParams = [
+			...requiredParams,
+			...otherParams,
+			"userId",
+			"isAuth",
+			"wall",
+		];
 
-		if (data?.wall && !headers?.accesstoken) {
+		if (data.wall && data.isAuth && !headers?.accesstoken) {
 			requiredParams.push("userId");
 		}
 

@@ -7,6 +7,7 @@
  */
 function prepareUserData(data) {
 	const { user, isAuth } = data;
+	user.modules = Object.keys(user.modules || []);
 	if (isAuth) {
 		delete user.token;
 	}
