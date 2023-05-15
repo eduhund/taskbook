@@ -19,7 +19,7 @@ async function getMe(req, res, next) {
 		const userExists = await getUserInfo(data, next);
 		if (!userExists) return;
 
-		const content = prepareUserData(data);
+		const content = prepareUserData(data, next);
 
 		next({ code: 0, content });
 		return content;

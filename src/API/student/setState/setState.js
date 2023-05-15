@@ -49,10 +49,10 @@ async function setState(req, res, next) {
 			}
 		}
 
-		const taskData = await getTaskInfo(data);
+		const taskData = await getTaskInfo(data, next);
 		if (!taskData) return;
 
-		const taskState = await getStateInfo(data);
+		const taskState = await getStateInfo(data, next);
 		if (!taskState) {
 			data.newState.inProcess = true;
 		}
@@ -70,7 +70,7 @@ async function setState(req, res, next) {
 			}
 		}
 
-		const newState = await setTaskState(data);
+		const newState = await setTaskState(data, next);
 		delete newState.comments;
 
 		next({ code: 0, content: newState });

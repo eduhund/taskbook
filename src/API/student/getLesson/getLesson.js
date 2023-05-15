@@ -25,16 +25,16 @@ async function getLesson(req, res, next) {
 		const lessonData = await getLessonInfo(data, next);
 		if (!lessonData) return;
 
-		await getUserInfo(data);
+		await getUserInfo(data, next);
 
 		if (!checkModuleAccess(data)) {
 			next({ code: 10201 });
 			return;
 		}
 
-		await getStateInfo(data);
+		await getStateInfo(data, next);
 
-		const content = await prepareLessonData(data);
+		const content = await prepareLessonData(data, next);
 
 		next({ code: 0, content });
 		return content;

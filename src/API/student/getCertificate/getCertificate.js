@@ -30,9 +30,9 @@ async function getCertificate(req, res, next) {
 		}
 		if (!(userData && moduleData)) return;
 
-		await getStateInfo(data);
+		await getStateInfo(data, next);
 
-		const content = await prepareCertificateData(data);
+		const content = await prepareCertificateData(data, next);
 
 		next({ code: 0, content });
 		return content;

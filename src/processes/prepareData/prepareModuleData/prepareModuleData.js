@@ -14,8 +14,8 @@ const { getNextTaskId } = require("@utils/getNextTaskId");
  *
  * @returns {Object} Module content
  */
-async function prepareModuleData(data) {
-	const { module, state, isAuth } = data;
+async function prepareModuleData(data, next) {
+	const { module, state, isAuth, isFinalAccess } = data;
 	const { intro, final } = module;
 
 	const content = {
@@ -31,9 +31,14 @@ async function prepareModuleData(data) {
 		buyLink: module.buyLink,
 	};
 
-	if (!isAuth) {
+	if (!isFinalAccess || !isAuth) {
 		return content;
 	}
+
+	const prolongation = {
+		prolongation: module.prolongation,
+		prolongationLink: module.prolongationLink,
+	};
 
 	const nextTaskId = getNextTaskId(module, state);
 
@@ -46,13 +51,16 @@ async function prepareModuleData(data) {
 		maxScore: calculateModuleMaxScore(module.lessons),
 		doneTasks: calculateDoneTasks(state),
 		totalTasks: module.totalTasks,
-		nextTask: await getTaskInfo({
-			taskId: nextTaskId,
-			returns: ["id", "name", "type"],
-		}),
+		nextTask: await getTaskInfo(
+			{
+				taskId: nextTaskId,
+				returns: ["id", "name", "type"],
+			},
+			next
+		),
 	};
 
-	return Object.assign(content, scoped, progress);
+	return Object.assign(content, scoped, prolongation, progress);
 }
 
 module.exports = prepareModuleData;

@@ -28,12 +28,16 @@ async function getModule(req, res, next) {
 		if (!moduleData) return;
 
 		if (data.isAuth) {
-			await getUserInfo(data);
-			await checkFinalAccess(data);
-			await getStateInfo(data);
+			await getUserInfo(data, next);
 		}
 
-		const content = await prepareModuleData(data);
+		const isUserAccess = checkFinalAccess(data, next);
+
+		if (isUserAccess) {
+			await getStateInfo(data, next);
+		}
+
+		const content = await prepareModuleData(data, next);
 
 		next({ code: 0, content });
 		return content;

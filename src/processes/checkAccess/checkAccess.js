@@ -36,7 +36,9 @@ function checkFinalAccess(data) {
 	const { user, moduleId } = data;
 
 	const modules = Object.keys(user?.modules);
-	return modules.includes(moduleId);
+	const isFinalAccess = modules.includes(moduleId);
+	data.isFinalAccess = isFinalAccess;
+	return isFinalAccess;
 }
 
 module.exports = { checkModuleAccess, checkFinalAccess };

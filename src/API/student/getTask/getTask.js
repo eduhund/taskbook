@@ -22,7 +22,7 @@ async function getTask(req, res, next) {
 	try {
 		const { data } = req;
 
-		await getUserInfo(data);
+		await getUserInfo(data, next);
 
 		if (!checkModuleAccess(data)) {
 			next({ code: 10201 });
@@ -34,8 +34,8 @@ async function getTask(req, res, next) {
 
 		let content = taskData;
 		if (taskData.type === "practice") {
-			await getStateInfo(data);
-			content = await prapareTaskData(data);
+			await getStateInfo(data, next);
+			content = await prapareTaskData(data, next);
 		}
 
 		next({ code: 0, content });

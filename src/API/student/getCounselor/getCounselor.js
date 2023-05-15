@@ -16,7 +16,7 @@ async function getCounselor(req, res, next) {
 	try {
 		const { data } = req;
 
-		const content = await getCounselorInfo(data);
+		const content = await getCounselorInfo(data, next);
 
 		next({ code: 0, content });
 		return content;
