@@ -25,6 +25,7 @@ try {
 
 app.use(express.static("static"));
 app.use("/diplomas", express.static("diplomas"));
+app.use(cors());
 app.use(express.json());
 app.use(require("body-parser").urlencoded({ extended: false }));
 

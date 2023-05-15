@@ -1,4 +1,4 @@
-const { checkKey } = require("@tokenMachine/otk");
+const { checkKey } = require("@tokenMachine/OTK");
 
 /***
  * Function checks one-time key for password change.
