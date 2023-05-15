@@ -130,6 +130,11 @@ const ERRORS = [
 		type: "process_failure",
 		description: "Error in get counselor process",
 	},
+	{
+		code: 20212,
+		type: "process_failure",
+		description: "Error in get comments list process",
+	},
 ];
 
 function responseGenerator(code, data = {}) {

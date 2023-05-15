@@ -7,6 +7,7 @@ const getLesson = require("./getLesson/getLesson");
 const getTask = require("./getTask/getTask");
 const setState = require("./setState/setState");
 const addComment = require("./addComment/addComment");
+const getCommentsList = require("./getCommentsList/getCommentsList");
 const getCertificate = require("./getCertificate/getCertificate");
 const getCounselor = require("./getCounselor/getCounselor");
 
@@ -71,6 +72,13 @@ const STUDENT = [
 		wall: true,
 		requiredParams: ["taskId", "comment"],
 		exec: [addComment],
+	},
+	{
+		name: "getCommentsList",
+		type: "get",
+		wall: true,
+		requiredParams: ["taskId"],
+		exec: [getCommentsList],
 	},
 	{
 		name: "getCertificate",

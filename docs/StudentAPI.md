@@ -487,6 +487,29 @@ This method saves new comments to the task.
 
 Updated task's comment list.
 
+### getCommentsList
+
+> Canary
+
+<aside>
+🌐 *GET*, [api.eduhund.com/v3/student/getCommentsList](http://api.eduhund.ru/api/v2/getCommentsList)
+
+</aside>
+
+#### Description
+
+This method returns lits of comments for the task.
+
+#### Parameters
+
+| Parameter | Description | Type       | Required | Default value |
+| --------- | ----------- | ---------- | -------- | ------------- |
+| taskId    | Task ID     | FullTaskID | true     | —             |
+
+#### Return
+
+Updated task's comment list.
+
 ### setState
 
 <aside>

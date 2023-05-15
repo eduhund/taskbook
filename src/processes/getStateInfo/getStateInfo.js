@@ -8,10 +8,10 @@ const DB = require("../../services/mongo/requests");
  * @returns {Array | Object} State data for task or array of state data objects
  */
 async function getStateInfo(data) {
-	const { userId, moduleId, lessonId, taskId } = data;
+	const { user, moduleId, lessonId, taskId } = data;
 	const id = moduleId || lessonId || taskId;
 	const query = {
-		userId,
+		userId: user.id,
 		taskId: { $regex: `^${id}` },
 	};
 
