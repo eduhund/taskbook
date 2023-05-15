@@ -10,6 +10,7 @@ const { checkPass } = require("@utils/pass");
  */
 function checkCredentials(data, next) {
 	const { user, pass } = data;
+
 	const isPassValid = checkPass(user, pass);
 
 	if (!isPassValid) {

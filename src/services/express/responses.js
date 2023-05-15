@@ -135,6 +135,11 @@ const ERRORS = [
 		type: "process_failure",
 		description: "Error in get comments list process",
 	},
+	{
+		code: 20213,
+		type: "process_failure",
+		description: "Error in get modules list process",
+	},
 ];
 
 function responseGenerator(code, data = {}) {

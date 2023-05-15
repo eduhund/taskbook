@@ -10,6 +10,7 @@ const addComment = require("./addComment/addComment");
 const getCommentsList = require("./getCommentsList/getCommentsList");
 const getCertificate = require("./getCertificate/getCertificate");
 const getCounselor = require("./getCounselor/getCounselor");
+const getModulesList = require("./getModulesList/getModulesList");
 
 const STUDENT = [
 	{
@@ -93,6 +94,12 @@ const STUDENT = [
 		type: "get",
 		requiredParams: ["lang"],
 		exec: [getCounselor],
+	},
+	{
+		name: "getModulesList",
+		type: "get",
+		wall: true,
+		exec: [getModulesList],
 	},
 ];
 

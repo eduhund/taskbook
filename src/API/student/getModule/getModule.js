@@ -22,8 +22,6 @@ async function getModule(req, res, next) {
 	try {
 		const { data } = req;
 
-		console.log(data);
-
 		const moduleData = await getModuleInfo(data, next);
 		if (!moduleData) return;
 

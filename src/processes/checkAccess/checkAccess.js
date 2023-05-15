@@ -3,7 +3,6 @@ const { getModuleId } = require("@utils/idExtractor");
 function checkDate(start, deadline) {
 	if (!start && !deadline) return false;
 	const today = Date.now();
-	console.log(today >= Date.parse(start) && today < Date.parse(deadline));
 	return today >= Date.parse(start) && today < Date.parse(deadline);
 }
 
@@ -33,10 +32,9 @@ function checkModuleAccess(data) {
  * @returns {boolean} Check result
  */
 function checkFinalAccess(data) {
-	const { user, moduleId } = data;
-
+	const { user, moduleId, module } = data;
 	const modules = Object.keys(user?.modules);
-	const isFinalAccess = modules.includes(moduleId);
+	const isFinalAccess = modules.includes(moduleId || module.code);
 	data.isFinalAccess = isFinalAccess;
 	return isFinalAccess;
 }

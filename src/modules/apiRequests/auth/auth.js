@@ -2,7 +2,7 @@ const { log } = require("@logger");
 
 const { getDBRequest } = require("../../dbRequests/dbRequests");
 const accessTokens = require("../../../services/tokenMachine/tokenMachine");
-const { checkPass } = require("../../../utils/pass");
+const { checkPass, hashPass } = require("../../../utils/pass");
 const { generateMessage } = require("../../../utils/messageGenerator");
 
 const tokens = accessTokens;
@@ -21,7 +21,7 @@ async function auth({ req, res }) {
 		return error;
 	}
 
-	if (!checkPass(user, pass)) {
+	if (!checkPass(user, hashPass(pass))) {
 		log.info(`${email}: Invalid password!`);
 		const error = generateMessage(10102);
 		res.status(401).send(error);

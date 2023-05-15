@@ -529,3 +529,22 @@ This method update (or initiate) the state of the question. When it is the first
 | newState   | Changed task's state | State               | true     | —             |
 
 #### Return
+
+### getModulesList
+
+<aside>
+🌐 *GET*, [api.eduhund.com/v3/student/getModulesList](https://api.eduhund.com/v3/student/getModulesList)
+
+</aside>
+
+#### Description
+
+This method returns list of available modules.
+
+#### Parameters
+
+This method doesn't have any parameters.
+
+#### Return
+
+List of module objects.
