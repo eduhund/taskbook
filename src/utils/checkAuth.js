@@ -1,6 +1,6 @@
 const { db } = require("../modules/dbRequests/mongo");
 const { log } = require("@logger");
-const { accessTokens } = require("../modules/userTokens/accessTokens");
+const accessTokens = require("../services/tokenMachine/tokenMachine");
 const { getModuleId } = require("./idExtractor");
 const { generateMessage } = require("./messageGenerator");
 
@@ -14,6 +14,7 @@ function checkAuth(req, res, next) {
 		return error;
 	} else {
 		req.userId = userId;
+		console.log(userId);
 		next();
 	}
 }
@@ -53,6 +54,7 @@ function checkModuleAccess(req, res, next) {
 		req?.body?.moduleId ||
 		getModuleId(lessonId || taskId || questionId);
 
+	console.log(moduleId);
 	db.USERS.findOne({ id: userId }).then((user) => {
 		startDate = user?.modules?.[moduleId]?.start;
 		deadline = user?.modules?.[moduleId]?.deadline;

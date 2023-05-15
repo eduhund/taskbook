@@ -4,7 +4,7 @@ const { generateSkills } = require("./generateSkills");
 const {
 	generateCertId,
 } = require("../../../processes/prepareData/prepareCertificateData/generateCertId");
-const { createCert } = require("../../../utils/certGenerator");
+const createCert = require("../../../utils/certGenerator");
 const { generateMessage } = require("../../../utils/messageGenerator");
 const { addUserAction } = require("../../../modules/statistics/addUserAction");
 const provideData = require("./provideData");

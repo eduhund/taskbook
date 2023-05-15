@@ -5,7 +5,7 @@ function hashPass(pass) {
 }
 
 function checkPass(user, pass) {
-	const validity = user?.pass === pass ? true : false;
+	const validity = user?.pass === hashPass(pass) ? true : false;
 	return validity;
 }
 
