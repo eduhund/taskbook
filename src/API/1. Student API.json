@@ -1,0 +1,1595 @@
+{
+	"info": {
+		"_postman_id": "dba8dd47-a0c7-4f2a-98fd-124ef38b01e4",
+		"name": "1. Student API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_uid": "27171338-dba8dd47-a0c7-4f2a-98fd-124ef38b01e4"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"id": "57412bc1-060a-4255-a51e-24392b6af9b5",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"{{userEmail}}\",\n    \"pass\": \"{{userPass}}\",\n    \"lang\": \"en\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{domain}}/v3/student/auth",
+					"protocol": "https",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"v3",
+						"student",
+						"auth"
+					]
+				}
+			},
+			"response": [
+				{
+					"id": "1fe38878-0b6d-43cc-ae31-394d44c41659",
+					"name": "auth — empty request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:8888/v3/student/auth",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"v3",
+								"student",
+								"auth"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "100"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"64-P/C361wBWqeb91LYxzz6hO41+6c\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 02 May 2023 13:57:04 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"OK\": false,\n    \"error\": {\n        \"code\": 10002,\n        \"type\": \"invalid_request\",\n        \"description\": \"Missing required params\"\n    }\n}"
+				},
+				{
+					"id": "3ccd5f6a-c95d-4ea7-903b-4a6e124b2c42",
+					"name": "auth — not a user",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"exapmle@mail.com\",\n    \"pass\": \"123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:8888/v3/student/auth",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"v3",
+								"student",
+								"auth"
+							]
+						}
+					},
+					"status": "Unauthorized",
+					"code": 401,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "98"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"62-FqG1NeX0swP7+h9BqmCStyhM8r0\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 01 May 2023 12:29:21 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"OK\": false,\n    \"error\": {\n        \"code\": 10101,\n        \"type\": \"invalid_credentials\",\n        \"description\": \"User didn't found\"\n    }\n}"
+				},
+				{
+					"id": "37d551fa-8457-4a38-819c-e7d3f1ae9461",
+					"name": "auth — invalid password",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"test@mail.com\",\n    \"pass\": \"12345\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:8888/v3/student/auth",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"v3",
+								"student",
+								"auth"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "97"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"61-BmToB/PhmiJbvJECcioD1PhlvrE\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 02 May 2023 13:57:50 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"OK\": false,\n    \"error\": {\n        \"code\": 10102,\n        \"type\": \"invalid_credentials\",\n        \"description\": \"Invalid password\"\n    }\n}"
+				},
+				{
+					"id": "5ad8076e-2307-4aea-8d23-768ae38db01c",
+					"name": "auth — success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"test@mail.com\",\n    \"pass\": \"1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:8888/v3/student/auth",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"v3",
+								"student",
+								"auth"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "213"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"d5-CHQQyd84dd2jPr1EQn2l5Zo3dlE\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 02 May 2023 14:49:01 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"OK\": true,\n    \"data\": {\n        \"id\": \"U0000001\",\n        \"email\": \"test@mail.com\",\n        \"firstName\": \"Test\",\n        \"lastName\": \"Account\",\n        \"lang\": \"en\",\n        \"token\": {\n            \"accessToken\": \"00sj6u1crn2isapzk9l692\",\n            \"expiresIn\": 1683046141,\n            \"refreshToken\": \"2hmmky20jo7\"\n        }\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "checkPayment",
+			"id": "c53fea0c-3336-415c-a033-5d3472e47e59",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{domain}}/v3/student/checkPayment?paymentId=Q5UHJy4SuYPRVHG4UGDEsg==",
+					"protocol": "https",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"v3",
+						"student",
+						"checkPayment"
+					],
+					"query": [
+						{
+							"key": "paymentId",
+							"value": "Q5UHJy4SuYPRVHG4UGDEsg=="
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"id": "01fb77a9-b8b3-4f1e-b0ce-079386b8dd04",
+					"name": "check payment — payment didn't found",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:8888/v3/student/checkPayment?paymentId=qwerty",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"v3",
+								"student",
+								"checkPayment"
+							],
+							"query": [
+								{
+									"key": "paymentId",
+									"value": "qwerty",
+									"type": "text"
+								}
+							]
+						}
+					},
+					"status": "Unauthorized",
+					"code": 401,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "101"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"65-kN3vvq1QsW/DQHwS9ncKdEqeyo4\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 01 May 2023 18:18:13 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"OK\": false,\n    \"error\": {\n        \"code\": 10106,\n        \"type\": \"invalid_credentials\",\n        \"description\": \"Payment didn't found\"\n    }\n}"
+				},
+				{
+					"id": "061ef653-9c0b-47d8-a9ed-23156806a401",
+					"name": "check payment — user didn't found",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:8888/v3/student/checkPayment?paymentId=fjae0fjwdovnqp",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"v3",
+								"student",
+								"checkPayment"
+							],
+							"query": [
+								{
+									"key": "paymentId",
+									"value": "fjae0fjwdovnqp",
+									"type": "text"
+								}
+							]
+						}
+					},
+					"status": "Unauthorized",
+					"code": 401,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "98"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"62-FqG1NeX0swP7+h9BqmCStyhM8r0\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 01 May 2023 18:20:09 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"OK\": false,\n    \"error\": {\n        \"code\": 10101,\n        \"type\": \"invalid_credentials\",\n        \"description\": \"User didn't found\"\n    }\n}"
+				},
+				{
+					"id": "8c8f35c7-a486-475f-bff3-a0106a411644",
+					"name": "check payment — missing params",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:8888/v3/student/checkPayment",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"v3",
+								"student",
+								"checkPayment"
+							],
+							"query": [
+								{
+									"key": "paymentId",
+									"value": "fjae0fjwdovnqp",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "100"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"64-P/C361wBWqeb91LYxzz6hO41+6c\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 01 May 2023 18:20:58 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"OK\": false,\n    \"error\": {\n        \"code\": 10002,\n        \"type\": \"invalid_request\",\n        \"description\": \"Missing required params\"\n    }\n}"
+				},
+				{
+					"id": "cef72b12-cfd4-44a9-ae02-23dcd48b3e5b",
+					"name": "check payment — payment found",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:8888/v3/student/checkPayment?paymentId=Q5UHJy4SuYPRVHG4UGDEsg==",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"v3",
+								"student",
+								"checkPayment"
+							],
+							"query": [
+								{
+									"key": "paymentId",
+									"value": "Q5UHJy4SuYPRVHG4UGDEsg==",
+									"type": "text"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "212"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"d4-XqS00vjU7/MICsh6tN0rLm6yd4o\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 01 May 2023 18:40:49 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"OK\": true,\n    \"data\": {\n        \"id\": \"U0000001\",\n        \"email\": \"test@mail.com\",\n        \"firstName\": \"Test\",\n        \"lastName\": \"Account\",\n        \"lang\": \"en\",\n        \"token\": {\n            \"accessToken\": \"lrh8qx5fqv67mpwp9up2q\",\n            \"expiresIn\": 1682973649,\n            \"refreshToken\": \"9yfcb4v46qp\"\n        }\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "getCounselor",
+			"id": "3fdb4fe9-8035-463f-828c-0876d103e499",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{domain}}/v3/student/getCounselor?lang=ru",
+					"protocol": "https",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"v3",
+						"student",
+						"getCounselor"
+					],
+					"query": [
+						{
+							"key": "lang",
+							"value": "ru"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"id": "c67f2460-cf6b-444b-8349-f3c67cc0eb4a",
+					"name": "check payment — payment didn't found",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:8888/v3/student/checkPayment?paymentId=qwerty",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"v3",
+								"student",
+								"checkPayment"
+							],
+							"query": [
+								{
+									"key": "paymentId",
+									"value": "qwerty",
+									"type": "text"
+								}
+							]
+						}
+					},
+					"status": "Unauthorized",
+					"code": 401,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "101"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"65-kN3vvq1QsW/DQHwS9ncKdEqeyo4\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 01 May 2023 18:18:13 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"OK\": false,\n    \"error\": {\n        \"code\": 10106,\n        \"type\": \"invalid_credentials\",\n        \"description\": \"Payment didn't found\"\n    }\n}"
+				},
+				{
+					"id": "dee43a6d-d3c8-46db-8f90-5fa5ed479163",
+					"name": "check payment — user didn't found",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:8888/v3/student/checkPayment?paymentId=fjae0fjwdovnqp",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"v3",
+								"student",
+								"checkPayment"
+							],
+							"query": [
+								{
+									"key": "paymentId",
+									"value": "fjae0fjwdovnqp",
+									"type": "text"
+								}
+							]
+						}
+					},
+					"status": "Unauthorized",
+					"code": 401,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "98"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"62-FqG1NeX0swP7+h9BqmCStyhM8r0\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 01 May 2023 18:20:09 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"OK\": false,\n    \"error\": {\n        \"code\": 10101,\n        \"type\": \"invalid_credentials\",\n        \"description\": \"User didn't found\"\n    }\n}"
+				},
+				{
+					"id": "f4b06aa3-ce71-4080-b396-81d218e7e0f0",
+					"name": "check payment — missing params",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:8888/v3/student/checkPayment",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"v3",
+								"student",
+								"checkPayment"
+							],
+							"query": [
+								{
+									"key": "paymentId",
+									"value": "fjae0fjwdovnqp",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "100"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"64-P/C361wBWqeb91LYxzz6hO41+6c\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 01 May 2023 18:20:58 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"OK\": false,\n    \"error\": {\n        \"code\": 10002,\n        \"type\": \"invalid_request\",\n        \"description\": \"Missing required params\"\n    }\n}"
+				},
+				{
+					"id": "bfa894d3-1845-49eb-8177-d0d3592d411b",
+					"name": "check payment — payment found",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:8888/v3/student/checkPayment?paymentId=Q5UHJy4SuYPRVHG4UGDEsg==",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"v3",
+								"student",
+								"checkPayment"
+							],
+							"query": [
+								{
+									"key": "paymentId",
+									"value": "Q5UHJy4SuYPRVHG4UGDEsg==",
+									"type": "text"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "212"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"d4-XqS00vjU7/MICsh6tN0rLm6yd4o\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 01 May 2023 18:40:49 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"OK\": true,\n    \"data\": {\n        \"id\": \"U0000001\",\n        \"email\": \"test@mail.com\",\n        \"firstName\": \"Test\",\n        \"lastName\": \"Account\",\n        \"lang\": \"en\",\n        \"token\": {\n            \"accessToken\": \"lrh8qx5fqv67mpwp9up2q\",\n            \"expiresIn\": 1682973649,\n            \"refreshToken\": \"9yfcb4v46qp\"\n        }\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "createPass",
+			"id": "ccf5a217-1e7e-4212-83a1-a0dfc8f2a001",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"test@mail.com\",\n    \"pass\": \"1234\",\n    \"key\": \"0t016ych2nc\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{domain}}/v3/student/createPass",
+					"protocol": "https",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"v3",
+						"student",
+						"createPass"
+					]
+				}
+			},
+			"response": [
+				{
+					"id": "ef780d36-3945-41ad-8190-e6bac1ca4352",
+					"name": "createPass — pass updated",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"test@mail.com\",\n    \"pass\": \"1234\",\n    \"key\": \"0t016ych2nc\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:8888/v3/student/createPass",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"v3",
+								"student",
+								"createPass"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "212"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"d4-pX1qAYicAWZBLdga12qpj/xJpI0\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 02 May 2023 12:49:49 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"OK\": true,\n    \"data\": {\n        \"id\": \"U0000001\",\n        \"email\": \"test@mail.com\",\n        \"firstName\": \"Test\",\n        \"lastName\": \"Account\",\n        \"lang\": \"en\",\n        \"token\": {\n            \"accessToken\": \"z3yoj2e7v9aqowm5kqrfrj\",\n            \"expiresIn\": 1683038989,\n            \"refreshToken\": \"ysxq6ykdvu\"\n        }\n    }\n}"
+				},
+				{
+					"id": "79913a4f-8332-4599-b9f3-c76de6dce3ec",
+					"name": "createPass — verify key have been used",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"test@mail.com\",\n    \"pass\": \"1234\",\n    \"key\": \"qyckktapvya\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:8888/v3/student/createPass",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"v3",
+								"student",
+								"createPass"
+							]
+						}
+					},
+					"status": "Unauthorized",
+					"code": 401,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "113"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"71-EciWYGLkU2GaK+FpHG2/rXNWiVk\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 02 May 2023 12:42:45 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"OK\": false,\n    \"error\": {\n        \"code\": 10105,\n        \"type\": \"invalid_credentials\",\n        \"description\": \"Verify key is invalid or expired\"\n    }\n}"
+				},
+				{
+					"id": "81d915a3-9beb-43b7-a4cf-8e33557a57f2",
+					"name": "createPass — missing params",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"test@mail.com\",\n    \"pass\": \"1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:8888/v3/student/createPass",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "8888",
+							"path": [
+								"v3",
+								"student",
+								"createPass"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "100"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"64-P/C361wBWqeb91LYxzz6hO41+6c\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 02 May 2023 12:51:05 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"OK\": false,\n    \"error\": {\n        \"code\": 10002,\n        \"type\": \"invalid_request\",\n        \"description\": \"Missing required params\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "getMe",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "b1b09213-7603-4c4c-b7a5-4603147cdc27",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"id": "c5e3611e-a4e3-4c79-82b0-9e4d55c814f7",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{accessTonen}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "accessToken",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{domain}}/v3/student/getMe",
+					"protocol": "https",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"v3",
+						"student",
+						"getMe"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getModule",
+			"id": "25143b4f-023b-4f29-9c6a-41380e9d3644",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{accessTonen}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "accessToken",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{domain}}/v3/student/getModule?moduleId=MIO",
+					"protocol": "https",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"v3",
+						"student",
+						"getModule"
+					],
+					"query": [
+						{
+							"key": "moduleId",
+							"value": "MIO"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getModulesList",
+			"id": "4ccfecc4-1fa1-4c11-a8d7-81ad989bdbf6",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{accessTonen}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "accessToken",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{domain}}/v3/student/getModulesList",
+					"protocol": "https",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"v3",
+						"student",
+						"getModulesList"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getLesson",
+			"id": "febd1ad5-87af-4fdc-ab61-c1c1a3220966",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{accessTonen}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "accessToken",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{domain}}/v3/student/getLesson?lessonId=MIO01",
+					"protocol": "https",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"v3",
+						"student",
+						"getLesson"
+					],
+					"query": [
+						{
+							"key": "lessonId",
+							"value": "MIO01"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getTask",
+			"id": "1924b157-89be-49c8-aa39-5bfa27cd6cfb",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{accessTonen}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "accessToken",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{domain}}/v3/student/getTask?taskId=MIO0104",
+					"protocol": "https",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"v3",
+						"student",
+						"getTask"
+					],
+					"query": [
+						{
+							"key": "taskId",
+							"value": "MIO0104"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getCommentsList",
+			"id": "e4b262c3-ce34-4e03-b447-4758544fdf86",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{accessTonen}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "accessToken",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{domain}}/v3/student/getCommentsList?taskId=MIO0104",
+					"protocol": "https",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"v3",
+						"student",
+						"getCommentsList"
+					],
+					"query": [
+						{
+							"key": "taskId",
+							"value": "MIO0104"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "setState",
+			"id": "d82b6599-d8e7-4d46-8c27-c1c8dd6fc52f",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{accessTonen}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "accessToken",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": \"U0000001\",\n    \"taskId\": \"MIO0104\",\n    \"newState\": {\n        \"protest\": false\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{domain}}/v3/student/setState",
+					"protocol": "https",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"v3",
+						"student",
+						"setState"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addComment",
+			"id": "01832032-2c9f-4451-a142-66dae90a00c6",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{accessTonen}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "accessToken",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"taskId\": \"MIO0104\",\n    \"comment\": \"Новый коммент\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{domain}}/v3/student/addComment",
+					"protocol": "https",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"v3",
+						"student",
+						"addComment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getCertificate",
+			"id": "75177b8c-2c61-49d5-a520-15835ac5ee14",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{accessTonen}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "accessToken",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{domain}}/v3/student/getCertificate?moduleId=MIO",
+					"protocol": "https",
+					"host": [
+						"{{domain}}"
+					],
+					"path": [
+						"v3",
+						"student",
+						"getCertificate"
+					],
+					"query": [
+						{
+							"key": "moduleId",
+							"value": "MIO"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "cfdc9c71-5690-4ff0-a539-95aa3299c43c",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "f8c43a56-5a55-4be8-ae76-5a7b5685aa81",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
