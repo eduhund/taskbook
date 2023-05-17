@@ -1,4 +1,13 @@
-const { getToken } = require("../../services/tokenMachine/tokenMachine");
+function getToken() {
+	const accessToken = rand() + rand();
+	const refreshToken = rand();
+	const expiresIn = Math.floor(Date.now() / 1000 + 7200);
+	return {
+		accessToken,
+		expiresIn,
+		refreshToken,
+	};
+}
 
 function tokenMachine() {
 	const tokens = {};
