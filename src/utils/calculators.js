@@ -148,12 +148,12 @@ function calculateDefaultScore(content = []) {
  *
  * @returns {String} Date of deadline
  */
-function calculateDeadline(date, duration, prolongations = []) {
-	const dateStart = new Date(date);
-	const dateFinish = new Date(
-		dateStart.setDate(dateStart.getDate() + duration)
-	);
-	return dateFinish.toISOString().split("T")[0];
+function calculateDeadline({ deadline, prolongations = [] }) {
+	if (prolongations.length === 0) return deadline;
+	if (prolongations.length === 1) return prolongations[0]?.until;
+
+	prolongations.sort((a, b) => Date.parse(b.until) - Date.parse(a.until));
+	return prolongations[0]?.until;
 }
 
 /**

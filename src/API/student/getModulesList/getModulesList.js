@@ -22,15 +22,11 @@ async function getModulesList(req, res, next) {
 	try {
 		const { data } = req;
 
-		console.log(data);
-
 		const modulesList = await getModuleInfo(data, next);
 
 		if (data.isAuth) {
 			await getUserInfo(data, next);
 		}
-
-		console.log(data);
 
 		const content = [];
 
@@ -38,8 +34,6 @@ async function getModulesList(req, res, next) {
 			data.module = moduleData;
 
 			const isUserAccess = checkFinalAccess(data, next);
-
-			console.log(isUserAccess);
 
 			if (isUserAccess) {
 				await getStateInfo(data, next);
