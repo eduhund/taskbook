@@ -57,6 +57,7 @@ async function prepareModuleData(data, next) {
 		price: module.price,
 		buyLink: module.buyLink,
 		prevModule: module.prevModule,
+		group: module.group,
 	};
 
 	if (!isFinalAccess || !isAuth || !user.modules[module.code]) {
