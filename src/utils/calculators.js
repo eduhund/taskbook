@@ -150,10 +150,14 @@ function calculateDefaultScore(content = []) {
  */
 function calculateDeadline({ deadline, prolongations = [] }) {
 	if (prolongations.length === 0) return deadline;
-	if (prolongations.length === 1) return prolongations[0]?.until;
 
-	prolongations.sort((a, b) => Date.parse(b.until) - Date.parse(a.until));
-	return prolongations[0]?.until;
+	if (prolongations.length > 1) {
+		prolongations.sort((a, b) => Date.parse(b.until) - Date.parse(a.until));
+	}
+
+	return prolongations[0]?.until > deadline
+		? prolongations[0]?.until
+		: deadline;
 }
 
 /**

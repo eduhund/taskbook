@@ -58,6 +58,7 @@ async function prepareModuleData(data, next) {
 		buyLink: module.buyLink,
 		prevModule: module.prevModule,
 		group: module.group,
+		status: "available",
 	};
 
 	if (!isFinalAccess || !isAuth || !user.modules[module.code]) {
