@@ -16,12 +16,6 @@ const DEMO = process.env.DEMO;
 async function getDashboard({ req, res }) {
 	const userId = req?.userId;
 
-	const requests = [
-		getDBRequest("getModulesList", {
-			query: DEMO ? {} : { active: true },
-		}),
-	];
-
 	try {
 		const userData = await getDBRequest("getUserInfo", {
 			query: { id: userId },
