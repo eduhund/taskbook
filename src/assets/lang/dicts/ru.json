@@ -1,5 +1,5 @@
 {
-	"prevTaskFirst": "Сделайте вначале задачу {{phrase}}",
+	"prevTaskFirst": "Сделайте вначале задачу {{taskName}}",
 	"certType": "зачетку",
 	"certType+": "сертификат",
 	"certType++": "сертификат с отличием",

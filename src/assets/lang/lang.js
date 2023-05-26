@@ -11,9 +11,8 @@ function setString(phrase, values = {}) {
 
 	let string = phrase;
 	for (key in values) {
-		string.replaceAll(prefix + key + suffix, values[key]);
+		string = string.replaceAll(prefix + key + suffix, values[key]);
 	}
-
 	return string;
 }
 

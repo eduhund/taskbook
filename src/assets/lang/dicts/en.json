@@ -1,5 +1,5 @@
 {
-	"prevTaskFirst": "Solve the problem {{phrase}} first",
+	"prevTaskFirst": "Solve the problem {{taskName}} first",
 	"certType": "the course eduHund.com",
 	"certType+": "the course eduHund.com",
 	"certType++": "the course eduHund.com",

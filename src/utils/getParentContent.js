@@ -9,7 +9,9 @@ async function getTaskName(taskId, lang) {
 	if (!taskData) {
 		throw new Error(`getParentContent: Can't find task with ID ${taskId}`);
 	}
-	const taskName = getPhrase(lang, "prevTaskFirst", { phrase: taskData.name });
+	const taskName = getPhrase(lang, "prevTaskFirst", {
+		taskName: taskData.name,
+	});
 	return [taskName, false];
 }
 
