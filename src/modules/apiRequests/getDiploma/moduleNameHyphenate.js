@@ -5,6 +5,7 @@ const dict = {
 		TXT: "Несекретные\nсекреты текстов",
 		UCC: "Сценарии\nвзаимодействия",
 		COM: "Композиция\nв дизайне интерфейсов",
+		HSE: "Hard Skills начинающего\nруководителя",
 	},
 	en: {
 		HSB: "Novice Manager\nHard Skills",
@@ -12,6 +13,7 @@ const dict = {
 		TXT: "Non-secret\nSecrets of Text Writing",
 		UCC: "Use cases\nin Interface Design",
 		COM: "Composition\nin Interface Design",
+		HSE: "Hard Skills\nfor Managers",
 	},
 };
 

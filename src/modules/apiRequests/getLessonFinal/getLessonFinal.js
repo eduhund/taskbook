@@ -5,6 +5,7 @@ const { getModuleId, getLessonId } = require("../../../utils/idExtractor");
 const { createSummary } = require("./createSummary");
 const { generateMessage } = require("../../../utils/messageGenerator");
 const { addUserAction } = require("../../../modules/statistics/addUserAction");
+const { calculateDeadline } = require("../../../utils/calculators");
 
 async function getLessonFinal({ req, res }) {
 	const userId = req?.userId;
@@ -47,7 +48,7 @@ async function getLessonFinal({ req, res }) {
 			});
 		}
 
-		moduleData.deadline = userData?.modules?.[moduleId]?.deadline;
+		moduleData.deadline = calculateDeadline(userData?.modules?.[moduleId]);
 
 		moduleData.score = stateData.reduce(
 			(progress, value) => progress + (value?.score || 0),

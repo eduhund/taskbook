@@ -5,7 +5,7 @@ const { checkKey } = require("../../../services/tokenMachine/OTK");
 const { generateMessage } = require("../../../utils/messageGenerator");
 
 async function createPassword({ req, res, next }) {
-	const { email, pass, key } = req.body;
+	const { email, pass, key, lang } = req.body;
 
 	const verify = await checkKey(key);
 	if (!verify) {
@@ -14,9 +14,15 @@ async function createPassword({ req, res, next }) {
 		return error;
 	}
 
+	const data = { pass };
+
+	if (lang) {
+		data.lang = lang;
+	}
+
 	const user = await getDBRequest("setUserInfo", {
 		email,
-		data: { pass },
+		data,
 	});
 
 	if (!user) {

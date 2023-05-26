@@ -4,7 +4,15 @@ const accessTokens = require("../services/tokenMachine/tokenMachine");
 const { getModuleId } = require("./idExtractor");
 const { generateMessage } = require("./messageGenerator");
 
+const trustedAddress = process.env.TRUSTED;
+
 function checkAuth(req, res, next) {
+	console.log(req.ip);
+	if (trustedAddress.includes(req.ip)) {
+		req.userId = req?.query?.userId || req?.body?.userId;
+		next();
+		return;
+	}
 	const token = req?.query?.accessToken || req?.body?.accessToken;
 	const userId = accessTokens.checkList()?.[token]?.id;
 

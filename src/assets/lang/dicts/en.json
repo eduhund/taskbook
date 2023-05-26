@@ -1,9 +1,9 @@
 {
 	"prevTaskFirst": "Solve the problem {{phrase}} first",
-	"certType": "Сertificate",
-	"certType+": "Diploma",
-	"certType++": "Diploma cum laude",
-	"certDescription": "gnawed at the granite of the eduHund.com problem book and received a",
+	"certType": "the course eduHund.com",
+	"certType+": "the course eduHund.com",
+	"certType++": "the course eduHund.com",
+	"certDescription": "For completing",
 	"certCheck1": "For certificate authentication",
 	"certCheck2": "write to",
 	"certSignName": "Olga Pavlova",

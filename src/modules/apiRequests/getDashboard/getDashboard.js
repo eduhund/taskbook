@@ -1,7 +1,10 @@
 const { log } = require("@logger");
 const { getDBRequest } = require("../../dbRequests/dbRequests");
 
-const { calculateTotalScore } = require("../../../utils/calculators");
+const {
+	calculateTotalScore,
+	calculateDeadline,
+} = require("../../../utils/calculators");
 const { getNextTaskId } = require("../../../utils/getNextTaskId");
 const setLessonsState = require("../../../utils/setLessonsState");
 const { getNumberOfDoneTasks } = require("./getNumberOfDoneTasks");
@@ -12,12 +15,6 @@ const DEMO = process.env.DEMO;
 
 async function getDashboard({ req, res }) {
 	const userId = req?.userId;
-
-	const requests = [
-		getDBRequest("getModulesList", {
-			query: DEMO ? {} : { active: true },
-		}),
-	];
 
 	try {
 		const userData = await getDBRequest("getUserInfo", {
@@ -50,13 +47,13 @@ async function getDashboard({ req, res }) {
 			if (!moduleData) continue;
 			const today = Date.now();
 			const startDate = Date.parse(userModules[moduleId].start);
-			const deadline = Date.parse(userModules[moduleId].deadline);
+			const deadline = Date.parse(calculateDeadline(userModules[moduleId]));
 			const UTCMidnight = new Date(deadline);
 			UTCMidnight.setUTCHours(23, 59, 59, 0);
 			const UTCDeadline = Date.parse(UTCMidnight);
 
 			moduleData.startDate = userModules[moduleId].start;
-			moduleData.deadline = userModules[moduleId].deadline;
+			moduleData.deadline = calculateDeadline(userModules[moduleId]);
 
 			if (moduleData.prevModule) {
 				if (Object.keys(userModules).includes(moduleData.prevModule)) {

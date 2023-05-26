@@ -58,6 +58,8 @@ const tasksTextProcessor = {
 				? this.question?.price
 				: 0;
 		}
+
+		return this.question?.price;
 	},
 };
 
