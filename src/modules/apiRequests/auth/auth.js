@@ -2,7 +2,7 @@ const { log } = require("@logger");
 
 const { getDBRequest } = require("../../dbRequests/dbRequests");
 const accessTokens = require("../../../services/tokenMachine/tokenMachine");
-const { checkPass, hashPass } = require("../../../utils/pass");
+const { checkPass } = require("../../../utils/pass");
 const { generateMessage } = require("../../../utils/messageGenerator");
 
 const tokens = accessTokens;

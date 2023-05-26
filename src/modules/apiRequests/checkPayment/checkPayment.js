@@ -1,7 +1,7 @@
 const { log } = require("@logger");
 
 const { getDBRequest } = require("../../dbRequests/dbRequests");
-const { accessTokens } = require("../../userTokens/accessTokens");
+const accessTokens = require("../../../services/tokenMachine/tokenMachine");
 const { generateMessage } = require("../../../utils/messageGenerator");
 
 async function checkPayment({ req, res }) {
