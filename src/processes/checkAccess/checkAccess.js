@@ -1,4 +1,5 @@
 const { getModuleId } = require("@utils/idExtractor");
+const { calculateDeadline } = require("@utils/calculators");
 
 function checkDate(start, deadline) {
 	if (!start && !deadline) return false;
@@ -19,7 +20,7 @@ function checkModuleAccess(data) {
 	const cutModuleId = moduleId || getModuleId(lessonId || taskId || questionId);
 
 	const startDate = user?.modules?.[cutModuleId]?.start;
-	const deadline = user?.modules?.[cutModuleId]?.deadline;
+	const deadline = calculateDeadline(user?.modules?.[cutModuleId] || {});
 
 	return checkDate(startDate, deadline);
 }
