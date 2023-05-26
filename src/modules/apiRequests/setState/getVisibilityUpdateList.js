@@ -1,4 +1,4 @@
-const { log } = require("../../../services/logger");
+const { log } = require("../../../services/logger/logger");
 
 function getVisibilityUpdateList(tasks, questionId) {
 	// Get array with question, whith visibility need to change
