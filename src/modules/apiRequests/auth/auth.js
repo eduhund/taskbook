@@ -21,7 +21,7 @@ async function auth({ req, res }) {
 		return error;
 	}
 
-	if (!checkPass(user, hashPass(pass))) {
+	if (!checkPass(user, pass)) {
 		log.info(`${email}: Invalid password!`);
 		const error = generateMessage(10102);
 		res.status(401).send(error);

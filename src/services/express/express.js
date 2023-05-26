@@ -9,6 +9,7 @@ const { STUDENT } = require("../../API/student/student");
 const { responseHandler, pathHandler } = require("./responses");
 const prepareRequestData = require("./prepareRequestData");
 const { checkAuth } = require("./security");
+const { paramsProcessor } = require("../../utils/validate");
 
 const port = process.env.SERVER_PORT || 443;
 
@@ -32,6 +33,7 @@ app.use(require("body-parser").urlencoded({ extended: false }));
 // API v.2
 const apiRouter = express.Router();
 app.use("/api/v2", apiRouter);
+apiRouter.use(paramsProcessor);
 for (const request of PUBLIC) {
 	const { path, method, exec } = request;
 	switch (method) {
@@ -44,7 +46,6 @@ for (const request of PUBLIC) {
 
 // API v.3
 const student = express.Router();
-//app.use(checkAuth);
 app.use("/v3/student", student);
 
 for (const method of STUDENT) {

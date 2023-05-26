@@ -2,7 +2,7 @@
 
 const { lowerString, upperString } = require("./stringProcessor");
 const { hashPass } = require("../utils/pass");
-const { supportedLangs, defaultLang } = require("../../config.json");
+const { lang } = require("../../config.json");
 const { generateMessage } = require("./messageGenerator");
 
 const requireParams = {
@@ -46,9 +46,9 @@ function paramsProcessor(req, res, next) {
 	}
 
 	if ("lang" in params) {
-		params.lang = supportedLangs.includes(params.lang)
+		params.lang = lang.supported.includes(params.lang)
 			? params.lang
-			: defaultLang;
+			: lang.default;
 	}
 
 	if ("moduleId" in params) {
