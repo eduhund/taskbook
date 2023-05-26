@@ -5,9 +5,9 @@ const { getFullTaskId, getFullQuestionId } = require("./idExtractor");
 const DB = require("@mongo/requests");
 
 async function getTaskName(taskId, lang) {
-	const taskData = await DB.getOne("task", { query: { id: taskId } });
+	const taskData = await DB.getOne("tasks", { query: { id: taskId } });
 	if (!taskData) {
-		throw new Error(`getParentContent: Can't find task woth ID ${taskId}`);
+		throw new Error(`getParentContent: Can't find task with ID ${taskId}`);
 	}
 	const taskName = getPhrase(lang, "prevTaskFirst", taskData.name);
 	return [taskName, false];
@@ -27,13 +27,15 @@ async function getParentContent(userId, contentId, lang) {
 		const parentContent = taskState.data?.[questionId]?.state;
 		if (parentContent?.value) {
 			return [parentContent?.value, true];
-		} else {
+		} else if (Array.isArray(parentContent)) {
 			const selectedAnswers = parentContent
 				.filter((item) => item.isSelected)
 				.map((item) => item.label);
 			return [selectedAnswers.join(", ") || "", true];
 		}
-	} else return getTaskName(taskId, lang);
+	}
+
+	return getTaskName(taskId, lang);
 }
 
 module.exports.getParentContent = getParentContent;
