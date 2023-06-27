@@ -63,9 +63,9 @@ async function getDashboard({ req, res }) {
 
 			if (today < startDate) {
 				moduleData.status = "paid";
-			} else if (today >= UTCDeadline) {
+			} else if (today > UTCDeadline) {
 				moduleData.status = "past";
-			} else if (today >= UTCDeadline - 864000000 && today < UTCDeadline) {
+			} else if (today > UTCDeadline - 864000000 && today < UTCDeadline) {
 				moduleData.status = "deadline";
 			} else {
 				moduleData.status = "active";

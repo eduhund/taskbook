@@ -13,7 +13,7 @@ async function checkPayment({ req, res }) {
 
 	if (!payment) {
 		log.info(`${paymentId}: Payment didn't found!`);
-		const error = generateMessage(10106);
+		const error = generateMessage(10104);
 		res.status(401).send(error);
 		return error;
 	}

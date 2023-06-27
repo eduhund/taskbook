@@ -24,12 +24,12 @@ const ERRORS = [
 		description: "Invalid password",
 	},
 	{
-		code: 10105,
+		code: 10103,
 		type: "invalid_credentials",
 		description: "Verify key is invalid or expired",
 	},
 	{
-		code: 10106,
+		code: 10104,
 		type: "invalid_credentials",
 		description: "Payment didn't found",
 	},

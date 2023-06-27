@@ -38,9 +38,10 @@ function checkToken(tokenList = {}, token = "") {
 function checkDate(start, deadline) {
 	if (!start && !deadline) return undefined;
 	const today = Date.now();
-	return today >= Date.parse(start) && today < Date.parse(deadline)
-		? true
-		: false;
+	const UTCMidnight = new Date(deadline);
+	UTCMidnight.setUTCHours(23, 59, 59, 0);
+	const UTCDeadline = Date.parse(UTCMidnight);
+	return today >= Date.parse(start) && today <= UTCDeadline ? true : false;
 }
 
 /**
