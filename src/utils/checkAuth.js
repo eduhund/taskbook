@@ -87,6 +87,7 @@ function checkCertAccess(req, res, next) {
 
 	db.USERS.findOne({ id: userId }).then((user) => {
 		const modules = Object.keys(user?.modules);
+		console.log(modules);
 		if (modules.includes(moduleId)) {
 			next();
 		} else {
