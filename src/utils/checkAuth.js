@@ -83,7 +83,9 @@ function checkModuleAccess(req, res, next) {
 function checkCertAccess(req, res, next) {
 	const userId = req.userId;
 
-	const moduleId = req?.query?.moduleId || req?.body?.moduleId;
+	const lessonId = req?.query?.lessonId || req?.body?.lessonId;
+	const moduleId =
+		req?.query?.moduleId || req?.body?.moduleId || getModuleId(lessonId);
 
 	db.USERS.findOne({ id: userId }).then((user) => {
 		const modules = Object.keys(user?.modules);
