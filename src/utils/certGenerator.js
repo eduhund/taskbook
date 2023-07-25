@@ -4,7 +4,7 @@ const fs = require("fs");
 const path = require("node:path");
 const { buildSvg } = require("svg-content");
 
-async function createCert(data) {
+async function createCert(data, quality = "small") {
 	const svg = fs.readFileSync(`./templates/diplomas/poster.svg`).toString();
 	const processed = buildSvg(svg, data);
 	const fileId = crypto.createHash("sha256").update(data.certId).digest("hex");
@@ -14,9 +14,25 @@ async function createCert(data) {
 	if (!fs.existsSync(folderPath)) {
 		fs.mkdirSync(`./diplomas/${fileId}`, { recursive: true });
 	}
-	await sharp(buffer, { density: 150 })
+	const settings = {
+		small: {
+			dpi: 72,
+			fileName: "small",
+		},
+		medium: {
+			dpi: 150,
+			fileName: "medium",
+		},
+		large: {
+			dpi: 300,
+			fileName: "large",
+		},
+	};
+
+	const { dpi, fileName } = settings[quality];
+	await sharp(buffer, { density: dpi })
 		.png()
-		.toFile(folderPath + `/medium.png`);
+		.toFile(`${folderPath}/${fileName}.png`);
 	return fileId;
 }
 
