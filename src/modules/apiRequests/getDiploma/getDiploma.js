@@ -2,15 +2,28 @@ const { log } = require("@logger");
 const { getDBRequest } = require("../../dbRequests/dbRequests");
 const { generateSkills } = require("./generateSkills");
 const generateCertId = require("../../../processes/prepareData/prepareCertificateData/generateCertId");
-const createCert = require("../../../utils/certGenerator");
 const { generateMessage } = require("../../../utils/messageGenerator");
 const { addUserAction } = require("../../../modules/statistics/addUserAction");
 const provideData = require("./provideData");
 const CyrillicToTranslit = require("cyrillic-to-translit-js");
+const { fork } = require("child_process");
 
 const cyrillicToTranslit = new CyrillicToTranslit();
 
+async function generateCert(fullInfo) {
+	return new Promise((resolve, reject) => {
+		const child = fork(__dirname + "/../../../utils/certGenerator");
+		child.on("message", (fileId) => {
+			log.info("New certificate generated:", fileId);
+			return resolve(fileId);
+		});
+		child.send(fullInfo);
+	});
+}
+
 async function getDiploma({ req, res }) {
+	const certGen = fork(__dirname + "/../../../utils/certGenerator");
+
 	const userId = req?.userId;
 	const { moduleId, lang, isColor, isMascot, isProgress, isPublic } =
 		req?.query;
@@ -139,7 +152,7 @@ async function getDiploma({ req, res }) {
 
 		const fullInfo = provideData(info, params);
 
-		const fileId = await createCert(fullInfo);
+		const fileId = await generateCert(fullInfo);
 
 		Object.assign(moduleData, params);
 

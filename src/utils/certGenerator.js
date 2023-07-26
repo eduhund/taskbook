@@ -36,4 +36,9 @@ async function createCert(data, quality = "small") {
 	return fileId;
 }
 
+process.on("message", async (msg) => {
+	const cert = await createCert(msg);
+	process.send(cert);
+});
+
 module.exports = createCert;
