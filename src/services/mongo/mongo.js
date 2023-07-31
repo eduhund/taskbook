@@ -1,8 +1,7 @@
 const { MongoClient } = require("mongodb");
 const { log } = require("@logger");
 
-const DB_URL = process.env.DATABASE_URL;
-const DB_NAME = process.env.DATABASE_NAME;
+const { DB_URL, DB_NAME } = process.env;
 
 const mongoClient = new MongoClient(DB_URL);
 

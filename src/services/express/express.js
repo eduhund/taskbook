@@ -11,17 +11,20 @@ const prepareRequestData = require("./prepareRequestData");
 const { checkAuth } = require("./security");
 const { paramsProcessor } = require("../../utils/validate");
 
-const port = process.env.SERVER_PORT || 443;
+const { SERVER_PORT, SSL_CERT, SSL_KEY, SSL_PASS } = process.env;
+
+const port = SERVER_PORT || 443;
 
 const app = express();
 
 const options = {};
 
 try {
-	options.cert = fs.readFileSync(process.env.SSL_CERT);
-	options.key = fs.readFileSync(process.env.SSL_KEY);
-} catch {
-	throw new Error("Can't download SSL certificates!");
+	options.cert = fs.readFileSync(SSL_CERT);
+	options.key = fs.readFileSync(SSL_KEY);
+	options.passphrase = SSL_PASS;
+} catch (e) {
+	throw new Error("Can't download SSL certificates!", e);
 }
 
 const corsOptions = {
@@ -34,6 +37,10 @@ app.use("/diplomas", express.static("diplomas"));
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(require("body-parser").urlencoded({ extended: false }));
+app.use((req, res, next) => {
+	console.log(req?.query, req?.body, req?.path);
+	next();
+});
 
 // API v.2
 const apiRouter = express.Router();
@@ -66,11 +73,11 @@ for (const method of STUDENT) {
 app.use(responseHandler);
 app.use(pathHandler);
 
-const server = https.createServer(options, app);
+//const server = https.createServer(options, app);
 
 function start() {
 	return new Promise((resolve, reject) => {
-		server.listen(port, (err) => {
+		app.listen(port, (err) => {
 			if (err) {
 				return reject(err);
 			}

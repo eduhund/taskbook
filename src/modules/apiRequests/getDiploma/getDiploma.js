@@ -15,6 +15,7 @@ async function generateCert(fullInfo) {
 		const child = fork(__dirname + "/../../../utils/certGenerator");
 		child.on("message", (fileId) => {
 			log.info("New certificate generated:", fileId);
+			child.kill();
 			return resolve(fileId);
 		});
 		child.send(fullInfo);
