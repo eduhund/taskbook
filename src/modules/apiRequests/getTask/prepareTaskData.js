@@ -5,6 +5,20 @@ const { setVisibility } = require("../../../utils/visibilityControl");
 const { refAnswerRight } = require("../../../utils/refAnswerRight");
 const { getDBRequest } = require("../../dbRequests/dbRequests");
 
+async function updateVisibility(userId, data) {
+	const { id, depends = [] } = data;
+	for (const depend of depends) {
+		const { type, parentId, isVisible } = depend;
+		if (type == "visibility") {
+			const visibility = await setVisibility(userId, parentId, id);
+			data.isVisible = visibility;
+			if (!isVisible) {
+				break;
+			}
+		}
+	}
+}
+
 function validateTaskState(taskState) {
 	var {
 		isChecked,
@@ -40,39 +54,43 @@ function validateTaskState(taskState) {
 
 async function prepareTaskData({ taskData, taskState, userId, lang }) {
 	try {
-		if (taskData.type === "practice") {
-			Object.assign(taskData, validateTaskState(taskState || {}));
-			for (const content of taskData.content) {
-				for (const introItem of content.intro) {
-					if (introItem.type == "richText") {
-						for (const richItem of introItem.value) {
-							if (richItem.parentId) {
-								const value = await getParentContent(
-									userId,
-									richItem.parentId,
-									lang
-								);
+		for (const content of taskData.content) {
+			for (const introItem of content.intro) {
+				await updateVisibility(userId, introItem);
+				if (introItem.type == "richText") {
+					for (const richItem of introItem.value) {
+						await updateVisibility(userId, richItem);
+						if (richItem.parentId) {
+							const value = await getParentContent(
+								userId,
+								richItem.parentId,
+								lang
+							);
 
-								richItem.value = value[0];
+							richItem.value = value[0];
 
-								if (!value[1]) {
-									introItem.value = value[0];
-									introItem.type = "p";
-									break;
-								}
+							if (!value[1]) {
+								introItem.value = value[0];
+								introItem.type = "p";
+								break;
 							}
 						}
 					}
-
-					if (introItem.parentId) {
-						const value = await getParentContent(
-							userId,
-							introItem.parentId,
-							lang
-						);
-						introItem.value = value[0];
-					}
 				}
+
+				if (introItem.parentId) {
+					const value = await getParentContent(
+						userId,
+						introItem.parentId,
+						lang
+					);
+					introItem.value = value[0];
+				}
+			}
+		}
+		if (taskData.type === "practice") {
+			Object.assign(taskData, validateTaskState(taskState || {}));
+			for (const content of taskData.content) {
 				for (const question of content.questions || []) {
 					if (question?.subtopic) {
 						for (let i = 0; i < question?.subtopic.length; i++) {
@@ -93,19 +111,7 @@ async function prepareTaskData({ taskData, taskState, userId, lang }) {
 						question.depends &&
 						taskState?.data?.[question.id]?.isVisible == undefined
 					) {
-						for (const depend of question.depends) {
-							if (depend.type == "visibility") {
-								const isVisible = await setVisibility(
-									userId,
-									depend.parentId,
-									question.id
-								);
-								question.isVisible = isVisible;
-								if (!isVisible) {
-									break;
-								}
-							}
-						}
+						await updateVisibility(userId, question);
 					} else {
 						const path = "data." + question.id + ".isVisible";
 						const taskId = taskData.id;
