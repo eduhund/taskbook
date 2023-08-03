@@ -34,10 +34,11 @@ async function getLessonFinal({ req, res }) {
 	try {
 		const [userData, stateData, moduleData] = await Promise.all(requests);
 
+		const lessonsArray = Object.keys(moduleData.lessons || {});
+		const currentLessonIndex = lessonsArray.indexOf(lessonId);
+
 		moduleData.lessonNumber = Number(lessonId);
-		moduleData.nextLesson = Object.keys(moduleData.lessons || {}).includes(
-			lessonId
-		);
+		moduleData.nextLesson = lessonsArray.length > currentLessonIndex + 1;
 		moduleData.maxScore = moduleData.lessons[lessonId]?.maxScore;
 		moduleData.content = moduleData.lessons[lessonId]?.final;
 
