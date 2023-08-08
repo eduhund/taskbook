@@ -29,8 +29,14 @@ function processTexts(lang, moduleId, certType, certDate) {
 		certType: getPhrase(lang, certType),
 		certCheck1: getPhrase(lang, "certCheck1"),
 		certCheck2: getPhrase(lang, "certCheck2"),
-		certSignName: getPhrase(lang, "certSignName"),
-		certSignPos: getPhrase(lang, "certSignPos"),
+		certSignName: getPhrase(
+			lang,
+			moduleId === "LGR" ? "certSignNameLinor" : "certSignName"
+		),
+		certSignPos: getPhrase(
+			lang,
+			moduleId === "LGR" ? "certSignPosLinor" : "certSignPos"
+		),
 		certDate: date,
 	};
 }
@@ -59,6 +65,7 @@ function processColors(moduleId, progress, params) {
 		!isMascot || isColor ? "0" : progress >= 60 ? "1" : "0.3";
 	const progressOpacity = isProgress ? (progress >= 60 ? "1" : "0.3") : "0";
 	const headerOpacity = progress < 60 ? "0.1" : "1";
+	const signOpacity = moduleId === "LGR" ? "0" : "0.6";
 
 	return {
 		bgColor,
@@ -69,6 +76,7 @@ function processColors(moduleId, progress, params) {
 		mascotOpacity,
 		progressOpacity,
 		headerOpacity,
+		signOpacity,
 	};
 }
 

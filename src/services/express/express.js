@@ -13,10 +13,11 @@ const { paramsProcessor } = require("../../utils/validate");
 
 const { SERVER_PORT, SSL_CERT, SSL_KEY, SSL_PASS } = process.env;
 
-const port = SERVER_PORT || 443;
+const port = SERVER_PORT || 8888;
 
 const app = express();
 
+/*
 const options = {};
 
 try {
@@ -26,6 +27,7 @@ try {
 } catch (e) {
 	throw new Error("Can't download SSL certificates!", e);
 }
+*/
 
 const corsOptions = {
 	origin: process.env.ORIGIN || "*",

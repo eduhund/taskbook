@@ -7,5 +7,7 @@
 	"certCheck1": "For certificate authentication",
 	"certCheck2": "write to",
 	"certSignName": "Olga Pavlova",
-	"certSignPos": "head of insanity"
+	"certSignPos": "head of insanity",
+	"certSignNameLinor": "Linor Goralik",
+	"certSignPosLinor": "автор смысла"
 }
