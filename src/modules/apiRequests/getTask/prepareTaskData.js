@@ -11,6 +11,7 @@ async function updateVisibility(userId, data) {
 		const { type, parentId, isVisible } = depend;
 		if (type == "visibility") {
 			const visibility = await setVisibility(userId, parentId, id);
+			console.log("V", visibility);
 			data.isVisible = visibility;
 			if (!isVisible) {
 				break;
@@ -64,7 +65,8 @@ async function prepareTaskData({ taskData, taskState, userId, lang }) {
 							const value = await getParentContent(
 								userId,
 								richItem.parentId,
-								lang
+								lang,
+								richItem.parentId.startsWith(taskData.id)
 							);
 
 							richItem.value = value[0];
@@ -82,7 +84,8 @@ async function prepareTaskData({ taskData, taskState, userId, lang }) {
 					const value = await getParentContent(
 						userId,
 						introItem.parentId,
-						lang
+						lang,
+						introItem.parentId.startsWith(taskData.id)
 					);
 					introItem.value = value[0];
 				}
@@ -98,19 +101,14 @@ async function prepareTaskData({ taskData, taskState, userId, lang }) {
 								const value = await getParentContent(
 									userId,
 									question?.subtopic[i].parentId,
-									lang
+									lang,
+									question?.subtopic[i].parentId.startsWith(taskData.id)
 								);
 								question.subtopic[i] = value[0];
 							}
 						}
 					}
-
-					if (taskState?.data?.[question.id]?.isVisible != undefined) {
-						question.isVisible = taskState?.data?.[question.id]?.isVisible;
-					} else if (
-						question.depends &&
-						taskState?.data?.[question.id]?.isVisible == undefined
-					) {
+					if (question.depends) {
 						await updateVisibility(userId, question);
 					} else {
 						const path = "data." + question.id + ".isVisible";
@@ -136,7 +134,8 @@ async function prepareTaskData({ taskData, taskState, userId, lang }) {
 								const value = await getParentContent(
 									userId,
 									variant.parentId,
-									lang
+									lang,
+									variant.parentId.startsWith(taskData.id)
 								);
 								variant.label = value[0];
 							}

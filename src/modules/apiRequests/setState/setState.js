@@ -40,6 +40,8 @@ async function setState({ req, res }) {
 
 		const finalData = newState?.value?.data || {};
 
+		log.debug(finalData);
+
 		const data = generateMessage(0, finalData);
 
 		res.status(200).send(data);

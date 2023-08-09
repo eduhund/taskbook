@@ -4,13 +4,13 @@ const { getFullTaskId, getFullQuestionId } = require("./idExtractor");
 function checkVisibility(id, taskState) {
 	const questionId = getFullQuestionId(id);
 	const questionData = taskState?.data?.[questionId] || {};
-	const { isVisible = false, state = [] } = questionData;
+	const { state = [] } = questionData;
 
 	if (id.length === 13) {
 		const answer = state.find((answer) => answer.id == id);
-		return answer?.isSelected && isVisible;
+		return answer?.isSelected;
 	} else if (id.length === 11) {
-		return questionData && isVisible;
+		return (state?.value || "").length > 0;
 	} else {
 		throw new Error(`${questionId}: Question ID must be a 11 or 13 symbols!`);
 	}
