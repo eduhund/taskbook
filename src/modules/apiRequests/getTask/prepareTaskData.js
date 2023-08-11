@@ -58,6 +58,44 @@ async function prepareTaskData({ taskData, taskState, userId, lang }) {
 		for (const content of taskData.content) {
 			for (const introItem of content.intro) {
 				await updateVisibility(userId, introItem);
+
+				if (introItem.type == "crib") {
+					for (const cribItem of introItem.value || []) {
+						await updateVisibility(userId, cribItem);
+						if (cribItem.type == "richText") {
+							for (const richItem of cribItem.value) {
+								await updateVisibility(userId, richItem);
+								if (richItem.parentId) {
+									const value = await getParentContent(
+										userId,
+										richItem.parentId,
+										lang,
+										richItem.parentId.startsWith(taskData.id)
+									);
+
+									richItem.value = value[0];
+
+									if (!value[1]) {
+										cribItem.value = value[0];
+										cribItem.type = "p";
+										break;
+									}
+								}
+							}
+						}
+
+						if (cribItem.parentId) {
+							const value = await getParentContent(
+								userId,
+								cribItem.parentId,
+								lang,
+								cribItem.parentId.startsWith(taskData.id)
+							);
+							cribItem.value = value[0];
+						}
+					}
+				}
+
 				if (introItem.type == "richText") {
 					for (const richItem of introItem.value) {
 						await updateVisibility(userId, richItem);
