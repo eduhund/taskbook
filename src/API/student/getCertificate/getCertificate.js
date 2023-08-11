@@ -8,7 +8,7 @@ const {
 
 /***
  * getDiploma StudentAPI method.
- * https://api.eduhund.com/docs/student#getDiploma
+ * https://api.eduhund.com/docs/student#getCertificate
  *
  * @since 0.6.0
  *
