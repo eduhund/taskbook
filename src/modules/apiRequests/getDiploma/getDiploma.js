@@ -41,8 +41,6 @@ async function getDiploma({ req, res }) {
 		if (params[key] === undefined) delete params[key];
 	}
 
-	log.debug("Init params: ", params)
-
 	const requests = [
 		getDBRequest("getUserInfo", {
 			query: { id: userId },
@@ -85,15 +83,11 @@ async function getDiploma({ req, res }) {
 			returns: ["lang", "isColor", "isMascot", "isProgress", "isPublic"],
 		});
 
-		log.debug("Cert Data: ", certData)
-
 		if (params.lang === undefined) params.lang = certData?.lang || moduleData.lang;
 		if (params.isColor === undefined) params.isColor = certData?.isColor || false;
 		if (params.isMascot === undefined) params.isMascot = certData.isMascot === undefined ? true : certData?.isMascot;
 		if (params.isProgress === undefined) params.isProgress = certData.isProgress === undefined ? true : certData?.isProgress;
 		if (params.isPublic === undefined) params.isPublic = certData?.isPublic || false;
-
-		log.debug("Result params: ", params);
 
 		getDBRequest("setDiploma", {
 			query: { id: certId },
