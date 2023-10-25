@@ -32,7 +32,7 @@ async function getDiploma({ req, res }) {
 	const params = {
 		lang: lang || undefined,
 		isColor: isColor ? isColor === "true" : undefined,
-		isMascot: isMascot ? isMascot === "true" : undefined,
+		isMascot: (isColor === undefined) ? isMascot ? isMascot === "true" : undefined : !isColor,
 		isProgress: isProgress ? isProgress === "true" : undefined,
 		isPublic: isPublic ? isPublic === "true" : undefined,
 	};
@@ -40,6 +40,8 @@ async function getDiploma({ req, res }) {
 	for (const key of Object.keys(params)) {
 		if (params[key] === undefined) delete params[key];
 	}
+
+	log.debug("Init params: ", params)
 
 	const requests = [
 		getDBRequest("getUserInfo", {
@@ -83,14 +85,15 @@ async function getDiploma({ req, res }) {
 			returns: ["lang", "isColor", "isMascot", "isProgress", "isPublic"],
 		});
 
-		Object.assign(params, certData?.value || {});
-		log.debug(params);
+		log.debug("Cert Data: ", certData)
 
-		if (params.lang === undefined) params.lang = moduleData.lang;
-		if (params.isColor === undefined) params.isColor = false;
-		if (params.isMascot === undefined) params.isMascot = true;
-		if (params.isProgress === undefined) params.isProgress = true;
-		if (params.isPublic === undefined) params.isPublic = false;
+		if (params.lang === undefined) params.lang = certData?.lang || moduleData.lang;
+		if (params.isColor === undefined) params.isColor = certData?.isColor || false;
+		if (params.isMascot === undefined) params.isMascot = certData?.isMascot || true;
+		if (params.isProgress === undefined) params.isProgress = certData?.isProgress || true;
+		if (params.isPublic === undefined) params.isPublic = certData?.isPublic || false;
+
+		log.debug("Result params: ", params);
 
 		getDBRequest("setDiploma", {
 			query: { id: certId },
