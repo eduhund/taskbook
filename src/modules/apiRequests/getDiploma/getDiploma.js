@@ -23,7 +23,7 @@ async function generateCert(fullInfo) {
 }
 
 async function getDiploma({ req, res }) {
-	const certGen = fork(__dirname + "/../../../utils/certGenerator");
+	//const certGen = fork(__dirname + "/../../../utils/certGenerator");
 
 	const userId = req?.userId;
 	const { moduleId, lang, isColor, isMascot, isProgress, isPublic } =
@@ -32,7 +32,7 @@ async function getDiploma({ req, res }) {
 	const params = {
 		lang: lang || undefined,
 		isColor: isColor ? isColor === "true" : undefined,
-		isMascot: (isColor === undefined) ? isMascot ? isMascot === "true" : undefined : !isColor,
+		isMascot: (isColor === undefined) ? isMascot ? isMascot === "true" : undefined : !(isColor === "true"),
 		isProgress: isProgress ? isProgress === "true" : undefined,
 		isPublic: isPublic ? isPublic === "true" : undefined,
 	};
@@ -89,8 +89,8 @@ async function getDiploma({ req, res }) {
 
 		if (params.lang === undefined) params.lang = certData?.lang || moduleData.lang;
 		if (params.isColor === undefined) params.isColor = certData?.isColor || false;
-		if (params.isMascot === undefined) params.isMascot = certData?.isMascot || true;
-		if (params.isProgress === undefined) params.isProgress = certData?.isProgress || true;
+		if (params.isMascot === undefined) params.isMascot = certData.isMascot === undefined ? true : certData?.isMascot;
+		if (params.isProgress === undefined) params.isProgress = certData.isProgress === undefined ? true : certData?.isProgress;
 		if (params.isPublic === undefined) params.isPublic = certData?.isPublic || false;
 
 		log.debug("Result params: ", params);
