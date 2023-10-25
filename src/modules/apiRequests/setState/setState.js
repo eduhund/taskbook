@@ -87,8 +87,6 @@ async function setState({ req, res }) {
 			updatedData
 		);
 
-		log.debug(finalData);
-
 		const data = generateMessage(0, finalData);
 
 		res.status(200).send(data);

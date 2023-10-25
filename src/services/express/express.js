@@ -23,10 +23,12 @@ app.use(express.json());
 app.use(require("body-parser").urlencoded({ extended: false }));
 
 app.use("/diplomas", express.static("diplomas"));
+/*
 app.use((req, res, next) => {
 	log.info(req?.query, req?.body, req?.path);
 	next();
 });
+*/
 
 // API v.2
 const apiRouter = express.Router();
