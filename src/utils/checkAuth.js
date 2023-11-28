@@ -68,7 +68,7 @@ function checkModuleAccess(req, res, next) {
 			next();
 		} else {
 			const error = generateMessage(10201);
-			res.status(401).send(error);
+			res.status(403).send(error);
 			return error;
 		}
 	});
@@ -91,7 +91,7 @@ function checkCertAccess(req, res, next) {
 			next();
 		} else {
 			const error = generateMessage(10201);
-			res.status(401).send(error);
+			res.status(403).send(error);
 			return error;
 		}
 	});
