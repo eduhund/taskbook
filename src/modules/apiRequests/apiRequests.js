@@ -83,7 +83,7 @@ const PUBLIC = [
 		path: "/getModuleInfo",
 		exec: [
 			checkAuth,
-			checkModuleAccess,
+			checkCertAccess,
 			(req, res) => getApiRequest("getModuleInfo", { req, res }),
 		],
 	},
@@ -113,7 +113,7 @@ const PUBLIC = [
 		path: "/getModuleFinal",
 		exec: [
 			checkAuth,
-			checkModuleAccess,
+			checkCertAccess,
 			(req, res) => getApiRequest("getModuleFinal", { req, res }),
 		],
 	},
@@ -143,7 +143,7 @@ const PUBLIC = [
 		path: "/getLessonsList",
 		exec: [
 			checkAuth,
-			checkModuleAccess,
+			checkCertAccess,
 			(req, res) => getApiRequest("getLessonsList", { req, res }),
 		],
 	},
@@ -153,7 +153,7 @@ const PUBLIC = [
 		path: "/getTasksList",
 		exec: [
 			checkAuth,
-			checkModuleAccess,
+			checkCertAccess,
 			(req, res) => getApiRequest("getTasksList", { req, res }),
 		],
 	},
