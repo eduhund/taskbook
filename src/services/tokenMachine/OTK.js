@@ -4,12 +4,23 @@ const { OTK_SERVER, OTK_TOKEN } = process.env;
 
 const bearerToken = "Bearer " + OTK_TOKEN
 
-const keyTypes = {
-	oneTimePass: {
-		type: "digit",
-		length: 4,
-		life: 3600,
-		isReusable: false
+function getKeyParams(type) {
+	switch (type) {
+		case "oneTimePass":
+			return {
+				type: "digit",
+				length: 4,
+				life: 3600,
+				isReusable: false
+			}
+		
+		default:
+			return {
+				type: "digit",
+				length: 4,
+				life: 3600,
+				isReusable: false
+			}
 	}
 }
 
@@ -26,7 +37,7 @@ async function checkKey(key) {
 async function setKey(userId, type) {
 	const body = {
 		userId,
-		...keyTypes[type]
+		...getKeyParams(type)
 	}
 	const response = await fetch(`${OTK_SERVER}/setKey`, {
 		method: "POST",
