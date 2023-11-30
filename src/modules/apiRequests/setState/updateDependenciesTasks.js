@@ -19,7 +19,7 @@ async function updateDependenciesTasks(userId, questions, state) {
 				switch (question.type) {
 					case "question":
 						data = {
-							[path]: state?.data ? true : false,
+							[path]: (state?.value || "").length > 0,
 						};
 						break;
 					case "variant":

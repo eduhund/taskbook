@@ -27,14 +27,18 @@ async function getLessonFinal({ req, res }) {
 		}),
 		getDBRequest("getModuleInfo", {
 			query: { code: moduleId },
-			returns: ["shortName", "lessons", "maxScore", "totalTasks", "lang"],
+			returns: ["shortName", "lessons", "lang"],
 		}),
 	];
 
 	try {
 		const [userData, stateData, moduleData] = await Promise.all(requests);
 
+		const lessonsArray = Object.keys(moduleData.lessons || {});
+		const currentLessonIndex = lessonsArray.indexOf(lessonId);
+
 		moduleData.lessonNumber = Number(lessonId);
+		moduleData.nextLesson = lessonsArray.length > currentLessonIndex + 1;
 		moduleData.maxScore = moduleData.lessons[lessonId]?.maxScore;
 		moduleData.content = moduleData.lessons[lessonId]?.final;
 
@@ -47,6 +51,7 @@ async function getLessonFinal({ req, res }) {
 				if (result?.type == "practice") totalPractice++;
 			});
 		}
+		moduleData.totalTasks = totalPractice;
 
 		moduleData.deadline = calculateDeadline(userData?.modules?.[moduleId]);
 

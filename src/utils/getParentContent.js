@@ -15,7 +15,7 @@ async function getTaskName(taskId, lang) {
 	return [taskName, false];
 }
 
-async function getParentContent(userId, contentId, lang) {
+async function getParentContent(userId, contentId, lang, sameTask = false) {
 	const taskId = getFullTaskId(contentId);
 	const taskState = await DB.getOne("state", {
 		query: {
@@ -24,7 +24,7 @@ async function getParentContent(userId, contentId, lang) {
 		},
 	});
 
-	if (taskState?.isChecked) {
+	if (taskState?.isChecked || sameTask) {
 		const questionId = getFullQuestionId(contentId);
 		const parentContent = taskState.data?.[questionId]?.state;
 		if (parentContent?.value) {

@@ -68,7 +68,7 @@ function checkModuleAccess(req, res, next) {
 			next();
 		} else {
 			const error = generateMessage(10201);
-			res.status(401).send(error);
+			res.status(403).send(error);
 			return error;
 		}
 	});
@@ -84,17 +84,17 @@ function checkCertAccess(req, res, next) {
 	const userId = req.userId;
 
 	const lessonId = req?.query?.lessonId || req?.body?.lessonId;
-	const moduleId =
-		req?.query?.moduleId || req?.body?.moduleId || getModuleId(lessonId);
+	const moduleId = req?.query?.moduleId || 
+		req?.body?.moduleId ||
+		getModuleId(lessonId);
 
 	db.USERS.findOne({ id: userId }).then((user) => {
-		const modules = Object.keys(user?.modules);
-		console.log(modules);
+		const modules = Object.keys(user?.modules || {});
 		if (modules.includes(moduleId)) {
 			next();
 		} else {
 			const error = generateMessage(10201);
-			res.status(401).send(error);
+			res.status(403).send(error);
 			return error;
 		}
 	});

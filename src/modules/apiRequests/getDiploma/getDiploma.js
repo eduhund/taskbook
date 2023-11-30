@@ -2,15 +2,29 @@ const { log } = require("@logger");
 const { getDBRequest } = require("../../dbRequests/dbRequests");
 const { generateSkills } = require("./generateSkills");
 const generateCertId = require("../../../processes/prepareData/prepareCertificateData/generateCertId");
-const createCert = require("../../../utils/certGenerator");
 const { generateMessage } = require("../../../utils/messageGenerator");
 const { addUserAction } = require("../../../modules/statistics/addUserAction");
 const provideData = require("./provideData");
 const CyrillicToTranslit = require("cyrillic-to-translit-js");
+const { fork } = require("child_process");
 
 const cyrillicToTranslit = new CyrillicToTranslit();
 
+async function generateCert(fullInfo) {
+	return new Promise((resolve, reject) => {
+		const child = fork(__dirname + "/../../../utils/certGenerator");
+		child.on("message", (fileId) => {
+			log.info("New certificate generated:", fileId);
+			child.kill();
+			return resolve(fileId);
+		});
+		child.send(fullInfo);
+	});
+}
+
 async function getDiploma({ req, res }) {
+	//const certGen = fork(__dirname + "/../../../utils/certGenerator");
+
 	const userId = req?.userId;
 	const { moduleId, lang, isColor, isMascot, isProgress, isPublic } =
 		req?.query;
@@ -18,7 +32,7 @@ async function getDiploma({ req, res }) {
 	const params = {
 		lang: lang || undefined,
 		isColor: isColor ? isColor === "true" : undefined,
-		isMascot: isMascot ? isMascot === "true" : undefined,
+		isMascot: (isColor === undefined) ? isMascot ? isMascot === "true" : undefined : !(isColor === "true"),
 		isProgress: isProgress ? isProgress === "true" : undefined,
 		isPublic: isPublic ? isPublic === "true" : undefined,
 	};
@@ -69,14 +83,11 @@ async function getDiploma({ req, res }) {
 			returns: ["lang", "isColor", "isMascot", "isProgress", "isPublic"],
 		});
 
-		Object.assign(params, certData?.value || {});
-		log.debug(params);
-
-		if (params.lang === undefined) params.lang = moduleData.lang;
-		if (params.isColor === undefined) params.isColor = false;
-		if (params.isMascot === undefined) params.isMascot = true;
-		if (params.isProgress === undefined) params.isProgress = true;
-		if (params.isPublic === undefined) params.isPublic = false;
+		if (params.lang === undefined) params.lang = certData?.lang || moduleData.lang;
+		if (params.isColor === undefined) params.isColor = certData?.isColor || false;
+		if (params.isMascot === undefined) params.isMascot = certData.isMascot === undefined ? true : certData?.isMascot;
+		if (params.isProgress === undefined) params.isProgress = certData.isProgress === undefined ? true : certData?.isProgress;
+		if (params.isPublic === undefined) params.isPublic = certData?.isPublic || false;
 
 		getDBRequest("setDiploma", {
 			query: { id: certId },
@@ -139,7 +150,7 @@ async function getDiploma({ req, res }) {
 
 		const fullInfo = provideData(info, params);
 
-		const fileId = await createCert(fullInfo);
+		const fileId = await generateCert(fullInfo);
 
 		Object.assign(moduleData, params);
 

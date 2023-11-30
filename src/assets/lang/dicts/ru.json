@@ -3,9 +3,11 @@
 	"certType": "зачетку",
 	"certType+": "сертификат",
 	"certType++": "сертификат с отличием",
-	"certDescription": "грыз гранит дизайн задачника eduHund.com и получил",
+	"certDescription": "грыз гранит дизайн-задачника eduHund.com и получил",
 	"certCheck1": "Для проверки подлинности сертификата",
 	"certCheck2": "напишите на",
 	"certSignName": "Olga Pavlova",
-	"certSignPos": "рквдтль безумия"
+	"certSignPos": "рквдтль безумия",
+	"certSignNameLinor": "Linor Goralik",
+	"certSignPosLinor": "автор смысла"
 }
