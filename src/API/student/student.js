@@ -11,7 +11,7 @@ const getCommentsList = require("./getCommentsList/getCommentsList");
 const getCertificate = require("./getCertificate/getCertificate");
 const getCounselor = require("./getCounselor/getCounselor");
 const getModulesList = require("./getModulesList/getModulesList");
-const requestOTK = require("./requestOTK/requestOTK");
+const requestOTP = require("./requestOTP/requestOTP");
 
 const STUDENT = [
 	{
@@ -22,11 +22,11 @@ const STUDENT = [
 		exec: auth,
 	},
 	{
-		name: "requestOTK",
+		name: "requestOTP",
 		type: "post",
 		requiredParams: ["email"],
 		otherParams: ["lang"],
-		exec: requestOTK,
+		exec: requestOTP,
 	},
 	{
 		name: "checkPayment",

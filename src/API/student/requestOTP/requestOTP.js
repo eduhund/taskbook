@@ -1,6 +1,6 @@
 const {
 	getUserInfo,
-  getOTK
+	getOTP
 } = require("@processes");
 
 /***
@@ -15,14 +15,14 @@ const {
  *
  * @returns {Object | undefined} User data on success; undefined on fail
  */
-async function requestOTK(req, res, next) {
+async function requestOTP(req, res, next) {
 	try {
 		const { data } = req;
 
 		const userExists = await getUserInfo(data, next);
 		if (!userExists) return;
 
-		const content = await getOTK();
+		const content = await getOTP(data.user.id, "oneTimePass");
 
 		next({ code: 0, content });
 		return content;
@@ -33,4 +33,4 @@ async function requestOTK(req, res, next) {
 	}
 }
 
-module.exports = requestOTK;
+module.exports = requestOTP;
