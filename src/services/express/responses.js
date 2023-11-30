@@ -140,6 +140,11 @@ const ERRORS = [
 		type: "process_failure",
 		description: "Error in get modules list process",
 	},
+	{
+		code: 20214,
+		type: "process_failure",
+		description: "Error in requestOTK process",
+	},
 ];
 
 function responseGenerator(code, data = {}) {
@@ -152,7 +157,7 @@ function responseGenerator(code, data = {}) {
 }
 
 function responseHandler(message, req, res, next) {
-	const { code, content, trace } = message;
+	const { code, content, trace = "No trace" } = message;
 	const { data } = req;
 	if (!code) {
 		log.debug({ input: data, output: message });

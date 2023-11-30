@@ -15,6 +15,7 @@ const updateContent = require("./updateContent/updateContent");
 const setTaskState = require("./setTaskState/setTaskState");
 const pushComment = require("./pushComment/pushComment");
 const setDiploma = require("./setDiploma/setDiploma");
+const getOTK = require("./getOTK/getOTK");
 
 module.exports = {
 	getUserInfo,
@@ -34,4 +35,5 @@ module.exports = {
 	setTaskState,
 	pushComment,
 	setDiploma,
+	getOTK,
 };

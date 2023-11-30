@@ -17,6 +17,8 @@ async function getUserInfo(data, next) {
 		}
 	});
 
+	console.log(query)
+
 	const user = await DB.getOne("users", {
 		query,
 	});

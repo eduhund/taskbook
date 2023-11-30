@@ -11,14 +11,22 @@ const getCommentsList = require("./getCommentsList/getCommentsList");
 const getCertificate = require("./getCertificate/getCertificate");
 const getCounselor = require("./getCounselor/getCounselor");
 const getModulesList = require("./getModulesList/getModulesList");
+const requestOTK = require("./requestOTK/requestOTK");
 
 const STUDENT = [
 	{
 		name: "auth",
 		type: "post",
-		requiredParams: ["email", "pass"],
+		requiredParams: ["type", "email", "pass"],
 		otherParams: ["lang"],
 		exec: auth,
+	},
+	{
+		name: "requestOTK",
+		type: "post",
+		requiredParams: ["email"],
+		otherParams: ["lang"],
+		exec: requestOTK,
 	},
 	{
 		name: "checkPayment",
