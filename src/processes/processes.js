@@ -15,6 +15,7 @@ const updateContent = require("./updateContent/updateContent");
 const setTaskState = require("./setTaskState/setTaskState");
 const pushComment = require("./pushComment/pushComment");
 const setDiploma = require("./setDiploma/setDiploma");
+const prepareMail = require("./prepareMail/prepareMail");
 
 module.exports = {
 	getUserInfo,
@@ -34,4 +35,5 @@ module.exports = {
 	setTaskState,
 	pushComment,
 	setDiploma,
+	prepareMail
 };

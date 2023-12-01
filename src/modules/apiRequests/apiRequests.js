@@ -19,6 +19,16 @@ const { getTasksList } = require("./getTasksList/getTasksList");
 const { addComment } = require("./addComment/addComment");
 const { getCounselor } = require("./getCounselor/getCounselor");
 
+const { createUser } = require("./createUser/createUser");
+const { editUser } = require("./editUser/editUser");
+const { getStudentsList } = require("./getStudentsList/getStudentsList");
+const { getModulesList } = require("./getModulesList/getModulesList");
+const {
+	changeCommentStatus,
+} = require("./changeCommentStatus/changeCommentStatus");
+const { getCommentsList } = require("./getCommentsList/getCommentsList");
+const { newPayment } = require("./newPayment/newPayment");
+
 const {
 	checkAuth,
 	checkModuleAccess,
@@ -44,6 +54,13 @@ const REQUESTS = {
 	getTasksList,
 	addComment,
 	getCounselor,
+	createUser,
+	editUser,
+	getStudentsList,
+	getModulesList,
+	changeCommentStatus,
+	getCommentsList,
+	newPayment,
 };
 
 const PUBLIC = [
@@ -218,6 +235,51 @@ const PUBLIC = [
 	},
 ];
 
+const TEACHER = [
+	{
+		name: "createUser",
+		method: "post",
+		path: "/createUser",
+		exec: [(req, res) => getApiRequest("createUser", { req, res })],
+	},
+	{
+		name: "editUser",
+		method: "post",
+		path: "/editUser",
+		exec: [(req, res) => getApiRequest("editUser", { req, res })],
+	},
+	{
+		name: "getStudentsList",
+		method: "get",
+		path: "/getStudentsList",
+		exec: [(req, res) => getApiRequest("getStudentsList", { req, res })],
+	},
+	{
+		name: "getModulesList",
+		method: "get",
+		path: "/getModulesList",
+		exec: [(req, res) => getApiRequest("getModulesList", { req, res })],
+	},
+	{
+		name: "getCommentsList",
+		method: "get",
+		path: "/getCommentsList",
+		exec: [(req, res) => getApiRequest("getCommentsList", { req, res })],
+	},
+	{
+		name: "changeCommentStatus",
+		method: "post",
+		path: "/changeCommentStatus",
+		exec: [(req, res) => getApiRequest("changeCommentStatus", { req, res })],
+	},
+	{
+		name: "changeCommentStatus",
+		method: "post",
+		path: "/changeCommentStatus",
+		exec: [(req, res) => getApiRequest("changeCommentStatus", { req, res })],
+	},
+]
+
 async function getApiRequest(type, { req, res, next }) {
 	try {
 		return REQUESTS[type]({ req, res, next });
@@ -228,4 +290,4 @@ async function getApiRequest(type, { req, res, next }) {
 	}
 }
 
-module.exports = { PUBLIC, getApiRequest };
+module.exports = { PUBLIC, TEACHER, getApiRequest };

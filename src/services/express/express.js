@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const { log } = require("@logger");
 
-const { PUBLIC } = require("../../modules/apiRequests/apiRequests");
+const { PUBLIC, TEACHER } = require("../../modules/apiRequests/apiRequests");
 const { STUDENT } = require("../../API/student/student");
 const { responseHandler, pathHandler } = require("./responses");
 const prepareRequestData = require("./prepareRequestData");
@@ -23,24 +23,31 @@ app.use(express.json());
 app.use(require("body-parser").urlencoded({ extended: false }));
 
 app.use("/diplomas", express.static("diplomas"));
-/*
-app.use((req, res, next) => {
-	log.info(req?.query, req?.body, req?.path);
-	next();
-});
-*/
 
 // API v.2
-const apiRouter = express.Router();
-app.use("/api/v2", apiRouter);
-apiRouter.use(paramsProcessor);
+const oldStudent = express.Router();
+app.use("/v2/student", oldStudent);
+oldStudent.use(paramsProcessor);
 for (const request of PUBLIC) {
 	const { path, method, exec } = request;
 	switch (method) {
 		case "get":
-			apiRouter.get(path, exec);
+			oldStudent.get(path, exec);
 		case "post":
-			apiRouter.post(path, exec);
+			oldStudent.post(path, exec);
+	}
+}
+
+const oldTeacher = express.Router();
+app.use("/v2/teacher", oldTeacher);
+oldTeacher.use(checkAuth);
+for (const request of TEACHER) {
+	const { path, method, exec } = request;
+	switch (method) {
+		case "get":
+			oldTeacher.get(path, exec);
+		case "post":
+			oldTeacher.post(path, exec);
 	}
 }
 
