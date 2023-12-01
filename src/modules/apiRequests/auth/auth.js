@@ -1,11 +1,10 @@
 const { log } = require("@logger");
 
 const { getDBRequest } = require("../../dbRequests/dbRequests");
-const accessTokens = require("../../../services/tokenMachine/tokenMachine");
 const { checkPass } = require("../../../utils/pass");
 const { generateMessage } = require("../../../utils/messageGenerator");
 
-const tokens = accessTokens;
+const tokens = require("../../../services/tokenMachine/tokenMachine");
 
 async function auth({ req, res }) {
 	const { email, pass, lang } = req.body;
@@ -29,10 +28,8 @@ async function auth({ req, res }) {
 	}
 
 	const userToken = tokens.setToken(user);
-	lang &&
-		lang !== user.lang &&
-		getDBRequest("setUserInfo", { email, data: { lang } });
-	log.info(`${user.id}: Auth success!`);
+	lang && lang !== user.lang &&	getDBRequest("setUserInfo", { email, data: { lang } });
+
 	const userData = {
 		id: user.id,
 		email: user.email,
@@ -41,10 +38,11 @@ async function auth({ req, res }) {
 		lang: lang || user.lang,
 		token: userToken,
 	};
-	const data = generateMessage(0, userData);
 
+	const data = generateMessage(0, userData);
 	res.status(200).send(data);
 
+	log.info(`${user.id}: Auth success!`);
 	return data;
 }
 
