@@ -1,9 +1,8 @@
 node_modules
 *DS_Store
 .env
-cert
 diplomas
-templates
+files
 
 logs
 *.log

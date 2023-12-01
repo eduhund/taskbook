@@ -1,3 +1,5 @@
+const { readFile, writeFile } = require("../../services/fs/fs")
+
 function rand() {
 	return Math.random().toString(36).substring(2);
 }
@@ -5,25 +7,31 @@ function rand() {
 function getToken() {
 	const accessToken = rand() + rand();
 	const refreshToken = rand();
-	const expiresIn = Math.floor(Date.now() / 1000 + 7200);
+	const expiresAt = Date.now() + 5 * 24 * 60 * 60 * 1000;
 	return {
 		accessToken,
-		expiresIn,
+		expiresAt,
 		refreshToken,
 	};
 }
 
 function tokenMachine() {
-	const tokens = {};
+	const tokens = readFile("/files/", "tokens.json",) || {};
 	function checkToken(token) {
 		return tokens?.[token];
 	}
 
-	function setToken(user) {
+	function setToken(user, data = {}) {
 		const newToken = getToken();
 		tokens[newToken.accessToken] = {
 			id: user?.id,
+			expiresAt: newToken.expiresAt,
+			ip: data.ip,
+			ts: Date.now(),
+			userAgent: data.userAgent,
+			geo: data.geo
 		};
+		writeFile("/files/", "tokens.json", tokens)
 		return newToken;
 	}
 
@@ -37,6 +45,4 @@ function tokenMachine() {
 	};
 }
 
-const accessTokens = tokenMachine();
-
-module.exports = accessTokens;
+module.exports = tokenMachine();
