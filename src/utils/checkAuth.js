@@ -16,7 +16,7 @@ function checkAuth(req, res, next) {
 	const userId = accessTokens.checkList()?.[token]?.id;
 
 	if (!userId) {
-		const error = generateMessage(10103);
+		const error = generateMessage(10105);
 		res.status(401).send(error);
 		return error;
 	} else {

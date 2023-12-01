@@ -34,6 +34,11 @@ const ERRORS = [
 		description: "Payment didn't found",
 	},
 	{
+		code: 10105,
+		type: "invalid_credentials",
+		description: "Access token is invalid or expired",
+	},
+	{
 		code: 10201,
 		type: "access_denied",
 		description: "You don't have access to this content",

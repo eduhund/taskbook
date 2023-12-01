@@ -1,10 +1,11 @@
 const { log } = require("@logger");
+
 const { getDBRequest } = require("../../dbRequests/dbRequests");
 const { generateMessage } = require("../../../utils/messageGenerator");
 const { addUserAction } = require("../../../modules/statistics/addUserAction");
 
 async function addComment({ req, res }) {
-	const userId = req?.userId;
+	const { userId } = req;
 	const { taskId, comment, protest } = req.body;
 
 	const query = { userId, taskId };
@@ -22,9 +23,11 @@ async function addComment({ req, res }) {
 			protest,
 			returns: [],
 		});
-		const data = generateMessage(0, update);
 
+		const data = generateMessage(0, update);
 		res.status(200).send(data);
+
+		log.info(`New comment from user ${userId}: ${comment}`);
 
 		return data;
 	} catch (e) {
