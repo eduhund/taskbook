@@ -1,4 +1,4 @@
-const { db } = require("../mongo");
+const { USERS } = require("../mongo");
 
 function getUsersList({ query = {}, returns = [] }) {
 	const projection = {
@@ -7,9 +7,9 @@ function getUsersList({ query = {}, returns = [] }) {
 	for (const param of returns) {
 		projection[param] = 1;
 	}
-	return db.USERS.find(query, {
+	return USERS.find(query, {
 		projection,
 	}).toArray();
 }
 
-module.exports.getUsersList = getUsersList;
+module.exports = getUsersList;

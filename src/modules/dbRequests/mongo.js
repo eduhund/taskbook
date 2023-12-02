@@ -14,7 +14,7 @@ const CERTS = mongoClient.db(DB_NAME).collection("certs");
 const PAYMENTS = mongoClient.db(DB_NAME).collection("payments");
 const COUNSELOR = mongoClient.db(DB_NAME).collection("counselor");
 
-module.exports.db = {
+module.exports = {
 	USERS,
 	TASKS,
 	STATE,

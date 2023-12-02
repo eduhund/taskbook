@@ -1,4 +1,5 @@
-const DB = require("@mongo/requests");
+const { CERTS } = require("../modules/dbRequests/mongo");
+const { getDBRequest } = require("../modules/dbRequests/dbRequests");
 
 function padder(number = 0, count = 1) {
 	return number.toString().padStart(count, "0");
@@ -6,7 +7,7 @@ function padder(number = 0, count = 1) {
 
 async function generateCertId(userId, moduleId, startDate) {
 	const certsCount =
-		(await DB.count("certs", { query: { moduleId, startDate } })) || 0;
+		(await CERTS.count( { moduleId, startDate })) || 0;
 
 	const postfix = padder(certsCount + 1, 4);
 	const date = new Date(Date.parse(startDate));
@@ -16,7 +17,7 @@ async function generateCertId(userId, moduleId, startDate) {
 	)}`;
 	const certId = `${moduleId}${datePart}${postfix}`;
 
-	DB.insertOne("certs", {
+	getDBRequest("setUserInfo", {
 		query: {
 			id: certId,
 			userId,
@@ -28,7 +29,10 @@ async function generateCertId(userId, moduleId, startDate) {
 
 	const path = `modules.${moduleId}.certId`;
 
-	DB.setOne("users", { query: { id: userId }, set: { [path]: certId } });
+	getDBRequest("setUserInfo", {
+		query: { id: userId },
+		data: { [path]: certId }
+	});
 
 	return certId;
 }

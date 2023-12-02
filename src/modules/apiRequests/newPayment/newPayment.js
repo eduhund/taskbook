@@ -5,7 +5,7 @@ const { hashPass } = require("../../pass");
 const { setKey } = require("../../../services/tokenMachine/OTK");
 const { log } = require("../../../services/logger/logger");
 const { editUser } = require("../editUser/editUser");
-const { prepareMail } = require("../../../processes/processes");
+const { prepareMail } = require("../../../services/mailer/actions");
 const { sendMail } = require("../../../services/mailer/actions");
 
 function checkSource(body) {

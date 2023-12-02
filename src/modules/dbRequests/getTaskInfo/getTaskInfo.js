@@ -1,4 +1,4 @@
-const { db } = require("../mongo");
+const { TASKS } = require("../mongo");
 
 function getTaskInfo({ query = {}, returns = [] }) {
 	const projection = {
@@ -7,7 +7,7 @@ function getTaskInfo({ query = {}, returns = [] }) {
 	for (const param of returns) {
 		projection[param] = 1;
 	}
-	return db.TASKS.findOne(query, { projection });
+	return TASKS.findOne(query, { projection });
 }
 
-module.exports.getTaskInfo = getTaskInfo;
+module.exports = getTaskInfo;

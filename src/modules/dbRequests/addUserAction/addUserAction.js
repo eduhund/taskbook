@@ -1,7 +1,7 @@
-const { db } = require("../mongo");
+const { ACTIONS } = require("../mongo");
 
 function addUserAction({ userId, action, data, params }) {
-	return db.ACTIONS.insertOne({
+	return ACTIONS.insertOne({
 		ts: Date.now(),
 		userId,
 		action,
@@ -10,4 +10,4 @@ function addUserAction({ userId, action, data, params }) {
 	});
 }
 
-module.exports.addUserAction = addUserAction;
+module.exports = addUserAction;

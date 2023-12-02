@@ -1,4 +1,4 @@
-const { db } = require("../mongo");
+const { COUNSELOR } = require("../mongo");
 
 function getCounselor({ query = {}, returns = [] }) {
 	const projection = {
@@ -7,7 +7,7 @@ function getCounselor({ query = {}, returns = [] }) {
 	for (const param of returns) {
 		projection[param] = 1;
 	}
-	return db.COUNSELOR.findOne(query, { projection });
+	return COUNSELOR.findOne(query, { projection });
 }
 
-module.exports.getCounselor = getCounselor;
+module.exports = getCounselor;

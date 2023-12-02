@@ -1,4 +1,4 @@
-const { db } = require("../mongo");
+const { PAYMENTS } = require("../mongo");
 
 function getPaymentInfo({ query = {}, returns = [] }) {
 	const projection = {
@@ -7,7 +7,7 @@ function getPaymentInfo({ query = {}, returns = [] }) {
 	for (const param of returns) {
 		projection[param] = 1;
 	}
-	return db.PAYMENTS.findOne(query, { projection });
+	return PAYMENTS.findOne(query, { projection });
 }
 
-module.exports.getPaymentInfo = getPaymentInfo;
+module.exports = getPaymentInfo;

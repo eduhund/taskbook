@@ -1,4 +1,4 @@
-const { db } = require("../mongo");
+const { USERS } = require("../mongo");
 
 function getUserInfo({ query = {}, returns = [] }) {
 	const projection = {
@@ -7,7 +7,7 @@ function getUserInfo({ query = {}, returns = [] }) {
 	for (const param of returns) {
 		projection[param] = 1;
 	}
-	return db.USERS.findOne(query, { projection });
+	return USERS.findOne(query, { projection });
 }
 
-module.exports.getUserInfo = getUserInfo;
+module.exports = getUserInfo;

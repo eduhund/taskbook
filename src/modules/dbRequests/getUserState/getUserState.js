@@ -1,4 +1,4 @@
-const { db } = require("../mongo");
+const { STATE } = require("../mongo");
 
 function getUserState({ query = {}, returns = [] }) {
 	const projection = {
@@ -7,7 +7,7 @@ function getUserState({ query = {}, returns = [] }) {
 	for (const param of returns) {
 		projection[param] = 1;
 	}
-	return db.STATE.find(query, { projection }).toArray();
+	return STATE.find(query, { projection }).toArray();
 }
 
-module.exports.getUserState = getUserState;
+module.exports = getUserState;

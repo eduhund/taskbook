@@ -1,4 +1,4 @@
-const { db } = require("../mongo");
+const { CERTS } = require("../mongo");
 
 function setDiploma({ query = {}, data = {}, returns = [] }) {
 	const projection = {
@@ -7,7 +7,7 @@ function setDiploma({ query = {}, data = {}, returns = [] }) {
 	for (const param of returns) {
 		projection[param] = 1;
 	}
-	return db.CERTS.findOneAndUpdate(
+	return CERTS.findOneAndUpdate(
 		query,
 		{
 			$set: data,
@@ -21,4 +21,4 @@ function setDiploma({ query = {}, data = {}, returns = [] }) {
 	);
 }
 
-module.exports.setDiploma = setDiploma;
+module.exports = setDiploma;

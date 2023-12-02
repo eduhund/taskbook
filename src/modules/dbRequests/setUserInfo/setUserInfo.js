@@ -1,7 +1,7 @@
-const { db } = require("../mongo");
+const { USERS } = require("../mongo");
 
 async function setUserInfo({ email, data }) {
-	const user = await db.USERS.findOneAndUpdate(
+	const user = await USERS.findOneAndUpdate(
 		{ email },
 		{ $set: data },
 		{ upsert: false, returnDocument: "after" }
@@ -9,4 +9,4 @@ async function setUserInfo({ email, data }) {
 	return user.value;
 }
 
-module.exports.setUserInfo = setUserInfo;
+module.exports = setUserInfo;

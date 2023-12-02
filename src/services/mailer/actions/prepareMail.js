@@ -1,4 +1,4 @@
-const { applyTemplate } = require("../../services/mailer/templates");
+const { applyTemplate } = require("../templates");
 
 function prepareMail(context) {
 	const { params, data } = context;

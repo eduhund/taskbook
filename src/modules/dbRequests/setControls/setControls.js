@@ -1,4 +1,4 @@
-const { db } = require("../mongo");
+const { STATE } = require("../mongo");
 
 function setControls({ query = {}, controlsState = {}, returns = [] }) {
 	const isHintActive = controlsState?.isHintActive || false;
@@ -10,7 +10,7 @@ function setControls({ query = {}, controlsState = {}, returns = [] }) {
 	for (const param of returns) {
 		projection[param] = 1;
 	}
-	return db.STATE.findOneAndUpdate(
+	return STATE.findOneAndUpdate(
 		query,
 		{
 			$set: {
@@ -28,4 +28,4 @@ function setControls({ query = {}, controlsState = {}, returns = [] }) {
 	);
 }
 
-module.exports.setControls = setControls;
+module.exports = setControls;
