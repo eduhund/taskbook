@@ -143,6 +143,11 @@ const ERRORS = [
 		type: "process_failure",
 		description: "Error with updating comment status",
 	},
+	{
+		code: 20118,
+		type: "process_failure",
+		description: "Error with resetting user password",
+	},
 ];
 
 function generateMessage(code, data) {

@@ -13,7 +13,13 @@ function getKeyParams(type) {
 				life: 3600,
 				isReusable: false
 			}
-		
+		case "oneTimeKey":
+			return {
+				type: "string",
+				length: 8,
+				life: 62 * 24 * 60 * 60,
+				isReusable: false
+			}
 		default:
 			return {
 				type: "digit",

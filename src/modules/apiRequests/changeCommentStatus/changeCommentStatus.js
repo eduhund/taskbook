@@ -24,7 +24,7 @@ async function changeCommentStatus({ req, res }) {
 	} catch (e) {
 		log.warn(`Error with updating comment status for user ${userId} and task ${taskId}`);
 		log.warn(e);
-		const error = generateMessage(20115);
+		const error = generateMessage(20117);
 		res.status(400).send(error);
 	}
 
