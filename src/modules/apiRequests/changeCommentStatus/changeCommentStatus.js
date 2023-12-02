@@ -1,5 +1,5 @@
 const { log } = require("../../../services/logger/logger");
-const { db } = require("../../dbRequests/mongo");
+const { STATE } = require("../../dbRequests/mongo");
 const { generateMessage } = require("../../../utils/messageGenerator");
 
 async function changeCommentStatus({ req, res }) {
@@ -7,7 +7,7 @@ async function changeCommentStatus({ req, res }) {
   const {userId, taskId, status = false} = req.body
 
   try {
-    await db.STATE.findOneAndUpdate(
+    await STATE.findOneAndUpdate(
       { userId, taskId },
       {
         $set: {

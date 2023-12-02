@@ -1,8 +1,8 @@
 const { log } = require("../../../services/logger/logger");
-const { db } = require("../../dbRequests/mongo");
+const { USERS, TASKS, STATE } = require("../../dbRequests/mongo");
 
 async function getCommentsList() {
-  const stateArray = await db.STATE.find(
+  const stateArray = await STATE.find(
     { "comments.0": { $exists: true } },
     {
       projection: {
@@ -15,12 +15,12 @@ async function getCommentsList() {
   const commentList = [];
   for (const item of stateArray) {
     if (typeof item.comments[0] !== "string") {
-      const userName = await db.USERS.findOne({ id: item.userId }).then(
+      const userName = await USERS.findOne({ id: item.userId }).then(
         (result) => {
           return result.firstName + " " + result?.lastName;
         }
       );
-      const taskInfo = await db.TASKS.findOne({ id: item.taskId }).then(
+      const taskInfo = await TASKS.findOne({ id: item.taskId }).then(
         (result) => {
           return {
             module: result?.module,
