@@ -138,9 +138,14 @@ const ERRORS = [
 		type: "process_failure",
 		description: "Error with getting counselor content",
 	},
+	{
+		code: 20117,
+		type: "process_failure",
+		description: "Error with updating comment status",
+	},
 ];
 
-function generateMessage(code, data = {}) {
+function generateMessage(code, data) {
 	if (code === 0) {
 		return { OK: true, data };
 	} else {

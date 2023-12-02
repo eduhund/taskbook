@@ -6,7 +6,7 @@ const { PUBLIC, TEACHER } = require("../../modules/apiRequests/apiRequests");
 const { STUDENT } = require("../../API/student/student");
 const { responseHandler, pathHandler } = require("./responses");
 const prepareRequestData = require("./prepareRequestData");
-const { checkAuth } = require("./security");
+const { checkAuth, checkAdmin } = require("./security");
 const { paramsProcessor } = require("../../utils/validate");
 
 const { SERVER_PORT = 8888, ORIGIN = "*" } = process.env;
@@ -40,7 +40,7 @@ for (const request of PUBLIC) {
 
 const oldTeacher = express.Router();
 app.use("/v2/teacher", oldTeacher);
-oldTeacher.use(checkAuth);
+oldTeacher.use(checkAdmin);
 for (const request of TEACHER) {
 	const { path, method, exec } = request;
 	switch (method) {

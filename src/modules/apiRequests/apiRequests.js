@@ -273,10 +273,10 @@ const TEACHER = [
 		exec: [(req, res) => getApiRequest("changeCommentStatus", { req, res })],
 	},
 	{
-		name: "changeCommentStatus",
+		name: "newPayment",
 		method: "post",
-		path: "/changeCommentStatus",
-		exec: [(req, res) => getApiRequest("changeCommentStatus", { req, res })],
+		path: "/newPayment",
+		exec: [(req, res) => getApiRequest("newPayment", { req, res })],
 	},
 ]
 
