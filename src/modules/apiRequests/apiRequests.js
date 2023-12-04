@@ -21,15 +21,15 @@ const { getCounselor } = require("./getCounselor/getCounselor");
 
 
 const resetPassword = require("./resetPassword/resetPassword");
-const { addUser } = require("./addUser/addUser");
-const { editUser } = require("./editUser/editUser");
+const createUser = require("./createUser/createUser");
+const updateUser = require("./updateUser/updateUser");
 const { getStudentsList } = require("./getStudentsList/getStudentsList");
 const { getModulesList } = require("./getModulesList/getModulesList");
 const {
 	changeCommentStatus,
 } = require("./changeCommentStatus/changeCommentStatus");
 const { getCommentsList } = require("./getCommentsList/getCommentsList");
-const { newPayment } = require("./newPayment/newPayment");
+const newPayment = require("./newPayment/newPayment");
 
 const {
 	checkAuth,
@@ -57,8 +57,8 @@ const REQUESTS = {
 	addComment,
 	getCounselor,
 	resetPassword,
-	addUser,
-	editUser,
+	createUser,
+	updateUser,
 	getStudentsList,
 	getModulesList,
 	changeCommentStatus,
@@ -240,10 +240,10 @@ const PUBLIC = [
 
 const TEACHER = [
 	{
-		name: "addUser",
+		name: "createUser",
 		method: "post",
-		path: "/addUser",
-		exec: [(req, res) => getApiRequest("addUser", { req, res })],
+		path: "/createUser",
+		exec: [(req, res) => getApiRequest("createUser", { req, res })],
 	},
 	{
 		name: "resetPassword",
@@ -252,10 +252,10 @@ const TEACHER = [
 		exec: [(req, res) => getApiRequest("resetPassword", { req, res })],
 	},
 	{
-		name: "editUser",
+		name: "updateUser",
 		method: "post",
-		path: "/editUser",
-		exec: [(req, res) => getApiRequest("editUser", { req, res })],
+		path: "/updateUser",
+		exec: [(req, res) => getApiRequest("updateUser", { req, res })],
 	},
 	{
 		name: "getStudentsList",

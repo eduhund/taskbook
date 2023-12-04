@@ -17,6 +17,8 @@ const getDiploma = require("./getDiploma/getDiploma");
 const setDiploma = require("./setDiploma/setDiploma");
 const checkUsername = require("./checkUsername/checkUsername")
 const setPayment = require("./setPayment/setPayment");
+const addUser = require("./addUser/addUser");
+
 
 const REQUESTS = {
 	getUserInfo,
@@ -37,7 +39,8 @@ const REQUESTS = {
 	getDiploma,
 	setDiploma,
 	checkUsername,
-	setPayment
+	setPayment,
+	addUser
 };
 
 function getDBRequest(type, params) {

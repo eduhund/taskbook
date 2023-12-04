@@ -1,10 +1,9 @@
 const { getDBRequest } = require("../../dbRequests/dbRequests");
-const { createUser } = require("../addUser/addUser");
+const { createUser } = require("../createUser/createUser");
 const { calculateDeadline } = require("../../../utils/calculators");
 const { hashPass } = require("../../pass");
 const { setKey } = require("../../../services/tokenMachine/OTK");
 const { log } = require("../../../services/logger/logger");
-const { editUser } = require("../editUser/editUser");
 const { prepareMail } = require("../../../services/mailer/actions");
 const { sendMail } = require("../../../services/mailer/actions");
 
@@ -204,10 +203,9 @@ async function newPayment({ req, res }) {
 			}
 			user.modules[payment?.moduleId].prolongations.push(prolData)
 
-			await editUser({
+			await getDBRequest("setUserInfo", {
 				id: user?.id,
 				data: { modules: user.modules },
-				type: "set",
 			});
 
 			const params = {
@@ -265,10 +263,9 @@ async function newPayment({ req, res }) {
 				}
 			}
 
-			await editUser({
+			await getDBRequest("setUserInfo", {
 				id: user?.id,
 				data: { modules: user.modules },
-				type: "set",
 			});
 
 			const params = {
@@ -310,4 +307,4 @@ async function newPayment({ req, res }) {
 	}
 }
 
-module.exports = { newPayment };
+module.exports = newPayment;

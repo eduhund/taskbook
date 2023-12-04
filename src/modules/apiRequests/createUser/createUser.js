@@ -1,21 +1,9 @@
 const { log } = require("../../../services/logger/logger");
-const { USERS } = require("../../dbRequests/mongo");
 const { getDBRequest } = require("../../dbRequests/dbRequests");
 const { setKey } = require("../../../services/tokenMachine/OTK")
 const { lowerString } = require("../../../utils/stringProcessor")
 
-async function createUser(user) {
-  log.info("Registering user:", user);
-  return USERS.countDocuments().then((totalUsers) => {
-    const userId = `U${(totalUsers + 1).toString().padStart(7, "0")}`;
-    user.id = userId;
-    return USERS.insertOne(user).then(() => {
-      return user;
-    });
-  });
-}
-
-async function addUser({req, res}) {
+async function createUser({req, res}) {
 	try {
 		const { email, pass, firstName, lastName, modules, startDate, deadline, lang } = req.body
 
@@ -52,7 +40,7 @@ async function addUser({req, res}) {
 				modules: userModules,
 				lang,
 			};
-			const createdUser = await createUser(newUser);
+			const createdUser = await getDBRequest("addUser", newUser);
 
 			const sendData = {
 				OK: true,
@@ -92,4 +80,4 @@ async function addUser({req, res}) {
 	}
 };
 
-module.exports = { addUser, createUser };
+module.exports = createUser;
