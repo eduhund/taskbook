@@ -1,5 +1,5 @@
 const { getDBRequest } = require("../../dbRequests/dbRequests");
-const { createUser } = require("../createUser/createUser");
+const { createUser } = require("../addUser/addUser");
 const { calculateDeadline } = require("../../../utils/calculators");
 const { hashPass } = require("../../pass");
 const { setKey } = require("../../../services/tokenMachine/OTK");
@@ -9,12 +9,67 @@ const { prepareMail } = require("../../../services/mailer/actions");
 const { sendMail } = require("../../../services/mailer/actions");
 
 function checkSource(body) {
-	if (Object.keys(body).includes("gumroad_fee")) {
+	const keys = Object.keys(body)
+
+	if (keys.includes("gumroad_fee")) {
 		return "Gumroad";
-	} else if (Object.keys(body).includes("sign")) {
+	}
+
+	if (keys.includes("sign")) {
 		return "Tilda";
 	}
-	throw new Error("Unavailable payment source");
+
+	return undefined
+}
+
+function splitName(name) {
+	if (name) {
+		const [firstName, lastName] = data.name.split(" ", 2);
+		return {
+			firstName,
+			lastName,
+		};
+	} else return {}
+
+}
+
+function prepareData(source, data) {
+	const initData = { source, ts: Date.now() };
+	const products = {
+		["_-jg_yvw1calvFhRDQaqJg=="]: "HSE",
+		["DYGiKngRwU-N1dt_WOJ0lg=="]: "HSP",
+	};
+
+	switch (source) {
+		case "Gumroad":
+			return {
+				...initData,
+				date,
+				email: data.email,
+				firstName: data["First Name"],
+				lastName: data["Last Name"],
+				paymentId: data.sale_id,
+				moduleId: products[data.product_id],
+				value: data.price,
+				currency: "USD",
+			};
+		case "Tilda":
+			const moduleId = data.payment.products[0].sku.slice(0, 3);
+			const isProlongation = data.payment.products[0].sku.includes("+");
+			return {
+				...initData,
+				date,
+				email: data.email,
+				...splitName(data.name),
+				paymentId: data.payment.orderid,
+				moduleId,
+				isProlongation,
+				value: data.payment.products[0].price,
+				currency: "RUB",
+			};
+		default:
+			throw new Error("Payment data wasn't prepared")
+	}
 }
 
 function getDateObject(date) {
@@ -28,55 +83,33 @@ function getISODateOny(date) {
 }
 
 async function newPayment({ req, res }) {
-	const products = {
-		["_-jg_yvw1calvFhRDQaqJg=="]: "HSE",
-		["DYGiKngRwU-N1dt_WOJ0lg=="]: "HSP",
-	};
+
 	const { body } = req;
+
 	if (body.test) {
 		res.sendStatus(200);
 		return;
 	}
+
 	try {
 		log.debug(body);
 		const date = new Date(Date.now());
 
 		const source = checkSource(body);
-		const payment = { source, ts: Date.now() };
-		switch (source) {
-			case "Gumroad":
-				Object.assign(payment, {
-					date,
-					email: body.email,
-					firstName: body["First Name"],
-					lastName: body["Last Name"],
-					paymentId: body.sale_id,
-					moduleId: products[body.product_id],
-					value: body.price,
-					currency: "USD",
-				});
-				break;
-			case "Tilda":
-				if (body.name) {
-					const [firstName, lastName] = body.name.split(" ", 2);
-					Object.assign(payment, {
-						firstName,
-						lastName,
-					});
-				}
-				const moduleId = body.payment.products[0].sku.slice(0, 3);
-				const isProlongation = body.payment.products[0].sku.includes("+");
-				Object.assign(payment, {
-					date,
-					email: body.email,
-					paymentId: body.payment.orderid,
-					moduleId,
-					isProlongation,
-					value: body.payment.products[0].price,
-					currency: "RUB",
-				});
+
+		if (!source) {
+			res.status(400);
+			res.send({
+				OK: false,
+				error: "invalid_params"
+			})
+			return
 		}
+
+		const payment = prepareData(source, body);
+
 		log.debug(payment);
+
 		const user = await getDBRequest("getUserInfo", {
 			query: { email: payment.email },
 		});
@@ -245,7 +278,8 @@ async function newPayment({ req, res }) {
 		}
 		return payment;
 	} catch (e) {
-		console.log("Error with processing new payment.\n", e);
+		log.error("Error with processing new payment");
+		log.error(e);
 		res.sendStatus(500);
 	}
 }
