@@ -144,20 +144,15 @@ function calculateDefaultScore(content = []) {
  *
  * @param {String} date Date of start
  * @param {Number} duration Days number of access
- * @param {Array} prolongations List of users's prolongations
  *
  * @returns {String} Date of deadline
  */
-function calculateDeadline({ deadline, prolongations = [] }) {
-	if (prolongations.length === 0) return deadline;
-
-	if (prolongations.length > 1) {
-		prolongations.sort((a, b) => Date.parse(b.until) - Date.parse(a.until));
-	}
-
-	return prolongations[0]?.until > deadline
-		? prolongations[0]?.until
-		: deadline;
+function calculateDeadline(date, duration) {
+	const dateStart = new Date(date);
+	const dateFinish = new Date(
+		dateStart.setDate(dateStart.getDate() + duration)
+	);
+	return dateFinish.toISOString().split("T")[0];
 }
 
 /**

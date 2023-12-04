@@ -16,7 +16,6 @@ function getTemplate({ lang, status, type, start }) {
 		nameArray.push(start);
 	}
 	const name = nameArray.join("_") + ".html";
-	console.log(name);
 	return fs.readFileSync(path.join(templatePath, name)).toString();
 }
 

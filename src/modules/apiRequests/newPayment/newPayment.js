@@ -24,7 +24,7 @@ function checkSource(body) {
 
 function splitName(name) {
 	if (name) {
-		const [firstName, lastName] = data.name.split(" ", 2);
+		const [firstName, lastName] = name.split(" ", 2);
 		return {
 			firstName,
 			lastName,
@@ -33,7 +33,7 @@ function splitName(name) {
 
 }
 
-function prepareData(source, data) {
+function prepareData(source, data, date) {
 	const initData = { source, ts: Date.now() };
 	const products = {
 		["_-jg_yvw1calvFhRDQaqJg=="]: "HSE",
@@ -106,17 +106,29 @@ async function newPayment({ req, res }) {
 			return
 		}
 
-		const payment = prepareData(source, body);
+		const payment = prepareData(source, body, date);
 
 		log.debug(payment);
+
+		const moduleInfo = await getDBRequest("getModuleInfo", {
+			query: { code: payment.moduleId.toUpperCase() },
+		});
+
+		if (!moduleInfo) {
+			res.status(400);
+			res.send({
+				OK: false,
+				error: "invalid_params"
+			})
+			return
+		}
 
 		const user = await getDBRequest("getUserInfo", {
 			query: { email: payment.email },
 		});
-		const moduleInfo = await getDBRequest("getModuleInfo", {
-			query: { code: payment.moduleId.toUpperCase() },
-		});
+
 		let start = getISODateOny(date);
+
 		if (body.start) {
 			const dateArray = body.start.split(".");
 			const startDateNormilized = `${dateArray[2]}-${dateArray[1]}-${dateArray[0]}`;
@@ -173,23 +185,29 @@ async function newPayment({ req, res }) {
 			const mail = prepareMail({ params, data });
 
 			sendMail(mail, newUser?.email, "eduHund");
+
 		} else if (payment?.isProlongation) {
 			deadline = calculateDeadline(
 				user?.modules[payment.moduleId].deadline,
 				62
 			);
+
 			const prolData = {
 				type: "renewal",
 				paymentId: payment.paymentId,
 				until: deadline,
 			};
+
+			user.modules[payment?.moduleId].deadline = deadline
+			if (!Array.isArray(user.modules[payment?.moduleId].prolongations)) {
+				user.modules[payment?.moduleId].prolongations = []
+			}
+			user.modules[payment?.moduleId].prolongations.push(prolData)
+
 			await editUser({
 				id: user?.id,
-				data: { 
-					[`modules.${payment?.moduleId}.deadline`]: deadline,
-					[`modules.${payment?.moduleId}.prolongations`]: prolData 
-				},
-				type: "push",
+				data: { modules: user.modules },
+				type: "set",
 			});
 
 			const params = {
@@ -211,40 +229,47 @@ async function newPayment({ req, res }) {
 			const mail = prepareMail({ params, data });
 
 			sendMail(mail, user?.email, "eduHund");
+
 		} else {
+
 			const activeModules = Object.entries(user.modules || {}).filter(
 				([, value]) =>
 					Date.now() - Date.parse(value.deadline) <= 7 * 24 * 60 * 60 * 1000
 			);
 
-			const newModule = {
-				start,
-				deadline,
-				prolongations: [],
-			};
-
-			await editUser({
-				id: user?.id,
-				data: { [`modules.${payment?.moduleId}`]: newModule },
-				type: "set",
-			});
-
 			for (const [id] of activeModules) {
-				const type = id === payment?.moduleId ? "newBuy" : "otherModule";
+				const isCurrent = id === payment?.moduleId
+				const type = isCurrent ? "newBuy" : "otherModule";
 				const data = {
 					type,
 					paymentId: payment.paymentId,
 					until: deadline,
 				};
-				await editUser({
-					id: user?.id,
-					data: { 
-						[`modules.${id}.deadline`]: deadline,
-						[`modules.${id}.prolongations`]: data 
-					},
-					type: "push",
-				});
+
+				user.modules[id].deadline = deadline
+				if (!Array.isArray(user.modules[id].prolongations)) {
+					user.modules[id].prolongations = []
+				}
+				user.modules[id].prolongations.push(data)
 			}
+
+			if (!user.modules[payment.moduleId]) {
+				user.modules[payment.moduleId] = {
+					start,
+					deadline,
+					prolongations: [{
+						type: "newBuy",
+						paymentId: payment.paymentId,
+						until: deadline,
+					}]
+				}
+			}
+
+			await editUser({
+				id: user?.id,
+				data: { modules: user.modules },
+				type: "set",
+			});
 
 			const params = {
 				lang: user?.lang || "en",
@@ -271,6 +296,7 @@ async function newPayment({ req, res }) {
 		}
 
 		const response = await getDBRequest("setPayment", { payment });
+
 		if (response?.acknowledged) {
 			res.sendStatus(200);
 		} else {
