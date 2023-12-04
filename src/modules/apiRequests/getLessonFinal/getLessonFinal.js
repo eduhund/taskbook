@@ -53,7 +53,7 @@ async function getLessonFinal({ req, res }) {
 		}
 		moduleData.totalTasks = totalPractice;
 
-		moduleData.deadline = calculateDeadline(userData?.modules?.[moduleId]);
+		moduleData.deadline = userData?.modules?.[moduleId].deadline;
 
 		moduleData.score = stateData.reduce(
 			(progress, value) => progress + (value?.score || 0),

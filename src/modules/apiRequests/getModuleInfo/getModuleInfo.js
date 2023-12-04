@@ -2,7 +2,6 @@ const { log } = require("@logger");
 const { getDBRequest } = require("../../dbRequests/dbRequests");
 const { generateMessage } = require("../../../utils/messageGenerator");
 const { addUserAction } = require("../../../modules/statistics/addUserAction");
-const { calculateDeadline } = require("../../../utils/calculators");
 
 async function getModuleInfo({ req, res }) {
 	const userId = req?.userId;
@@ -35,7 +34,7 @@ async function getModuleInfo({ req, res }) {
 	try {
 		const [userData, stateData, moduleData] = await Promise.all(requests);
 
-		moduleData.deadline = calculateDeadline(userData?.modules?.[moduleId]);
+		moduleData.deadline = userData?.modules?.[moduleId]?.deadline;
 		moduleData.startDate = userData?.modules?.[moduleId]?.start;
 
 		let maxScore = 0;

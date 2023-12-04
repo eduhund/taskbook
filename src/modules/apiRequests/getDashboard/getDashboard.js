@@ -3,7 +3,6 @@ const { getDBRequest } = require("../../dbRequests/dbRequests");
 
 const {
 	calculateTotalScore,
-	calculateDeadline,
 } = require("../../../utils/calculators");
 const { getNextTaskId } = require("../../../utils/getNextTaskId");
 const setLessonsState = require("../../../utils/setLessonsState");
@@ -47,13 +46,13 @@ async function getDashboard({ req, res }) {
 			if (!moduleData) continue;
 			const today = Date.now();
 			const startDate = Date.parse(userModules[moduleId].start);
-			const deadline = Date.parse(calculateDeadline(userModules[moduleId]));
+			const deadline = Date.parse(userModules[moduleId].deadline);
 			const UTCMidnight = new Date(deadline);
 			UTCMidnight.setUTCHours(23, 59, 59, 0);
 			const UTCDeadline = Date.parse(UTCMidnight);
 
 			moduleData.startDate = userModules[moduleId].start;
-			moduleData.deadline = calculateDeadline(userModules[moduleId]);
+			moduleData.deadline = userModules[moduleId].deadline;
 
 			if (moduleData.prevModule) {
 				if (Object.keys(userModules).includes(moduleData.prevModule)) {
