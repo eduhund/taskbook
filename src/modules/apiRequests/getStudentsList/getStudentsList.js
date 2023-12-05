@@ -158,7 +158,7 @@ async function getStudentsList({res}) {
 		});
 	
 		return usersData;
-	}  catch (e) {
+	} catch (e) {
 		log.error("Error with processing get students list");
 		log.error(e);
 		res.sendStatus(500);

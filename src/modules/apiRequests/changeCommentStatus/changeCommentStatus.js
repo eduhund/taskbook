@@ -31,4 +31,4 @@ async function changeCommentStatus({ req, res }) {
 
 }
 
-module.exports.changeCommentStatus = changeCommentStatus;
+module.exports = changeCommentStatus;
