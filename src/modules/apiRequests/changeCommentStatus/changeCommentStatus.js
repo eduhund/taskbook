@@ -6,29 +6,20 @@ async function changeCommentStatus({ req, res }) {
 
   const {userId, taskId, status = false} = req.body
 
-  try {
-    await STATE.findOneAndUpdate(
-      { userId, taskId },
-      {
-        $set: {
-          "comments.0.readedByTeacher": status,
-        },
+  await STATE.findOneAndUpdate(
+    { userId, taskId },
+    {
+      $set: {
+        "comments.0.readedByTeacher": status,
       },
-      { upsert: true, returnDocument: "after", returnNewDocument: true }
-    );
+    },
+    { upsert: true, returnDocument: "after", returnNewDocument: true }
+  );
 
-		const data = generateMessage(0);
-		res.status(200).send(data);
+  const data = generateMessage(0);
+  res.status(200).send(data);
 
-		return data;
-	} catch (e) {
-		log.warn(`Error with updating comment status for user ${userId} and task ${taskId}`);
-		log.warn(e);
-		const error = generateMessage(20117);
-		res.status(400).send(error);
-	}
-
-
+  return
 }
 
 module.exports = changeCommentStatus;

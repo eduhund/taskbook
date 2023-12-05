@@ -1,21 +1,14 @@
 const { log } = require("../../../services/logger/logger");
-
 const { getDBRequest } = require("../../dbRequests/dbRequests");
+const { generateMessage } = require("../../../utils/messageGenerator");
 
 async function getModulesList({res}) {
-	try {
-		const modulesList = await getDBRequest("getModulesList", {});
-		res.status(200).send({
-			OK: true,
-			data: modulesList,
-		});
+	const modulesList = await getDBRequest("getModulesList", {});
 
-	} catch (e) {
-		log.error("Error with processing get modules list");
-		log.error(e);
-		res.sendStatus(500);
-	}
+  const data = generateMessage(0, modulesList);
+  res.status(200).send(data);
 
+	return
 }
 
 module.exports = getModulesList;

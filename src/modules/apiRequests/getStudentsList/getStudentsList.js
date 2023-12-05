@@ -4,6 +4,7 @@ const { getDBRequest } = require("../../dbRequests/dbRequests");
 const { calculateTotalScore } = require("../../../utils/calculators");
 const { getNextTaskId } = require("../../../utils/getNextTaskId");
 const { getDeadline } = require("../../../utils/access");
+const { generateMessage } = require("../../../utils/messageGenerator");
 
 async function getStudentsList({res}) {
 
@@ -152,12 +153,10 @@ async function getStudentsList({res}) {
 			usersData.push(userData);
 		}
 
-		res.status(200).send({
-			OK: true,
-			data: usersData,
-		});
-	
-		return usersData;
+		const data = generateMessage(0, usersList);
+		res.status(200).send(data);
+
+		return
 	} catch (e) {
 		log.error("Error with processing get students list");
 		log.error(e);

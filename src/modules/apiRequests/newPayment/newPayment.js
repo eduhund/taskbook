@@ -90,221 +90,216 @@ async function newPayment({ req, res }) {
 		return;
 	}
 
-	try {
-		log.debug(body);
-		const date = new Date(Date.now());
+	log.debug(body);
+	const date = new Date(Date.now());
 
-		const source = checkSource(body);
+	const source = checkSource(body);
 
-		if (!source) {
-			res.status(400);
-			res.send({
-				OK: false,
-				error: "invalid_params"
-			})
-			return
-		}
+	if (!source) {
+		res.status(400);
+		res.send({
+			OK: false,
+			error: "invalid_params"
+		})
+		return
+	}
 
-		const payment = prepareData(source, body, date);
+	const payment = prepareData(source, body, date);
 
-		log.debug(payment);
+	log.debug(payment);
 
-		const moduleInfo = await getDBRequest("getModuleInfo", {
-			query: { code: payment.moduleId.toUpperCase() },
-		});
+	const moduleInfo = await getDBRequest("getModuleInfo", {
+		query: { code: payment.moduleId.toUpperCase() },
+	});
 
-		if (!moduleInfo) {
-			res.status(400);
-			res.send({
-				OK: false,
-				error: "invalid_params"
-			})
-			return
-		}
+	if (!moduleInfo) {
+		res.status(400);
+		res.send({
+			OK: false,
+			error: "invalid_params"
+		})
+		return
+	}
 
-		const user = await getDBRequest("getUserInfo", {
-			query: { email: payment.email },
-		});
+	const user = await getDBRequest("getUserInfo", {
+		query: { email: payment.email },
+	});
 
-		let start = getISODateOny(date);
+	let start = getISODateOny(date);
 
-		if (body.start) {
-			const dateArray = body.start.split(".");
-			const startDateNormilized = `${dateArray[2]}-${dateArray[1]}-${dateArray[0]}`;
-			start = getISODateOny(startDateNormilized);
-		}
-		let deadline = calculateDeadline(start, 62);
+	if (body.start) {
+		const dateArray = body.start.split(".");
+		const startDateNormilized = `${dateArray[2]}-${dateArray[1]}-${dateArray[0]}`;
+		start = getISODateOny(startDateNormilized);
+	}
+	let deadline = calculateDeadline(start, 62);
 
-		if (!user) {
-			const userPass = Math.random().toString(36).substring(2);
-			const lang = source === "Tilda" ? "ru" : "en";
+	if (!user) {
+		const userPass = Math.random().toString(36).substring(2);
+		const lang = source === "Tilda" ? "ru" : "en";
 
-			const newUser = {
-				email: payment.email,
-				pass: userPass ? hashPass(userPass) : "",
-				firstName: payment.firstName,
-				lastName: payment.lastName,
-				modules: {
-					[payment.moduleId]: {
-						start,
-						deadline,
-						prolongations: [],
-					},
+		const newUser = {
+			email: payment.email,
+			pass: userPass ? hashPass(userPass) : "",
+			firstName: payment.firstName,
+			lastName: payment.lastName,
+			modules: {
+				[payment.moduleId]: {
+					start,
+					deadline,
+					prolongations: [],
 				},
-				lang,
-			};
+			},
+			lang,
+		};
 
-			const createdUser = await getDBRequest("addUser", newUser);
+		const createdUser = await getDBRequest("addUser", newUser);
 
-			const secureKey = await setKey(createdUser?.id, "oneTimeKey");
+		const secureKey = await setKey(createdUser?.id, "oneTimeKey");
 
-			const link = `${process.env.FRONTEND_URL}/createPassword?email=${payment.email}&verifyKey=${secureKey}&lang=${lang}`;
+		const link = `${process.env.FRONTEND_URL}/createPassword?email=${payment.email}&verifyKey=${secureKey}&lang=${lang}`;
 
-			const params = {
-				lang,
-				status: "new",
-				type: "buy",
-				start: getISODateOny(date) < start ? "date" : "now",
-			};
+		const params = {
+			lang,
+			status: "new",
+			type: "buy",
+			start: getISODateOny(date) < start ? "date" : "now",
+		};
 
+		const data = {
+			NAME: newUser?.firstName || "",
+			MODULE: moduleInfo?.name || "",
+			MODULELINK: moduleInfo?.moduleLink || "",
+			MASCOTLETTERTOP: moduleInfo?.mascot?.letterTop || "",
+			MASCOTLETTERBOTTOM: moduleInfo?.mascot?.letterBottom || "",
+			START_DATE: new Date(Date.parse(start)).toLocaleDateString("ru-RU", {
+				month: "long",
+				day: "numeric",
+			}),
+			PASSWORD: userPass || "",
+			PASSWORD_LINK: link,
+		};
+
+		const mail = prepareMail({ params, data });
+
+		sendMail(mail, newUser?.email, "eduHund");
+
+	} else if (payment?.isProlongation) {
+		deadline = calculateDeadline(
+			user?.modules[payment.moduleId].deadline,
+			62
+		);
+
+		const prolData = {
+			type: "renewal",
+			paymentId: payment.paymentId,
+			until: deadline,
+		};
+
+		user.modules[payment?.moduleId].deadline = deadline
+		if (!Array.isArray(user.modules[payment?.moduleId].prolongations)) {
+			user.modules[payment?.moduleId].prolongations = []
+		}
+		user.modules[payment?.moduleId].prolongations.push(prolData)
+
+		await getDBRequest("setUserInfo", {
+			id: user?.id,
+			data: { modules: user.modules },
+		});
+
+		const params = {
+			lang: "ru" || user?.lang,
+			status: "renew",
+		};
+
+		const data = {
+			NAME: user?.firstName || "",
+			MODULE: moduleInfo?.name || "",
+			MODULELINK: moduleInfo?.moduleLink || "",
+			MASCOTLETTERTOP: moduleInfo?.mascot?.letterTop || "",
+			MASCOTLETTERBOTTOM: moduleInfo?.mascot?.letterBottom || "",
+			START_DATE: new Date(Date.parse(start)).toLocaleDateString("ru-RU", {
+				month: "long",
+				day: "numeric",
+			}),
+		};
+		const mail = prepareMail({ params, data });
+
+		sendMail(mail, user?.email, "eduHund");
+
+	} else {
+
+		const activeModules = Object.entries(user.modules || {}).filter(
+			([, value]) =>
+				Date.now() - Date.parse(value.deadline) <= 7 * 24 * 60 * 60 * 1000
+		);
+
+		for (const [id] of activeModules) {
+			const isCurrent = id === payment?.moduleId
+			const type = isCurrent ? "newBuy" : "otherModule";
 			const data = {
-				NAME: newUser?.firstName || "",
-				MODULE: moduleInfo?.name || "",
-				MODULELINK: moduleInfo?.moduleLink || "",
-				MASCOTLETTERTOP: moduleInfo?.mascot?.letterTop || "",
-				MASCOTLETTERBOTTOM: moduleInfo?.mascot?.letterBottom || "",
-				START_DATE: new Date(Date.parse(start)).toLocaleDateString("ru-RU", {
-					month: "long",
-					day: "numeric",
-				}),
-				PASSWORD: userPass || "",
-				PASSWORD_LINK: link,
-			};
-
-			const mail = prepareMail({ params, data });
-
-			sendMail(mail, newUser?.email, "eduHund");
-
-		} else if (payment?.isProlongation) {
-			deadline = calculateDeadline(
-				user?.modules[payment.moduleId].deadline,
-				62
-			);
-
-			const prolData = {
-				type: "renewal",
+				type,
 				paymentId: payment.paymentId,
 				until: deadline,
 			};
 
-			user.modules[payment?.moduleId].deadline = deadline
-			if (!Array.isArray(user.modules[payment?.moduleId].prolongations)) {
-				user.modules[payment?.moduleId].prolongations = []
+			user.modules[id].deadline = deadline
+			if (!Array.isArray(user.modules[id].prolongations)) {
+				user.modules[id].prolongations = []
 			}
-			user.modules[payment?.moduleId].prolongations.push(prolData)
+			user.modules[id].prolongations.push(data)
+		}
 
-			await getDBRequest("setUserInfo", {
-				id: user?.id,
-				data: { modules: user.modules },
-			});
-
-			const params = {
-				lang: "ru" || user?.lang,
-				status: "renew",
-			};
-
-			const data = {
-				NAME: user?.firstName || "",
-				MODULE: moduleInfo?.name || "",
-				MODULELINK: moduleInfo?.moduleLink || "",
-				MASCOTLETTERTOP: moduleInfo?.mascot?.letterTop || "",
-				MASCOTLETTERBOTTOM: moduleInfo?.mascot?.letterBottom || "",
-				START_DATE: new Date(Date.parse(start)).toLocaleDateString("ru-RU", {
-					month: "long",
-					day: "numeric",
-				}),
-			};
-			const mail = prepareMail({ params, data });
-
-			sendMail(mail, user?.email, "eduHund");
-
-		} else {
-
-			const activeModules = Object.entries(user.modules || {}).filter(
-				([, value]) =>
-					Date.now() - Date.parse(value.deadline) <= 7 * 24 * 60 * 60 * 1000
-			);
-
-			for (const [id] of activeModules) {
-				const isCurrent = id === payment?.moduleId
-				const type = isCurrent ? "newBuy" : "otherModule";
-				const data = {
-					type,
+		if (!user.modules[payment.moduleId]) {
+			user.modules[payment.moduleId] = {
+				start,
+				deadline,
+				prolongations: [{
+					type: "newBuy",
 					paymentId: payment.paymentId,
 					until: deadline,
-				};
-
-				user.modules[id].deadline = deadline
-				if (!Array.isArray(user.modules[id].prolongations)) {
-					user.modules[id].prolongations = []
-				}
-				user.modules[id].prolongations.push(data)
+				}]
 			}
-
-			if (!user.modules[payment.moduleId]) {
-				user.modules[payment.moduleId] = {
-					start,
-					deadline,
-					prolongations: [{
-						type: "newBuy",
-						paymentId: payment.paymentId,
-						until: deadline,
-					}]
-				}
-			}
-
-			await getDBRequest("setUserInfo", {
-				id: user?.id,
-				data: { modules: user.modules },
-			});
-
-			const params = {
-				lang: user?.lang || "en",
-				status: "current",
-				type: "buy",
-				start: getISODateOny(date) < start ? "date" : "now",
-			};
-
-			const data = {
-				NAME: user?.firstName || "",
-				MODULE: moduleInfo?.name || "",
-				MODULELINK: moduleInfo?.moduleLink || "",
-				MASCOTLETTERTOP: moduleInfo?.mascot?.letterTop || "",
-				MASCOTLETTERBOTTOM: moduleInfo?.mascot?.letterBottom || "",
-				START_DATE: new Date(Date.parse(start)).toLocaleDateString("ru-RU", {
-					month: "long",
-					day: "numeric",
-				}),
-			};
-
-			const mail = prepareMail({ params, data });
-
-			sendMail(mail, user?.email, "eduHund");
 		}
 
-		const response = await getDBRequest("setPayment", { payment });
+		await getDBRequest("setUserInfo", {
+			id: user?.id,
+			data: { modules: user.modules },
+		});
 
-		if (response?.acknowledged) {
-			res.sendStatus(200);
-		} else {
-			res.sendStatus(400);
-		}
-		return payment;
-	} catch (e) {
-		log.error("Error with processing new payment");
-		log.error(e);
-		res.sendStatus(500);
+		const params = {
+			lang: user?.lang || "en",
+			status: "current",
+			type: "buy",
+			start: getISODateOny(date) < start ? "date" : "now",
+		};
+
+		const data = {
+			NAME: user?.firstName || "",
+			MODULE: moduleInfo?.name || "",
+			MODULELINK: moduleInfo?.moduleLink || "",
+			MASCOTLETTERTOP: moduleInfo?.mascot?.letterTop || "",
+			MASCOTLETTERBOTTOM: moduleInfo?.mascot?.letterBottom || "",
+			START_DATE: new Date(Date.parse(start)).toLocaleDateString("ru-RU", {
+				month: "long",
+				day: "numeric",
+			}),
+		};
+
+		const mail = prepareMail({ params, data });
+
+		sendMail(mail, user?.email, "eduHund");
 	}
+
+	const response = await getDBRequest("setPayment", { payment });
+
+	if (response?.acknowledged) {
+		res.sendStatus(200);
+	} else {
+		res.sendStatus(400);
+	}
+
+	return;
 }
 
 module.exports = newPayment;
