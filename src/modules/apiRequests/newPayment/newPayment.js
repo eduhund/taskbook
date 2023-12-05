@@ -1,7 +1,7 @@
 const { getDBRequest } = require("../../dbRequests/dbRequests");
 const { createUser } = require("../createUser/createUser");
 const { calculateDeadline } = require("../../../utils/calculators");
-const { hashPass } = require("../../pass");
+const { hashPass } = require("../../../utils/pass");
 const { setKey } = require("../../../services/tokenMachine/OTK");
 const { log } = require("../../../services/logger/logger");
 const { prepareMail } = require("../../../services/mailer/actions");
@@ -154,7 +154,7 @@ async function newPayment({ req, res }) {
 				lang,
 			};
 
-			const createdUser = await createUser(newUser);
+			const createdUser = await getDBRequest("addUser", newUser);
 
 			const secureKey = await setKey(createdUser?.id, "oneTimeKey");
 
