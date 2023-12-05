@@ -3,7 +3,7 @@ const { getDBRequest } = require("../../dbRequests/dbRequests");
 const { lowerString } = require("../../../utils/stringProcessor")
 const { generateMessage } = require("../../../utils/messageGenerator");
 
-async function updateUser({ req, res }) {
+async function updateUser(req, res) {
 	const { id, email, firstName, lastName, lang, gender} = req.body
 
 	if (!id) {

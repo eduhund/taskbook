@@ -2,7 +2,7 @@ const { log } = require("@logger");
 const { getDBRequest } = require("../../dbRequests/dbRequests");
 const { generateMessage } = require("../../../utils/messageGenerator");
 
-async function getLessonsList({ req, res }) {
+async function getLessonsList(req, res) {
 	const userId = req?.userId;
 	const moduleId = req?.query?.moduleId;
 

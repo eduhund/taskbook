@@ -2,7 +2,7 @@ const { log } = require("@logger");
 const { getDBRequest } = require("../../dbRequests/dbRequests");
 const { generateMessage } = require("../../../utils/messageGenerator");
 
-async function getCounselor({ req, res }) {
+async function getCounselor(req, res) {
 	const userId = req?.userId;
 	const { lang = "en" } = req?.query;
 

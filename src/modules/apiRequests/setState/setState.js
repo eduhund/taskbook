@@ -39,7 +39,7 @@ async function updateContent(taskData, taskState = {}, userId, lang = "en") {
 	return questionsDict;
 }
 
-async function setState({ req, res }) {
+async function setState(req, res) {
 	const userId = req?.userId;
 	const { questionId, state } = req.body;
 

@@ -5,7 +5,7 @@ const { getModuleId, getLessonId } = require("../../../utils/idExtractor");
 const { createSummary } = require("./createSummary");
 const { generateMessage } = require("../../../utils/messageGenerator");
 
-async function getLessonFinal({ req, res }) {
+async function getLessonFinal(req, res) {
 	const userId = req?.userId;
 	const fullLessonId = req?.query?.lessonId;
 

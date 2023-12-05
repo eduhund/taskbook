@@ -4,7 +4,7 @@ const { getDBRequest } = require("../../dbRequests/dbRequests");
 const { checkKey } = require("../../../services/tokenMachine/OTK");
 const { generateMessage } = require("../../../utils/messageGenerator");
 
-async function createPassword({ req, res, next }) {
+async function createPassword(req, res, next) {
 	const { email, pass, key, lang } = req.body;
 
 	const verify = await checkKey(key);

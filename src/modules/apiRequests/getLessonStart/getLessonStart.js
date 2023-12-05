@@ -3,7 +3,7 @@ const { getDBRequest } = require("../../dbRequests/dbRequests");
 const { getModuleId, getLessonId } = require("../../../utils/idExtractor");
 const { generateMessage } = require("../../../utils/messageGenerator");
 
-async function getLessonStart({ req, res }) {
+async function getLessonStart(req, res) {
 	const userId = req.userId;
 	const fullLessonId = req.query.lessonId;
 

@@ -6,7 +6,7 @@ const { getNextTaskId } = require("../../../utils/getNextTaskId");
 const { getDeadline } = require("../../../utils/access");
 const { generateMessage } = require("../../../utils/messageGenerator");
 
-async function getStudentsList({res}) {
+async function getStudentsList(req, res) {
 	const usersList = await getDBRequest("getUsersList", {});
 
 	const usersData = [];

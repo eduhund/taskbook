@@ -2,9 +2,8 @@ const { log } = require("@logger");
 
 const { getDBRequest } = require("../../dbRequests/dbRequests");
 const { generateMessage } = require("../../../utils/messageGenerator");
-const { addUserAction } = require("../../../modules/statistics/addUserAction");
 
-async function setControls({ req, res }) {
+async function setControls(req, res) {
 	const userId = req?.userId;
 	const { taskId, controlsState } = req.body;
 

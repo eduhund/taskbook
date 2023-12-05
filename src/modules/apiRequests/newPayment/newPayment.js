@@ -81,7 +81,7 @@ function getISODateOny(date) {
 	return dateObject.toISOString().split("T")[0];
 }
 
-async function newPayment({ req, res }) {
+async function newPayment(req, res) {
 
 	const { body } = req;
 

@@ -3,7 +3,6 @@ const { getDBRequest } = require("../../dbRequests/dbRequests");
 const { generateSkills } = require("./generateSkills");
 const generateCertId = require("../../../utils/generateCertId");
 const { generateMessage } = require("../../../utils/messageGenerator");
-const { addUserAction } = require("../../../modules/statistics/addUserAction");
 const provideData = require("./provideData");
 const CyrillicToTranslit = require("cyrillic-to-translit-js");
 const { fork } = require("child_process");
@@ -22,9 +21,7 @@ async function generateCert(fullInfo) {
 	});
 }
 
-async function getDiploma({ req, res }) {
-	//const certGen = fork(__dirname + "/../../../utils/certGenerator");
-
+async function getDiploma(req, res) {
 	const userId = req?.userId;
 	const { moduleId, lang, isColor, isMascot, isProgress, isPublic } =
 		req?.query;

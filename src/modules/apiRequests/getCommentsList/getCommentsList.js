@@ -2,7 +2,7 @@ const { log } = require("../../../services/logger/logger");
 const { USERS, TASKS, STATE } = require("../../dbRequests/mongo");
 const { generateMessage } = require("../../../utils/messageGenerator");
 
-async function getCommentsList({res}) {
+async function getCommentsList(req, res) {
   const stateArray = await STATE.find(
     { "comments.0": { $exists: true } },
     {

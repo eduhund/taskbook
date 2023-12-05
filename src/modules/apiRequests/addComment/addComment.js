@@ -3,7 +3,7 @@ const { log } = require("@logger");
 const { getDBRequest } = require("../../dbRequests/dbRequests");
 const { generateMessage } = require("../../../utils/messageGenerator");
 
-async function addComment({ req, res }) {
+async function addComment(req, res) {
 	const { userId } = req;
 	const { taskId, comment, protest } = req.body;
 

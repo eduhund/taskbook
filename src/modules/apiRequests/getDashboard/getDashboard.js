@@ -11,7 +11,7 @@ const { generateMessage } = require("../../../utils/messageGenerator");
 
 const DEMO = process.env.DEMO;
 
-async function getDashboard({ req, res }) {
+async function getDashboard(req, res) {
 	const userId = req?.userId;
 
 	const { email, lang, modules, firstName, lastName } = await getDBRequest("getUserInfo", {

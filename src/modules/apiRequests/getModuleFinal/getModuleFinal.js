@@ -5,7 +5,7 @@ const {
 const { getDBRequest } = require("../../dbRequests/dbRequests");
 const { generateMessage } = require("../../../utils/messageGenerator");
 
-async function getModuleFinal({ req, res }) {
+async function getModuleFinal(req, res) {
 	const userId = req?.userId;
 	const moduleId = req?.query?.moduleId;
 

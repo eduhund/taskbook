@@ -4,7 +4,7 @@ const { getDBRequest } = require("../../dbRequests/dbRequests");
 const { lowerString } = require("../../../utils/stringProcessor")
 const { setKey } = require("../../../services/tokenMachine/OTK")
 
-async function resetPassword({ req, res }) {
+async function resetPassword(req, res) {
     const email = lowerString(req.body.email);
     const user = await getDBRequest("checkUsername", { email })
   

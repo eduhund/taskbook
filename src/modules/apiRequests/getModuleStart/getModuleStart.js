@@ -4,7 +4,7 @@ const { getNextTaskId } = require("../../../utils/getNextTaskId");
 const { generateMessage } = require("../../../utils/messageGenerator");
 const { addUserAction } = require("../../../modules/statistics/addUserAction");
 
-async function getModuleStart({ req, res }) {
+async function getModuleStart(req, res) {
 	const userId = req?.userId;
 	const moduleId = req?.query?.moduleId;
 

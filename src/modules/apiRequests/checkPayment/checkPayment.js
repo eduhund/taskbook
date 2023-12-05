@@ -4,7 +4,7 @@ const { getDBRequest } = require("../../dbRequests/dbRequests");
 const accessTokens = require("../../../services/tokenMachine/tokenMachine");
 const { generateMessage } = require("../../../utils/messageGenerator");
 
-async function checkPayment({ req, res }) {
+async function checkPayment(req, res) {
 	const { paymentId } = req.body;
 
 	const payment = await getDBRequest("getPaymentInfo", {

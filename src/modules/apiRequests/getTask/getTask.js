@@ -5,9 +5,8 @@ const { getModuleId } = require("../../../utils/idExtractor");
 const { prepareModuleData } = require("./prepareModuleData");
 const { prepareTaskData } = require("./prepareTaskData");
 const { generateMessage } = require("../../../utils/messageGenerator");
-const { addUserAction } = require("../../../modules/statistics/addUserAction");
 
-async function getTask({ req, res }) {
+async function getTask(req, res) {
 	const userId = req.userId;
 	const { taskId } = req.query;
 
@@ -36,13 +35,13 @@ async function getTask({ req, res }) {
 	if (!moduleData) {
 		const error = generateMessage(10303);
 		res.status(200).send(error);
-		return error;
+		return;
 	}
 
 	if (!taskData) {
 		const error = generateMessage(10301);
 		res.status(200).send(error);
-		return error;
+		return;
 	}
 
 	const preparedModuleData = await prepareModuleData({ moduleData, taskId });

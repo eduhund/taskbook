@@ -3,9 +3,8 @@ const { log } = require("@logger");
 const { getDBRequest } = require("../../dbRequests/dbRequests");
 const { getModuleId, getLessonId } = require("../../../utils/idExtractor");
 const { generateMessage } = require("../../../utils/messageGenerator");
-const { addUserAction } = require("../../../modules/statistics/addUserAction");
 
-async function getTasksList({ req, res }) {
+async function getTasksList(req, res) {
 	const userId = req?.userId;
 	const fullLessonId = req?.query?.lessonId;
 

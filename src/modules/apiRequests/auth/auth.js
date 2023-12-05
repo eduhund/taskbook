@@ -6,7 +6,7 @@ const { generateMessage } = require("../../../utils/messageGenerator");
 
 const tokens = require("../../../services/tokenMachine/tokenMachine");
 
-async function auth({ req, res }) {
+async function auth(req, res) {
 	const { email, pass, lang } = req.body;
 
 	const user = await getDBRequest("getUserInfo", {

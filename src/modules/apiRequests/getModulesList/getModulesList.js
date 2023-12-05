@@ -2,7 +2,7 @@ const { log } = require("../../../services/logger/logger");
 const { getDBRequest } = require("../../dbRequests/dbRequests");
 const { generateMessage } = require("../../../utils/messageGenerator");
 
-async function getModulesList({res}) {
+async function getModulesList(req, res) {
 	const modulesList = await getDBRequest("getModulesList", {});
 
   const data = generateMessage(0, modulesList);

@@ -289,9 +289,11 @@ const TEACHER = [
 
 async function getApiRequest(type, { req, res, next }) {
 	try {
-		return REQUESTS[type]({ req, res, next });
+		return REQUESTS[type](req, res, next);
 	} catch (e) {
-		log.warn(`Error in API method: ${type}.`, e);
+		log.error(`Error in API method: ${type}.`);
+		log.debug(req.userId, req.query, req.body);
+		log.debug(e);
 		res.sendStatus(500);
 		return;
 	}

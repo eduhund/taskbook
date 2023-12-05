@@ -8,7 +8,7 @@ const {
 } = require("../../../utils/calculators");
 const { generateMessage } = require("../../../utils/messageGenerator");
 
-async function checkTask({ req, res }) {
+async function checkTask(req, res) {
 	const userId = req?.userId;
 	const { taskId, isChecked, protest } = req.body;
 

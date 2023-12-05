@@ -4,7 +4,7 @@ const { setKey } = require("../../../services/tokenMachine/OTK")
 const { lowerString } = require("../../../utils/stringProcessor")
 const { generateMessage } = require("../../../utils/messageGenerator");
 
-async function createUser({req, res}) {
+async function createUser(req, res) {
 	const { email, pass, firstName, lastName, modules, startDate, deadline, lang } = req.body
 
 	if (!email) {
@@ -31,7 +31,7 @@ async function createUser({req, res}) {
 			error_description: "User with this email is already exist",
 			error_code: 10008,
 		});
-		
+
 		return
 	}
 
