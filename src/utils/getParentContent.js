@@ -5,7 +5,7 @@ const { getFullTaskId, getFullQuestionId } = require("./idExtractor");
 const { getDBRequest } = require("../modules/dbRequests/dbRequests");
 
 async function getTaskName(taskId, lang) {
-	const taskData = await DB.getOne("tasks", { query: { id: taskId } });
+	const taskData = await getDBRequest("getTaskInfo", { query: { id: taskId } });
 	if (!taskData) {
 		throw new Error(`getParentContent: Can't find task with ID ${taskId}`);
 	}
