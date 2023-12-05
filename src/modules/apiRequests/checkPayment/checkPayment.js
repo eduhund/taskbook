@@ -12,10 +12,10 @@ async function checkPayment({ req, res }) {
 	});
 
 	if (!payment) {
-		log.info(`${paymentId}: Payment didn't found!`);
+		log.warn(`${paymentId}: Payment didn't found!`);
 		const error = generateMessage(10104);
 		res.status(401).send(error);
-		return error;
+		return;
 	}
 
 	const user = await getDBRequest("getUserInfo", {
@@ -24,23 +24,25 @@ async function checkPayment({ req, res }) {
 	});
 
 	if (!user) {
-		log.info(`${payment.email}: User didn't found!`);
+		log.warn(`${payment.email}: User didn't found!`);
 		const error = generateMessage(10101);
 		res.status(401).send(error);
-		return error;
+		return;
 	}
 
 	const userToken = accessTokens.setToken(user);
-	log.info(`${user.id}: Auth success!`);
+
 	const userData = {
 		...user,
 		token: userToken,
 	};
+	
 	const data = generateMessage(0, userData);
-
 	res.status(200).send(data);
 
-	return data;
+	log.info(`${user.id}: Auth success!`);
+
+	return;
 }
 
-module.exports = { checkPayment };
+module.exports = checkPayment;

@@ -2,7 +2,6 @@ const { log } = require("@logger");
 
 const { getDBRequest } = require("../../dbRequests/dbRequests");
 const { generateMessage } = require("../../../utils/messageGenerator");
-const { addUserAction } = require("../../../modules/statistics/addUserAction");
 
 async function addComment({ req, res }) {
 	const { userId } = req;
@@ -16,33 +15,19 @@ async function addComment({ req, res }) {
 		readedByTeacher: false,
 	};
 
-	try {
-		await getDBRequest("setComment", {
-			query,
-			data: update,
-			protest,
-			returns: [],
-		});
+	await getDBRequest("setComment", {
+		query,
+		data: update,
+		protest,
+		returns: [],
+	});
 
-		const data = generateMessage(0, update);
-		res.status(200).send(data);
+	const data = generateMessage(0, update);
+	res.status(200).send(data);
 
-		log.info(`New comment from user ${userId}: ${comment}`);
+	log.info(`New comment from user ${userId}: ${comment}`);
 
-		return data;
-	} catch (e) {
-		log.warn(`${taskId}: Error with processing new comment`);
-		log.warn(e);
-		const error = generateMessage(20115);
-		res.status(400).send(error);
-	} finally {
-		addUserAction({
-			userId,
-			action: "addComment",
-			data: { taskId, comment, protest },
-			req,
-		});
-	}
+	return;
 }
 
-module.exports.addComment = addComment;
+module.exports = addComment;

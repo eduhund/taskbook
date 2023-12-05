@@ -23,60 +23,46 @@ async function getTasksList({ req, res }) {
 		return error;
 	}
 
-	try {
-		const tasksList = [];
+	const tasksList = [];
 
-		const lesson = lessons[lessonId];
+	const lesson = lessons[lessonId];
 
-		if (!lesson) {
-			const error = generateMessage(10302);
+	if (!lesson) {
+		const error = generateMessage(10302);
+		res.status(200).send(error);
+		return error;
+	}
+
+	for (const taskId of lesson.tasks || []) {
+		const taskData = await getDBRequest("getTaskInfo", {
+			query: { id: taskId },
+			returns: ["id", "type", "title", "name", "maxScore"],
+		});
+
+		if (!taskData) {
+			const error = generateMessage(10301);
 			res.status(200).send(error);
 			return error;
 		}
 
-		for (const taskId of lesson.tasks || []) {
-			const taskData = await getDBRequest("getTaskInfo", {
-				query: { id: taskId },
-				returns: ["id", "type", "title", "name", "maxScore"],
+		if (taskData?.type === "practice") {
+			const taskState = await getDBRequest("getStateInfo", {
+				query: { userId, taskId },
 			});
 
-			if (!taskData) {
-				const error = generateMessage(10301);
-				res.status(200).send(error);
-				return error;
-			}
-
-			if (taskData?.type === "practice") {
-				const taskState = await getDBRequest("getStateInfo", {
-					query: { userId, taskId },
-				});
-
-				taskData.score = taskState?.score >= 0 ? taskState?.score : null;
-				taskData.isChecked = taskState?.isChecked || false;
-				taskData.inProcess = taskState?.inProcess;
-			}
-
-			tasksList.push(taskData);
+			taskData.score = taskState?.score >= 0 ? taskState?.score : null;
+			taskData.isChecked = taskState?.isChecked || false;
+			taskData.inProcess = taskState?.inProcess;
 		}
 
-		const data = generateMessage(0, tasksList);
-
-		res.status(200).send(data);
-
-		return data;
-	} catch (e) {
-		log.warn(`${moduleId}: Error with processing tasks list`);
-		log.warn(e);
-		const error = generateMessage(20109);
-		res.status(400).send(error);
-	} finally {
-		addUserAction({
-			userId,
-			action: "getTasksList",
-			data: { userId },
-			req,
-		});
+		tasksList.push(taskData);
 	}
+
+	const data = generateMessage(0, tasksList);
+
+	res.status(200).send(data);
+
+	return;
 }
 
-module.exports.getTasksList = getTasksList;
+module.exports = getTasksList;

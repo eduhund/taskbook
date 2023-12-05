@@ -22,43 +22,28 @@ async function getModuleStart({ req, res }) {
 		}),
 	];
 
-	try {
-		const [userModules, userState, moduleData] = await Promise.all(requests);
+	const [userModules, userState, moduleData] = await Promise.all(requests);
 
-		if (!moduleData) {
-			const error = generateMessage(10303);
-			res.status(200).send(error);
-			return error;
-		}
-
-		moduleData.deadline = userModules?.modules?.[moduleId]?.deadline;
-
-		moduleData.nextTaskId = getNextTaskId(moduleData, userState);
-
-		moduleData.lessons = Object.entries(moduleData?.lessons).map(
-			([id, data]) => {
-				return { id, title: data?.title, description: data?.description };
-			}
-		);
-
-		const data = generateMessage(0, moduleData);
-
-		res.status(200).send(data);
-
-		return data;
-	} catch (e) {
-		log.warn(`${moduleId}: Error with processing module start page`);
-		log.warn(e);
-		const error = generateMessage(20103);
-		res.status(400).send(error);
-	} finally {
-		addUserAction({
-			userId,
-			action: "getModuleStart",
-			data: { moduleId },
-			req,
-		});
+	if (!moduleData) {
+		const error = generateMessage(10303);
+		res.status(200).send(error);
+		return error;
 	}
+
+	moduleData.deadline = userModules?.modules?.[moduleId]?.deadline;
+
+	moduleData.nextTaskId = getNextTaskId(moduleData, userState);
+
+	moduleData.lessons = Object.entries(moduleData?.lessons).map(
+		([id, data]) => {
+			return { id, title: data?.title, description: data?.description };
+		}
+	);
+
+	const data = generateMessage(0, moduleData);
+	res.status(200).send(data);
+
+	return;
 }
 
-module.exports.getModuleStart = getModuleStart;
+module.exports = getModuleStart;

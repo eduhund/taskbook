@@ -5,7 +5,6 @@ const { getFullTaskId } = require("../../../utils/idExtractor");
 const { getVisibilityUpdateList } = require("./getVisibilityUpdateList");
 const { updateDependenciesTasks } = require("./updateDependenciesTasks");
 const { generateMessage } = require("../../../utils/messageGenerator");
-const { addUserAction } = require("../../../modules/statistics/addUserAction");
 const { getParentContent } = require("../../../utils/getParentContent");
 const { refAnswerRight } = require("../../../utils/refAnswerRight");
 
@@ -58,53 +57,38 @@ async function setState({ req, res }) {
 		returns: ["id", "content"],
 	});
 
-	try {
-		const questions = getVisibilityUpdateList(tasks, questionId);
+	const questions = getVisibilityUpdateList(tasks, questionId);
 
-		await updateDependenciesTasks(userId, questions, state);
+	await updateDependenciesTasks(userId, questions, state);
 
-		const path = "data." + questionId + ".state";
-		const query = { userId, taskId };
-		const update = {
-			[path]: state,
-			inProcess: true,
-		};
-		const newState = await getDBRequest("setState", {
-			query,
-			state: update,
-			returns: [],
-		});
+	const path = "data." + questionId + ".state";
+	const query = { userId, taskId };
+	const update = {
+		[path]: state,
+		inProcess: true,
+	};
+	const newState = await getDBRequest("setState", {
+		query,
+		state: update,
+		returns: [],
+	});
 
-		const updatedData = await updateContent(
-			taskData,
-			newState?.value?.data,
-			userId
-		);
+	const updatedData = await updateContent(
+		taskData,
+		newState?.value?.data,
+		userId
+	);
 
-		const finalData = Object.assign(
-			{},
-			newState?.value?.data || {},
-			updatedData
-		);
+	const finalData = Object.assign(
+		{},
+		newState?.value?.data || {},
+		updatedData
+	);
 
-		const data = generateMessage(0, finalData);
+	const data = generateMessage(0, finalData);
+	res.status(200).send(data);
 
-		res.status(200).send(data);
-
-		return data;
-	} catch (e) {
-		log.warn(`${questionId}: Error while setting new question state`);
-		log.warn(e);
-		const error = generateMessage(20112);
-		res.status(400).send(error);
-	} finally {
-		addUserAction({
-			userId,
-			action: "setState",
-			data: { questionId },
-			req,
-		});
-	}
+	return;
 }
 
-module.exports.setState = setState;
+module.exports = setState;

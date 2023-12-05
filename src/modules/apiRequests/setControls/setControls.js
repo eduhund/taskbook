@@ -8,31 +8,17 @@ async function setControls({ req, res }) {
 	const userId = req?.userId;
 	const { taskId, controlsState } = req.body;
 
-	try {
-		const query = { userId, taskId };
-		await getDBRequest("setControls", {
-			query,
-			controlsState,
-			returns: [],
-		});
-		const data = generateMessage(0);
+	const query = { userId, taskId };
+	await getDBRequest("setControls", {
+		query,
+		controlsState,
+		returns: [],
+	});
+	
+	const data = generateMessage(0);
+	res.status(200).send(data);
 
-		res.status(200).send(data);
-
-		return data;
-	} catch (e) {
-		log.warn(`${taskId}: Error while updating task's controls state`);
-		log.warn(e);
-		const error = generateMessage(20114);
-		res.status(400).send(error);
-	} finally {
-		addUserAction({
-			userId,
-			action: "setControls",
-			data: { taskId, controlsState },
-			req,
-		});
-	}
+	return;
 }
 
-module.exports.setControls = setControls;
+module.exports = setControls;

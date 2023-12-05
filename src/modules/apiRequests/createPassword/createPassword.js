@@ -11,7 +11,7 @@ async function createPassword({ req, res, next }) {
 	if (!verify) {
 		const error = generateMessage(10105);
 		res.status(401).send(error);
-		return error;
+		return ;
 	}
 
 	const data = { pass };
@@ -28,10 +28,13 @@ async function createPassword({ req, res, next }) {
 	if (!user) {
 		const error = generateMessage(20101);
 		res.status(401).send(error);
-		return error;
+		return ;
 	}
 
+	log.info(`New password was setted for user ${email}!`);
+
 	next();
+	return
 }
 
-module.exports = { createPassword };
+module.exports = createPassword;

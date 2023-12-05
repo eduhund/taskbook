@@ -14,14 +14,14 @@ async function auth({ req, res }) {
 	});
 
 	if (!user) {
-		log.info(`${email}: User didn't found!`);
+		log.warn(`${email}: User didn't found!`);
 		const error = generateMessage(10101);
 		res.status(401).send(error);
 		return error;
 	}
 
 	if (!checkPass(user, pass)) {
-		log.info(`${email}: Invalid password!`);
+		log.warn(`${email}: Invalid password!`);
 		const error = generateMessage(10102);
 		res.status(401).send(error);
 		return error;
@@ -43,7 +43,8 @@ async function auth({ req, res }) {
 	res.status(200).send(data);
 
 	log.info(`${user.id}: Auth success!`);
-	return data;
+
+	return
 }
 
-module.exports.auth = auth;
+module.exports = auth;

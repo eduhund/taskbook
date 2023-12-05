@@ -19,47 +19,11 @@ async function createUser({req, res}) {
 	}
 	const userEmail = lowerString(email);
 
-	const checkResult = await getDBRequest("checkUsername", {
+	const isUserExist = await getDBRequest("checkUsername", {
 		email: userEmail,
 	});
 
-	if (!checkResult) {
-		const userModules = {};
-		(modules || []).forEach((userModule) => {
-			//const date = new Date(Date.now());
-			userModules[userModule.id] = {
-				start: startDate, // date.toISOString().split("T")[0],
-				deadline, //calculateDeadline(date, 80),
-			};
-		});
-		const newUser = {
-			email: userEmail,
-			pass: pass ? hashPass(pass) : "",
-			firstName,
-			lastName,
-			modules: userModules,
-			lang,
-		};
-		const createdUser = await getDBRequest("addUser", newUser);
-
-		const sendData = {
-			OK: true,
-			data: {
-				id: createdUser.id,
-				email: createdUser.email,
-				firstName: createdUser.firstName,
-				lastName: createdUser.lastName,
-			},
-		};
-
-		if (!createdUser.pass) {
-			const secureKey = await setKey(createdUser.id, "oneTimeKey");
-			sendData.data.key = secureKey;
-		}
-
-		const data = generateMessage(0, sendData);
-		res.status(200).send(data);
-	} else {
+	if (isUserExist) {
 		res.status(401);
 		res.send({
 			OK: false,
@@ -67,8 +31,48 @@ async function createUser({req, res}) {
 			error_description: "User with this email is already exist",
 			error_code: 10008,
 		});
+		
+		return
 	}
-	
+
+	const userModules = {};
+	(modules || []).forEach((userModule) => {
+		//const date = new Date(Date.now());
+		userModules[userModule.id] = {
+			start: startDate, // date.toISOString().split("T")[0],
+			deadline, //calculateDeadline(date, 80),
+		};
+	});
+	const newUser = {
+		email: userEmail,
+		pass: pass ? hashPass(pass) : "",
+		firstName,
+		lastName,
+		modules: userModules,
+		lang,
+	};
+	const createdUser = await getDBRequest("addUser", newUser);
+
+	const sendData = {
+		OK: true,
+		data: {
+			id: createdUser.id,
+			email: createdUser.email,
+			firstName: createdUser.firstName,
+			lastName: createdUser.lastName,
+		},
+	};
+
+	if (!createdUser.pass) {
+		const secureKey = await setKey(createdUser.id, "oneTimeKey");
+		sendData.data.key = secureKey;
+	}
+
+	const data = generateMessage(0, sendData);
+	res.status(200).send(data);
+
+	log.info(`New user was created:`, createdUser);
+
 	return
 };
 

@@ -4,8 +4,6 @@ const { getDBRequest } = require("../../dbRequests/dbRequests");
 const { getModuleId, getLessonId } = require("../../../utils/idExtractor");
 const { createSummary } = require("./createSummary");
 const { generateMessage } = require("../../../utils/messageGenerator");
-const { addUserAction } = require("../../../modules/statistics/addUserAction");
-const { calculateDeadline } = require("../../../utils/calculators");
 
 async function getLessonFinal({ req, res }) {
 	const userId = req?.userId;
@@ -31,63 +29,48 @@ async function getLessonFinal({ req, res }) {
 		}),
 	];
 
-	try {
-		const [userData, stateData, moduleData] = await Promise.all(requests);
+	const [userData, stateData, moduleData] = await Promise.all(requests);
 
-		const lessonsArray = Object.keys(moduleData.lessons || {});
-		const currentLessonIndex = lessonsArray.indexOf(lessonId);
+	const lessonsArray = Object.keys(moduleData.lessons || {});
+	const currentLessonIndex = lessonsArray.indexOf(lessonId);
 
-		moduleData.lessonNumber = Number(lessonId);
-		moduleData.nextLesson = lessonsArray.length > currentLessonIndex + 1;
-		moduleData.maxScore = moduleData.lessons[lessonId]?.maxScore;
-		moduleData.content = moduleData.lessons[lessonId]?.final;
+	moduleData.lessonNumber = Number(lessonId);
+	moduleData.nextLesson = lessonsArray.length > currentLessonIndex + 1;
+	moduleData.maxScore = moduleData.lessons[lessonId]?.maxScore;
+	moduleData.content = moduleData.lessons[lessonId]?.final;
 
-		let totalPractice = 0;
-		for (const task of moduleData.lessons[lessonId]?.tasks) {
-			await getDBRequest("getTaskInfo", {
-				query: { id: task },
-				returns: ["type"],
-			}).then((result) => {
-				if (result?.type == "practice") totalPractice++;
-			});
-		}
-		moduleData.totalTasks = totalPractice;
-
-		moduleData.deadline = userData?.modules?.[moduleId].deadline;
-
-		moduleData.score = stateData.reduce(
-			(progress, value) => progress + (value?.score || 0),
-			0
-		);
-
-		moduleData.summary = createSummary(moduleData?.score, moduleData?.maxScore);
-
-		moduleData.doneTasks = stateData.reduce((progress, value) => {
-			if (value.isChecked) {
-				return progress + 1;
-			} else return progress;
-		}, 0);
-
-		delete moduleData.lessons;
-
-		const data = generateMessage(0, moduleData);
-
-		res.status(200).send(data);
-
-		return data;
-	} catch (e) {
-		log.warn(`${moduleId}: Error with processing lesson final page`);
-		log.warn(e);
-		const error = generateMessage(20106);
-		res.status(400).send(error);
-	} finally {
-		addUserAction({
-			userId,
-			action: "getLessonFinal",
-			data: { moduleId },
-			req,
+	let totalPractice = 0;
+	for (const task of moduleData.lessons[lessonId]?.tasks) {
+		await getDBRequest("getTaskInfo", {
+			query: { id: task },
+			returns: ["type"],
+		}).then((result) => {
+			if (result?.type == "practice") totalPractice++;
 		});
 	}
+	moduleData.totalTasks = totalPractice;
+
+	moduleData.deadline = userData?.modules?.[moduleId].deadline;
+
+	moduleData.score = stateData.reduce(
+		(progress, value) => progress + (value?.score || 0),
+		0
+	);
+
+	moduleData.summary = createSummary(moduleData?.score, moduleData?.maxScore);
+
+	moduleData.doneTasks = stateData.reduce((progress, value) => {
+		if (value.isChecked) {
+			return progress + 1;
+		} else return progress;
+	}, 0);
+
+	delete moduleData.lessons;
+
+	const data = generateMessage(0, moduleData);
+	res.status(200).send(data);
+
+	return;
 }
 
-module.exports.getLessonFinal = getLessonFinal;
+module.exports = getLessonFinal;
