@@ -23,7 +23,7 @@ const { getCounselor } = require("./getCounselor/getCounselor");
 const resetPassword = require("./resetPassword/resetPassword");
 const createUser = require("./createUser/createUser");
 const updateUser = require("./updateUser/updateUser");
-const { getStudentsList } = require("./getStudentsList/getStudentsList");
+const getStudentsList = require("./getStudentsList/getStudentsList");
 const { getModulesList } = require("./getModulesList/getModulesList");
 const {
 	changeCommentStatus,
