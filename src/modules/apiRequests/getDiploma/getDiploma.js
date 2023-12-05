@@ -81,8 +81,8 @@ async function getDiploma(req, res) {
 
 	if (params.lang === undefined) params.lang = certData?.lang || moduleData.lang;
 	if (params.isColor === undefined) params.isColor = certData?.isColor || false;
-	if (params.isMascot === undefined) params.isMascot = certData.isMascot === undefined ? true : certData?.isMascot;
-	if (params.isProgress === undefined) params.isProgress = certData.isProgress === undefined ? true : certData?.isProgress;
+	if (params.isMascot === undefined) params.isMascot = certData?.isMascot === undefined ? true : certData?.isMascot;
+	if (params.isProgress === undefined) params.isProgress = certData?.isProgress === undefined ? true : certData?.isProgress;
 	if (params.isPublic === undefined) params.isPublic = certData?.isPublic || false;
 
 	getDBRequest("setDiploma", {
