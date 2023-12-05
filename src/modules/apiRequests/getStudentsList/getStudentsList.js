@@ -153,7 +153,7 @@ async function getStudentsList({res}) {
 			usersData.push(userData);
 		}
 
-		const data = generateMessage(0, usersList);
+		const data = generateMessage(0, usersData);
 		res.status(200).send(data);
 
 		return

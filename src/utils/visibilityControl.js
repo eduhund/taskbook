@@ -1,4 +1,4 @@
-const { db } = require("../modules/dbRequests/mongo");
+const { STATE } = require("../modules/dbRequests/mongo");
 const { getFullTaskId, getFullQuestionId } = require("./idExtractor");
 
 function checkVisibility(id, taskState) {
@@ -21,11 +21,11 @@ async function setVisibility(userId, dependQuestionId, currentElementId) {
 	const currentTaskId = getFullTaskId(dependQuestionId);
 	const path = "data." + currentElementId + ".isVisible";
 
-	const taskState = await db.STATE.findOne({ userId, taskId: dependTaskId });
+	const taskState = await STATE.findOne({ userId, taskId: dependTaskId });
 
 	const isVisible = checkVisibility(dependQuestionId, taskState);
 
-	db.STATE.findOneAndUpdate(
+	STATE.findOneAndUpdate(
 		{ userId, taskId: currentTaskId },
 		{
 			$set: {
