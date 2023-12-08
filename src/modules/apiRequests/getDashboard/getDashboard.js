@@ -9,7 +9,7 @@ const setLessonsState = require("../../../utils/setLessonsState");
 const { getNumberOfDoneTasks } = require("./getNumberOfDoneTasks");
 const { generateMessage } = require("../../../utils/messageGenerator");
 
-const DEMO = process.env.DEMO;
+const { MACHINE } = process.env;
 
 async function getDashboard(req, res) {
 	const userId = req?.userId;
@@ -22,7 +22,7 @@ async function getDashboard(req, res) {
 
 	let modulesList = await getDBRequest("getModulesList", {
 		query: {
-			...(DEMO ? {} : { active: true }),
+			...(MACHINE === "prod" ? { active: true } : {}),
 			lang,
 		},
 	});
