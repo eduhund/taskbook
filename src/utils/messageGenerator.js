@@ -34,6 +34,11 @@ const ERRORS = [
 		description: "Payment didn't found",
 	},
 	{
+		code: 10105,
+		type: "invalid_credentials",
+		description: "Access token is invalid or expired",
+	},
+	{
 		code: 10201,
 		type: "access_denied",
 		description: "You don't have access to this content",
@@ -133,9 +138,19 @@ const ERRORS = [
 		type: "process_failure",
 		description: "Error with getting counselor content",
 	},
+	{
+		code: 20117,
+		type: "process_failure",
+		description: "Error with updating comment status",
+	},
+	{
+		code: 20118,
+		type: "process_failure",
+		description: "Error with resetting user password",
+	},
 ];
 
-function generateMessage(code, data = {}) {
+function generateMessage(code, data) {
 	if (code === 0) {
 		return { OK: true, data };
 	} else {

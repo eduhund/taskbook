@@ -11,7 +11,6 @@ async function updateVisibility(userId, data) {
 		const { type, parentId, isVisible } = depend;
 		if (type == "visibility") {
 			const visibility = await setVisibility(userId, parentId, id);
-			console.log("V", visibility);
 			data.isVisible = visibility;
 			if (!isVisible) {
 				break;

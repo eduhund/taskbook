@@ -2838,7 +2838,7 @@ const en = {
 	],
 	LGR: [
 		{
-			name: "рассылки для людей",
+			name: "Newsletters for people",
 			tasks: [
 				"LGR0102",
 				"LGR0207",
@@ -2850,7 +2850,7 @@ const en = {
 			],
 		},
 		{
-			name: "воронка в email-маркетинге",
+			name: "Email marketing funnels",
 			tasks: [
 				"LGR0104",
 				"LGR0105",
@@ -2866,7 +2866,7 @@ const en = {
 			],
 		},
 		{
-			name: "письмо как баннер",
+			name: "The letter as a banner",
 			tasks: [
 				"LGR0113",
 				"LGR0309",
@@ -2882,7 +2882,7 @@ const en = {
 			],
 		},
 		{
-			name: "техника изменения повода",
+			name: "Letters’ occasion techniques",
 			tasks: [
 				"LGR0202",
 				"LGR0203",
@@ -2894,11 +2894,11 @@ const en = {
 			],
 		},
 		{
-			name: "проектирование содержания",
+			name: "Content design",
 			tasks: ["LGR0302", "LGR0303", "LGR0304", "LGR0305", "LGR0306", "LGR0308"],
 		},
 		{
-			name: "упрощение чтения письма",
+			name: "Making letter reading easier",
 			tasks: ["LGR0402", "LGR0403", "LGR0404", "LGR0405", "LGR0406", "LGR0408"],
 		},
 	],

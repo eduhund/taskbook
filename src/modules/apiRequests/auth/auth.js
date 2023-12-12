@@ -1,13 +1,12 @@
 const { log } = require("@logger");
 
 const { getDBRequest } = require("../../dbRequests/dbRequests");
-const accessTokens = require("../../../services/tokenMachine/tokenMachine");
 const { checkPass } = require("../../../utils/pass");
 const { generateMessage } = require("../../../utils/messageGenerator");
 
-const tokens = accessTokens;
+const tokens = require("../../../services/tokenMachine/tokenMachine");
 
-async function auth({ req, res }) {
+async function auth(req, res) {
 	const { email, pass, lang } = req.body;
 
 	const user = await getDBRequest("getUserInfo", {
@@ -15,24 +14,22 @@ async function auth({ req, res }) {
 	});
 
 	if (!user) {
-		log.info(`${email}: User didn't found!`);
+		log.warn(`${email}: User didn't found!`);
 		const error = generateMessage(10101);
 		res.status(401).send(error);
 		return error;
 	}
 
 	if (!checkPass(user, pass)) {
-		log.info(`${email}: Invalid password!`);
+		log.warn(`${email}: Invalid password!`);
 		const error = generateMessage(10102);
 		res.status(401).send(error);
 		return error;
 	}
 
 	const userToken = tokens.setToken(user);
-	lang &&
-		lang !== user.lang &&
-		getDBRequest("setUserInfo", { email, data: { lang } });
-	log.info(`${user.id}: Auth success!`);
+	lang && lang !== user.lang &&	getDBRequest("setUserInfo", { email, data: { lang } });
+
 	const userData = {
 		id: user.id,
 		email: user.email,
@@ -41,11 +38,13 @@ async function auth({ req, res }) {
 		lang: lang || user.lang,
 		token: userToken,
 	};
-	const data = generateMessage(0, userData);
 
+	const data = generateMessage(0, userData);
 	res.status(200).send(data);
 
-	return data;
+	log.info(`${user.id}: Auth success!`);
+
+	return
 }
 
-module.exports.auth = auth;
+module.exports = auth;

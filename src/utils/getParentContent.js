@@ -2,10 +2,10 @@
 
 const getPhrase = require("@assets/lang/lang");
 const { getFullTaskId, getFullQuestionId } = require("./idExtractor");
-const DB = require("@mongo/requests");
+const { getDBRequest } = require("../modules/dbRequests/dbRequests");
 
 async function getTaskName(taskId, lang) {
-	const taskData = await DB.getOne("tasks", { query: { id: taskId } });
+	const taskData = await getDBRequest("getTaskInfo", { query: { id: taskId } });
 	if (!taskData) {
 		throw new Error(`getParentContent: Can't find task with ID ${taskId}`);
 	}
@@ -17,12 +17,9 @@ async function getTaskName(taskId, lang) {
 
 async function getParentContent(userId, contentId, lang, sameTask = false) {
 	const taskId = getFullTaskId(contentId);
-	const taskState = await DB.getOne("state", {
-		query: {
-			userId,
-			taskId,
-		},
-	});
+	const taskState = await getDBRequest("getStateInfo", {
+		query: { userId, taskId },
+	})
 
 	if (taskState?.isChecked || sameTask) {
 		const questionId = getFullQuestionId(contentId);

@@ -1,4 +1,4 @@
-const { db } = require("../mongo");
+const { STATE } = require("../mongo");
 
 function setComment({ query = {}, data = {}, protest = false, returns = [] }) {
 	const projection = {
@@ -7,7 +7,7 @@ function setComment({ query = {}, data = {}, protest = false, returns = [] }) {
 	for (const param of returns) {
 		projection[param] = 1;
 	}
-	return db.STATE.findOneAndUpdate(
+	return STATE.findOneAndUpdate(
 		query,
 		{
 			$push: {
@@ -29,4 +29,4 @@ function setComment({ query = {}, data = {}, protest = false, returns = [] }) {
 	);
 }
 
-module.exports.setComment = setComment;
+module.exports = setComment;

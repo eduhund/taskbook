@@ -2,11 +2,8 @@ const express = require("express");
 const cors = require("cors");
 const { log } = require("@logger");
 
-const { PUBLIC } = require("../../modules/apiRequests/apiRequests");
-const { STUDENT } = require("../../API/student/student");
-const { responseHandler, pathHandler } = require("./responses");
-const prepareRequestData = require("./prepareRequestData");
-const { checkAuth } = require("./security");
+const { PUBLIC, TEACHER } = require("../../modules/apiRequests/apiRequests");
+const { checkAdmin } = require("./security");
 const { paramsProcessor } = require("../../utils/validate");
 
 const { SERVER_PORT = 8888, ORIGIN = "*" } = process.env;
@@ -23,43 +20,33 @@ app.use(express.json());
 app.use(require("body-parser").urlencoded({ extended: false }));
 
 app.use("/diplomas", express.static("diplomas"));
-/*
-app.use((req, res, next) => {
-	log.info(req?.query, req?.body, req?.path);
-	next();
-});
-*/
 
 // API v.2
-const apiRouter = express.Router();
-app.use("/api/v2", apiRouter);
-apiRouter.use(paramsProcessor);
+const student = express.Router();
+app.use("/student", student);
+student.use(paramsProcessor);
 for (const request of PUBLIC) {
 	const { path, method, exec } = request;
 	switch (method) {
 		case "get":
-			apiRouter.get(path, exec);
+			student.get(path, exec);
 		case "post":
-			apiRouter.post(path, exec);
+			student.post(path, exec);
 	}
 }
 
-// API v.3
-const student = express.Router();
-app.use("/v3/student", student);
-
-for (const method of STUDENT) {
-	const { name, type, wall, exec } = method;
-	switch (type) {
+const oldTeacher = express.Router();
+app.use("/teacher", oldTeacher);
+oldTeacher.use(checkAdmin);
+for (const request of TEACHER) {
+	const { path, method, exec } = request;
+	switch (method) {
 		case "get":
-			student.get("/" + name, checkAuth(wall), prepareRequestData, exec);
+			oldTeacher.get(path, exec);
 		case "post":
-			student.post("/" + name, checkAuth(wall), prepareRequestData, exec);
+			oldTeacher.post(path, exec);
 	}
 }
-
-app.use(responseHandler);
-app.use(pathHandler);
 
 function start() {
 	return new Promise((resolve, reject) => {

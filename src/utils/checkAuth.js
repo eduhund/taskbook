@@ -1,4 +1,4 @@
-const { db } = require("../modules/dbRequests/mongo");
+const { USERS } = require("../modules/dbRequests/mongo");
 const accessTokens = require("../services/tokenMachine/tokenMachine");
 const { getModuleId } = require("./idExtractor");
 const { generateMessage } = require("./messageGenerator");
@@ -16,7 +16,7 @@ function checkAuth(req, res, next) {
 	const userId = accessTokens.checkList()?.[token]?.id;
 
 	if (!userId) {
-		const error = generateMessage(10103);
+		const error = generateMessage(10105);
 		res.status(401).send(error);
 		return error;
 	} else {
@@ -61,7 +61,7 @@ function checkModuleAccess(req, res, next) {
 		req?.body?.moduleId ||
 		getModuleId(lessonId || taskId || questionId);
 
-	db.USERS.findOne({ id: userId }).then((user) => {
+	USERS.findOne({ id: userId }).then((user) => {
 		startDate = user?.modules?.[moduleId]?.start;
 		deadline = user?.modules?.[moduleId]?.deadline;
 		if (checkDate(startDate, deadline)) {
@@ -88,7 +88,7 @@ function checkCertAccess(req, res, next) {
 		req?.body?.moduleId ||
 		getModuleId(lessonId);
 
-	db.USERS.findOne({ id: userId }).then((user) => {
+	USERS.findOne({ id: userId }).then((user) => {
 		const modules = Object.keys(user?.modules || {});
 		if (modules.includes(moduleId)) {
 			next();

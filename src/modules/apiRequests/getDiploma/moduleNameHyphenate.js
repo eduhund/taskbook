@@ -6,7 +6,7 @@ const dict = {
 		UCC: "Сценарии\nвзаимодействия",
 		COM: "Композиция\nв дизайне интерфейсов",
 		HSE: "Hard Skills начинающего\nруководителя",
-		LGR: "Низкобюджетный\nмаркетинг. Рассылки",
+		LGR: "Рассылки,\nкоторые читают",
 	},
 	en: {
 		HSB: "Novice Manager\nHard Skills",
@@ -15,7 +15,7 @@ const dict = {
 		UCC: "Use cases\nin Interface Design",
 		COM: "Composition\nin Interface Design",
 		HSE: "Hard Skills\nfor Managers",
-		LGR: "Низкобюджетный\nмаркетинг. Рассылки",
+		LGR: "Readable maillist",
 	},
 };
 

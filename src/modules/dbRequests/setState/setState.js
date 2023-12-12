@@ -1,4 +1,4 @@
-const { db } = require("../mongo");
+const { STATE } = require("../mongo");
 
 function setState({ query = {}, state = {}, returns = [] }) {
 	const projection = {
@@ -7,7 +7,7 @@ function setState({ query = {}, state = {}, returns = [] }) {
 	for (const param of returns) {
 		projection[param] = 1;
 	}
-	return db.STATE.findOneAndUpdate(
+	return STATE.findOneAndUpdate(
 		query,
 		{
 			$set: state,
@@ -21,4 +21,4 @@ function setState({ query = {}, state = {}, returns = [] }) {
 	);
 }
 
-module.exports.setState = setState;
+module.exports = setState;

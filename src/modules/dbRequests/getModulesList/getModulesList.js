@@ -1,4 +1,4 @@
-const { db } = require("../mongo");
+const { MODULES } = require("../mongo");
 
 function getModulesList({ query = {}, returns = [] }) {
 	const projection = {
@@ -7,9 +7,9 @@ function getModulesList({ query = {}, returns = [] }) {
 	for (const param of returns) {
 		projection[param] = 1;
 	}
-	return db.MODULES.find(query, {
+	return MODULES.find(query, {
 		projection,
 	}).toArray();
 }
 
-module.exports.getModulesList = getModulesList;
+module.exports = getModulesList;
