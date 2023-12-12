@@ -1,0 +1,11 @@
+.login {
+	max-width: 365px;
+}
+
+.loginFormHeader {
+	margin: 0;
+}
+
+.loginForm > * {
+	padding-bottom: 32px;
+}

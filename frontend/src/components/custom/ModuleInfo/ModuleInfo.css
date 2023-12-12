@@ -1,0 +1,30 @@
+.moduleInfo {
+	box-sizing: border-box;
+	width: 350px;
+	display: flex;
+	height: fit-content;
+	flex-direction: column;
+	align-items: center;
+	gap: 32px;
+	padding: 20px;
+	border: 1px solid var(--color-bg-border);
+	border-radius: 12px;
+}
+
+.moduleInfo h2 {
+	text-align: center;
+}
+
+.moduleInfoLinks,
+.moduleCalendarEvents {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 4px;
+}
+
+@media (max-width: 1280px) {
+	.moduleInfo {
+		display: none;
+	}
+}

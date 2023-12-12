@@ -1,0 +1,305 @@
+.dashboard {
+	flex-direction: column;
+}
+
+.dashboardMainInfo {
+	display: flex;
+	flex-wrap: wrap-reverse;
+	justify-content: center;
+	gap: 40px;
+}
+
+.userInfo {
+	max-width: 900px;
+	flex-grow: 2;
+}
+
+.userMainInfo {
+	max-width: 278px;
+}
+
+.userName {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	margin-bottom: 12px;
+}
+
+.userLogin {
+	margin: 0;
+}
+
+.modulesBlockHeader {
+	word-break: break-all;
+}
+
+.activeModules {
+	min-width: 200px;
+	display: flex;
+	flex-direction: column;
+	gap: 40px;
+}
+
+.activeModules.empty {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	max-width: 900px;
+	min-height: 247px;
+	border: 1px dashed #fff;
+	padding: 20px 40px;
+}
+
+.activeModules.empty span {
+	width: 100%;
+	color: #fff;
+	font-size: 32px;
+	font-weight: 600;
+}
+
+.moduleCard {
+	min-width: 355px;
+	display: flex;
+	flex-direction: column;
+
+	gap: 32px;
+	overflow: hidden;
+	position: relative;
+	box-sizing: border-box;
+	background-repeat: no-repeat;
+	padding: 32px;
+}
+
+.moduleCard.small {
+	justify-content: space-between;
+	max-width: 380px;
+	min-height: 480px;
+	background-size: auto 200px;
+	background-position: right -20px bottom -50px;
+}
+
+.moduleCard.medium {
+	justify-content: space-between;
+	max-width: 590px;
+	min-height: 420px;
+	background-size: auto 300px;
+	background-position: right -160px top 75%;
+}
+
+.moduleCard.large {
+	flex-grow: 1;
+	max-width: 900px;
+	padding: 0;
+	gap: 0;
+	background-size: auto 150px;
+	background-position: 104% max(40px, 25%);
+}
+
+.moduleCardInfo {
+	padding: 20px;
+	display: flex;
+	gap: 40px;
+}
+
+.cardMainInfo {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.cardMainInfo .infoBlock {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.infoBlock {
+	width: 100%;
+}
+
+.infoBlock p {
+	margin: 0;
+}
+
+.deadlineInformer {
+	background-color: var(--color-bg-success);
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 12px 20px;
+}
+
+.deadlineInformer span {
+	color: #fff;
+}
+
+.deadlineInformer span:first-child {
+	font-weight: 600;
+}
+
+.activeCardHeading {
+	width: 100%;
+	margin-right: 24px;
+}
+
+.cardHeadingLine {
+	display: flex;
+	align-items: center;
+	max-width: 520px;
+}
+
+.cardTitle {
+	max-width: 520px;
+	margin: 0;
+}
+
+.MainInfoLinks {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 24px;
+	row-gap: 16px;
+}
+
+.MainInfoLinks a {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+}
+
+.infoLessonsTitle {
+	margin-top: 16px;
+}
+
+.infoLessonsTitle h3 {
+	margin: 0;
+}
+
+.infoLessonsButtons {
+	display: flex;
+	flex-wrap: wrap;
+	padding-top: 16px;
+	row-gap: 12px;
+}
+
+.infoLessonsButtons button {
+	flex-basis: 56px;
+	max-width: 72px;
+	flex-grow: 2;
+}
+
+.MainInfoButton {
+	display: flex;
+	flex-direction: row-reverse;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 12px;
+}
+
+.MainInfoButton:first-child {
+	order: -1;
+}
+
+.cardState {
+	margin-top: 20px;
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+}
+
+.cardStatePast {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.cardStatePast a {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.cardStateActive {
+	flex-direction: row;
+	align-items: center;
+	gap: 8px;
+}
+
+.cardStatePercent {
+	font-size: 100px;
+	font-weight: bold;
+	line-height: 100px;
+	color: var(--color-typo-secondary);
+}
+
+.moduleDescription {
+	margin: 0;
+}
+
+.infoBuy {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.infoBuyButtons {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.infoBuyButtons.small {
+	flex-direction: column;
+	align-items: flex-start;
+}
+
+.infoBuyButtons h3 {
+	margin: 0;
+}
+
+.featuresItem {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	color: var(--color-control-typo-ghost);
+}
+
+.cardFeautires {
+	margin: 12px 0;
+	padding: 0;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+
+.cardFeautires li {
+	list-style: none;
+}
+
+@media (max-width: 1234px) {
+	.userMainInfo {
+		max-width: 900px;
+		display: flex;
+		justify-content: space-between;
+		gap: 40px;
+	}
+
+	.userMainInfo > p {
+		margin: 0;
+	}
+}
+
+@media (max-width: 900px) {
+	.dashboardMainInfo {
+		max-width: 584px;
+	}
+
+	.cardInfoCalendar {
+		display: none;
+	}
+
+	.userMainInfo > p {
+		display: none;
+	}
+}

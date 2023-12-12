@@ -1,0 +1,46 @@
+@keyframes imgMouseIn {
+  from {box-shadow: var(--shadow-group)}
+  to {box-shadow: var(--shadow-layer)}
+}
+
+@keyframes imgMouseOut {
+  from {box-shadow: var(--shadow-layer)}
+  to {box-shadow: var(--shadow-group)}
+}
+
+.imageContainer {
+  display: grid;
+  max-width: 667px;
+  padding: 24px 0;
+}
+
+.imageBordered {
+  border: 1px solid var(--color-bg-border);
+  border-radius: 4px;
+}
+
+.imageShadow {
+  box-shadow: var(--shadow-group);
+}
+
+.imageScalable {
+  animation-name: imgMouseOut;
+  animation-duration: 0.2s;
+  cursor: pointer;
+}
+
+.imageScalable:hover {
+  box-shadow: var(--shadow-layer);
+  animation-name: imgMouseIn;
+  animation-duration: 0.2s;
+}
+
+.imageContainer img {
+  max-width: 100%;
+  height: auto;
+}
+
+.imageContainer span {
+  text-align: center;
+  padding: 12px 0;
+}

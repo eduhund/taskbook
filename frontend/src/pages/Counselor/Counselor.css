@@ -1,0 +1,25 @@
+.counselorList {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+
+.counselorListItem {
+	border-radius: 2px;
+	padding: 20px 12px;
+	cursor: pointer;
+}
+
+.counselorListItem:hover {
+	background-color: var(--color-control-bg-primary);
+}
+
+.counselorListItem:hover p {
+	color: #fff;
+}
+
+.conselorAnchors {
+	display: flex;
+	gap: 12px;
+	flex-wrap: wrap;
+}

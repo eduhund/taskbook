@@ -1,0 +1,49 @@
+.tasksListItem {
+	display: flex;
+	gap: 8px;
+	row-gap: 4px;
+	align-items: center;
+	flex-wrap: wrap;
+	padding: 8px 12px;
+	border-radius: 2px;
+	cursor: pointer;
+	text-decoration: none;
+}
+
+.tasksListItem.active {
+	background-color: var(--color-bg-ghost);
+}
+
+.tasksListItem:hover {
+	background-color: var(--color-control-bg-primary);
+}
+
+.tasksListItem:hover .listItemTitle {
+	color: #fff;
+}
+
+.tasksListItem:hover .listItemType {
+	color: rgba(255, 255, 255, 0.6);
+}
+
+.listItemLabel {
+	display: flex;
+	gap: 8px;
+}
+
+.nav .listItemLabel.theory,
+.nav .listItemLabel.start,
+.nav .listItemLabel.final {
+	order: 2;
+}
+
+.list .listItemLabel.theory,
+.list .listItemLabel.start,
+.list .listItemLabel.final {
+	width: 100%;
+}
+
+.nav .badge {
+	flex-grow: 2;
+	order: 3;
+}

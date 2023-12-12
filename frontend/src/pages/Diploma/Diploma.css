@@ -1,0 +1,96 @@
+.diploma__container {
+	display: flex;
+	gap: 40px;
+}
+
+.certContainer {
+	display: flex;
+	flex-direction: column;
+	gap: 40px;
+	padding: 40px;
+	max-width: 595px;
+	overflow: auto;
+}
+
+.cert {
+	box-shadow: var(--shadow-group);
+	width: 100%;
+}
+
+.certSettings {
+	width: 350px;
+	max-width: 700px;
+	flex-grow: 1;
+	padding: 12px 40px;
+}
+
+.certSettingsItem {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	margin-bottom: 32px;
+}
+
+.certLinkArea {
+	border-color: var(--color-bg-border);
+	border-width: 1px;
+	border-style: solid;
+	border-radius: 4px;
+
+	padding: 8px 16px;
+	margin-right: auto;
+
+	display: inline-flex;
+	gap: 8px;
+}
+
+.cert__skills {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+td,
+th {
+	padding: 2px 4px;
+}
+
+th {
+	color: var(--color-typo-brand);
+}
+
+td:nth-child(even),
+th:nth-child(even) {
+	text-align: start;
+}
+
+td:nth-child(odd),
+th:nth-child(odd) {
+	text-align: end;
+}
+
+td:first-child {
+	width: 65px;
+	color: var(--color-typo-secondary);
+}
+
+td:nth-child(2) {
+	width: 323px;
+}
+
+td:nth-child(3) {
+	width: 50px;
+}
+
+.skill__state__perfect {
+	font-weight: 600;
+	color: var(--color-typo-brand);
+}
+
+.skill__state__verygood {
+	color: var(--color-typo-brand);
+}
+
+.skill__state__inprogress {
+	color: var(--color-typo-secondary);
+}

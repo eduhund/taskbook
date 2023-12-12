@@ -1,0 +1,155 @@
+.content {
+	padding-top: 40px;
+}
+
+.columnContent {
+	max-width: 620px;
+	padding-left: 40px;
+	padding-right: 40px;
+}
+
+.summaryContainer {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 16px;
+}
+
+.helpContainer {
+	display: flex;
+	flex-direction: column;
+	margin: 16px 0;
+}
+
+.analysContainer {
+	box-sizing: border-box;
+	max-width: 620px;
+	margin: 24px 0;
+	padding: 0 12px;
+	border-left: 4px solid var(--color-bg-brand);
+}
+
+.checkContainer {
+	padding-top: 16px;
+	padding-bottom: 32px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.checkButton {
+	display: flex;
+	align-items: center;
+}
+
+.hintSwitch {
+	margin-bottom: 16px;
+}
+
+.analysSwitch {
+	margin-top: 16px;
+}
+
+.result {
+	display: flex;
+	justify-content: flex-end;
+	align-items: flex-end;
+
+	min-width: 215px;
+}
+
+.result p {
+	margin-bottom: 16px;
+}
+
+.checkHint {
+	margin-left: 16px;
+}
+
+.analys p:first-child {
+	margin-top: 0;
+}
+
+.analys p:last-child {
+	margin-bottom: 0;
+}
+
+.correct:after {
+	position: absolute;
+	left: -32px;
+	top: -13px;
+	content: "+";
+	font-family: "Neucha", cursive;
+	font-size: var(--size-text-3xl);
+	color: var(--color-typo-secondary);
+	padding: 8px;
+}
+
+.wrong:after {
+	position: absolute;
+	left: -32px;
+	top: -13px;
+	content: "-";
+	font-family: "Neucha", cursive;
+	font-size: var(--size-text-3xl);
+	color: var(--color-typo-secondary);
+	padding: 8px;
+}
+
+.hint {
+	max-width: 700px;
+	box-sizing: border-box;
+	padding: 12px 0;
+}
+
+.contentButtons {
+	display: flex;
+	justify-content: flex-end;
+	padding-top: 16px;
+}
+
+.Checkbox-Label,
+.Radio-Label {
+	white-space: pre-line;
+}
+
+.taskGrid {
+	grid-template-columns: auto auto !important;
+}
+
+.imagesContainerSmall {
+	max-width: 300px;
+}
+
+.imagesContainerMedium {
+	max-width: 420px;
+}
+
+.imagesContainerLarge {
+	max-width: 620px;
+}
+
+.taskImages.twoCol {
+	min-height: 100%;
+	overflow-y: scroll;
+}
+
+.taskImages.twoCol::-webkit-scrollbar {
+	width: 2px;
+	background-color: #f9f9fd;
+}
+
+@media (min-width: 1280px) {
+	.taskImages.oneCol {
+		display: none;
+	}
+
+	.taskContent {
+		max-width: 640px;
+	}
+}
+
+@media (max-width: 1279px) {
+	.taskImages.twoCol {
+		display: none;
+	}
+}

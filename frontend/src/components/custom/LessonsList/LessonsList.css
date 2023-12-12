@@ -1,0 +1,32 @@
+.lessonsList {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+
+.lessonsListItem {
+	display: block;
+	padding: 8px 12px;
+	border-radius: 2px;
+	cursor: pointer;
+}
+
+.lessonsListItem:hover {
+	background-color: var(--color-control-bg-primary);
+}
+
+.lessonsListItem:hover p {
+	color: #fff;
+}
+
+.lessonsListItem:hover span {
+	color: rgba(255, 255, 255, 0.6);
+}
+
+.active {
+	background-color: var(--color-bg-ghost);
+}
+
+.lessonsListItem a {
+	text-decoration: none;
+}

@@ -1,0 +1,26 @@
+.variantsContainer {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	margin-top: 16px;
+	margin-bottom: 16px;
+}
+
+.inputContainer {
+	margin: 12px auto;
+}
+
+.choiceContainer {
+	width: 100%;
+	overflow: auto;
+}
+
+.ourVarContainer {
+	padding: 12px 0;
+}
+
+.ourVarContainer span {
+	font-family: "Neucha", cursive;
+	font-size: var(--size-text-l);
+	color: var(--color-typo-secondary);
+}

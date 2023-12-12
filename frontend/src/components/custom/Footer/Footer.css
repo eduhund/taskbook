@@ -1,0 +1,19 @@
+.eduFooter {
+	width: 100%;
+	min-height: 48px;
+}
+
+.footerContainer {
+	display: flex;
+	margin: 0 auto;
+	padding: 0 56px;
+	justify-content: space-between;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 12px;
+	height: 100%;
+}
+
+.footerContainer > span {
+	padding-bottom: 12px;
+}

@@ -1,0 +1,28 @@
+.commentsContainer {
+  padding: 40px;
+  background-color: var(--color-bg-secondary);
+}
+
+.commentsHeader {
+  margin-top: 0;
+  margin-bottom: 4px;
+}
+
+.commentsSubheader {
+  margin: 0
+}
+
+.comment {
+  margin: 16px 0;
+}
+
+.commentSubmit {
+  display: flex;
+  justify-content: space-between;
+  vertical-align: middle;
+  height: 32px;
+}
+
+.protestHint {
+  padding-top: 16px;
+}

@@ -1,0 +1,6 @@
+.mainCard {
+	height: fit-content;
+	position: relative;
+	background-color: #fff;
+	border-radius: 12px;
+}
