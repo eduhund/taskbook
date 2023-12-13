@@ -1,6 +1,6 @@
 // Deprecated
 
-const { db } = require("../modules/dbRequests/mongo");
+const { STATE } = require("../modules/dbRequests/mongo");
 const { getFullTaskId, getFullQuestionId } = require("./idExtractor");
 
 /**
@@ -16,7 +16,7 @@ async function refAnswerRight(userId = "", refs = []) {
 			const taskId = getFullTaskId(id);
 			const questionId = getFullQuestionId(id);
 
-			const status = await db.STATE.findOne({
+			const status = await STATE.findOne({
 				userId,
 				taskId,
 			}).then((result) => {
