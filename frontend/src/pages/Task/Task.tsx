@@ -55,7 +55,12 @@ function Task() {
 							variant.isSelected =
 								(data?.data?.[questionId]?.state || []).find(
 									(item: any) => item?.id === variant.id
-								)?.isSelected || false;
+								)?.isSelected || false; 
+
+								variant.isRight =
+								(data?.data?.[questionId]?.state || []).find(
+									(item: any) => item?.id === variant.id
+								)?.isRight || false; 
 						}
 					}
 				}
