@@ -17,14 +17,16 @@ async function generateCertId(userId, moduleId, startDate) {
 	)}`;
 	const certId = `${moduleId}${datePart}${postfix}`;
 
-	getDBRequest("setUserInfo", {
+	getDBRequest("setDiploma", {
 		query: {
 			id: certId,
+		},
+		data: {
 			userId,
 			moduleId,
 			startDate,
 			public: false,
-		},
+		}
 	});
 
 	const path = `modules.${moduleId}.certId`;
