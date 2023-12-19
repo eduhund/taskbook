@@ -32,6 +32,7 @@ type BlockProps = {
 		| "p"
 		| "span"
 		| "richText"
+		| "link"
 		| "crib"
 		| "img"
 		| "diploma"
@@ -172,6 +173,18 @@ function Block({ id, type, value, list, link, url, caption }: BlockProps): any {
 				);
 			case "richText":
 				return RichText(value || []);
+			case "link":
+				return (
+					<Text
+						as="a"
+						view="link"
+						href={link}
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						{value}
+					</Text>
+				);
 			case "crib":
 				return <div className="analysContainer">{(value || []).map(({ id, type, value, altText }: any) => (
 					<Block
