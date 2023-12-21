@@ -34,7 +34,7 @@ function calculateScore(state = {}, task = {}) {
 			const question = questionsById[questionId];
 			return (
 				currentValue +
-				getTaskProcessor(question).getScore(questionState, question?.multiply)
+				getTaskProcessor(question).getScore(questionState, question)
 			);
 		},
 		0

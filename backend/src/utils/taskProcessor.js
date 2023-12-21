@@ -7,7 +7,8 @@ const tasksChoiceProcessor = {
 			0
 		);
 	},
-	getScore: function (state, isMultiply = true) {
+	getScore: function (state, task) {
+		const {multiply, hasRightAnswer} = task
 		var variantsById = {};
 		this.question?.variants?.forEach((variant) => {
 			variantsById[variant.id] = variant;
@@ -22,7 +23,14 @@ const tasksChoiceProcessor = {
 			return this.question?.maxScore || 0;
 		}
 
-		if (isMultiply) {
+		if (hasRightAnswer === false) {
+			return (
+				(state?.state || []).find((variant) => variant.isRight == true && variant.isSelected == true)
+					?.price || 0
+			);
+		}
+
+		if (multiply) {
 			return (state?.state || []).reduce((currentValue, variantState) => {
 				var variant = variantsById[variantState.id];
 				if (
@@ -34,7 +42,7 @@ const tasksChoiceProcessor = {
 			}, 0);
 		} else {
 			return (
-				(state?.state || []).find((variant) => variant.isRight == true)
+				(state?.state || []).find((variant) => variant.isRight == true && variant.isSelected == true)
 					?.price || 0
 			);
 		}
