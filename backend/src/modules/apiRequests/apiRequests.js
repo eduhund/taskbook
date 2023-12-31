@@ -28,6 +28,7 @@ const getModulesList = require("./getModulesList/getModulesList");
 const changeCommentStatus = require("./changeCommentStatus/changeCommentStatus");
 const getCommentsList = require("./getCommentsList/getCommentsList");
 const newPayment = require("./newPayment/newPayment");
+const sendAnswer = require("./sendAnswer/sendAnswer");
 
 const {
 	checkAuth,
@@ -62,6 +63,7 @@ const REQUESTS = {
 	changeCommentStatus,
 	getCommentsList,
 	newPayment,
+	sendAnswer
 };
 
 const PUBLIC = [
@@ -284,6 +286,12 @@ const TEACHER = [
 		method: "post",
 		path: "/newPayment",
 		exec: [(req, res) => getApiRequest("newPayment", { req, res })],
+	},
+	{
+		name: "sendMail",
+		method: "post",
+		path: "/sendMail",
+		exec: [(req, res) => getApiRequest("sendAnswer", { req, res })],
 	},
 ]
 
