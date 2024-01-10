@@ -22,7 +22,7 @@
 		"node-fetch": "^2.6.9",
 		"nodemailer": "^6.9.7",
 		"pg": "^8.7.3",
-		"sharp": "^0.33.0",
+		"sharp": "^0.33.1",
 		"supertest": "^6.3.3",
 		"svg-content": "^0.1.1"
 	},
