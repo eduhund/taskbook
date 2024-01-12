@@ -10,9 +10,9 @@ async function createCert(data, quality = "medium") {
 	const fileId = crypto.createHash("sha256").update(data.certId).digest("hex");
 
 	const buffer = Buffer.from(processed);
-	const folderPath = path.resolve(`./diplomas/${fileId}`);
+	const folderPath = path.resolve(`./storage/diplomas/${fileId}`);
 	if (!fs.existsSync(folderPath)) {
-		fs.mkdirSync(`./diplomas/${fileId}`, { recursive: true });
+		fs.mkdirSync(`./storage/diplomas/${fileId}`, { recursive: true });
 	}
 	const settings = {
 		small: {

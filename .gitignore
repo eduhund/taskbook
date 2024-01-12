@@ -5,9 +5,7 @@ node_modules
 .env.local
 .env.development.local
 .env.production.local
-diplomas
-files
-logs
+storage
 *.log
 
 # dependencies

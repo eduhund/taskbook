@@ -3,7 +3,7 @@ const log4js = require("log4js");
 log4js.configure({
 	appenders: {
 		out: { type: "stdout" },
-		file: { type: "file", filename: "./logs/eduhund-backend.log" },
+		file: { type: "file", filename: "./storage/logs/eduhund-backend.log" },
 		slack: {
 			type: "@log4js-node/slack",
 			token: process.env.SLACK_BOT_TOKEN,

@@ -16,7 +16,7 @@ function getToken() {
 }
 
 function tokenMachine() {
-	const tokens = readFile("/files/", "tokens.json",) || {};
+	const tokens = readFile("/storage/files/", "tokens.json",) || {};
 	function checkToken(token) {
 		return tokens?.[token];
 	}
@@ -31,7 +31,7 @@ function tokenMachine() {
 			userAgent: data.userAgent,
 			geo: data.geo
 		};
-		writeFile("/files/", "tokens.json", tokens)
+		writeFile("/storage/files/", "tokens.json", tokens)
 		return newToken;
 	}
 

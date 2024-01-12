@@ -19,7 +19,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(require("body-parser").urlencoded({ extended: false }));
 
-app.use("/diplomas", express.static("diplomas"));
+app.use("/diplomas", express.static("storage/diplomas"));
 
 // API v.2
 const student = express.Router();

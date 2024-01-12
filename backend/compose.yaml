@@ -17,6 +17,11 @@ services:
       - .env
     ports:
       - 8888:8888
+    volumes:
+      - storage:/backend/storage
+
+volumes:
+  storage:
 
 # The commented out section below is an example of how to define a PostgreSQL
 # database that your application can use. `depends_on` tells Docker Compose to
