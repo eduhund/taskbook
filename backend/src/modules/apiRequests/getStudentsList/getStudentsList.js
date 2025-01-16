@@ -7,48 +7,55 @@ const { getDeadline } = require("../../../utils/access");
 const { generateMessage } = require("../../../utils/messageGenerator");
 
 async function getStudentsList(req, res) {
-	const usersList = await getDBRequest("getUsersList", {});
+  const usersList = await getDBRequest("getUsersList", {});
+  const modulesList = await getDBRequest("getModulesList", {});
 
-	const usersData = [];
+  const usersData = [];
 
-	for (const user of usersList) {
-		const userData = {};
-		userData.id = user.id;
-		userData.email = user.email;
-		userData.firstName = user.firstName;
-		userData.lastName = user.lastName;
-		userData.lang = user.lang;
-		userData.gender = user.gender;
-		userData.isActivated = user.pass ? true : false;
+  for (const user of usersList) {
+    const userData = {};
+    userData.id = user.id;
+    userData.email = user.email;
+    userData.firstName = user.firstName;
+    userData.lastName = user.lastName;
+    userData.lang = user.lang;
+    userData.gender = user.gender;
+    userData.isActivated = user.pass ? true : false;
 
-		const userModules = [];
+    const userModules = [];
 
-		for (const moduleId of Object.keys(user.modules || {})) {
-			const start = user.modules[moduleId].start;
-			const deadline = getDeadline(user.modules[moduleId]);
-			const prolongations = user.modules[moduleId].prolongations || [];
-			const certId = user.modules[moduleId].certId;
+    for (const moduleId of Object.keys(user.modules || {})) {
+      const moduleData = modulesList.find((m) => m.code === moduleId);
 
-			const requests = [
-				getDBRequest("getModuleInfo", {
-					query: { code: moduleId },
-				}),
+      const start = user.modules[moduleId].start;
+      const deadline = getDeadline(user.modules[moduleId]);
+      const prolongations = user.modules[moduleId].prolongations || [];
+      const certId = user.modules[moduleId].certId;
+
+      const moduleName = moduleData?.shortName;
+      const mascot = moduleData?.mascot;
+
+      /*
+      const requests = [
+        getDBRequest("getModuleInfo", {
+          query: { code: moduleId },
+        }),
 				getDBRequest("getUserState", {
 					query: {
 						userId: user.id,
 						taskId: { $regex: `^${moduleId}` },
 					},
 				}),
-			];
+      ];
 
-			const [moduleData, userState] = await Promise.all(requests);
+      const [moduleData] = await Promise.all(requests); // + userState
 
-			if (!moduleData || Object.keys(moduleData).length === 0) {
-				continue;
-			}
+      if (!moduleData || Object.keys(moduleData).length === 0) {
+        continue;
+      }
 
-			const moduleName = moduleData?.shortName;
-			const mascot = moduleData?.mascot;
+      const moduleName = moduleData?.shortName;
+      const mascot = moduleData?.mascot;
 
 			const totalTasks = moduleData?.totalTasks;
 
@@ -105,15 +112,17 @@ async function getStudentsList(req, res) {
 			);
 
 			const lessons = [];
+			*/
 
-			userModules.push({
-				id: moduleId,
-				moduleName,
-				mascot,
-				start,
-				deadline,
-				prolongations,
-				certId,
+      userModules.push({
+        id: moduleId,
+        moduleName,
+        mascot,
+        start,
+        deadline,
+        prolongations,
+        certId,
+        /*
 				totalTasks,
 				forsakenTasks,
 				doneTasks,
@@ -123,18 +132,19 @@ async function getStudentsList(req, res) {
 				totalScore,
 				maxScore,
 				lessons,
-			});
-		}
+				*/
+      });
+    }
 
-		userData.modules = userModules;
+    userData.modules = userModules;
 
-		usersData.push(userData);
-	}
+    usersData.push(userData);
+  }
 
-	const data = generateMessage(0, usersData);
-	res.status(200).send(data);
+  const data = generateMessage(0, usersData);
+  res.status(200).send(data);
 
-	return
+  return;
 }
 
 module.exports = getStudentsList;
