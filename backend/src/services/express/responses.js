@@ -81,6 +81,11 @@ const ERRORS = [
     description: "Error request params validate",
   },
   {
+    code: 20102,
+    type: "validate_failure",
+    description: "User with this email is already exist",
+  },
+  {
     code: 20201,
     type: "process_failure",
     description: "Error in auth process",
@@ -144,6 +149,11 @@ const ERRORS = [
     code: 20213,
     type: "process_failure",
     description: "Error in get modules list process",
+  },
+  {
+    code: 20214,
+    type: "process_failure",
+    description: "Error in createUser process",
   },
 ];
 

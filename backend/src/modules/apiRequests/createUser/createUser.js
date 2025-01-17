@@ -1,79 +1,54 @@
 const { log } = require("../../../services/logger/logger");
 const { getDBRequest } = require("../../dbRequests/dbRequests");
-const { setKey } = require("../../../services/tokenMachine/OTK")
-const { lowerString } = require("../../../utils/stringProcessor")
-const { generateMessage } = require("../../../utils/messageGenerator");
+const { setKey } = require("../../../services/tokenMachine/OTK");
+const { lowerString } = require("../../../utils/stringProcessor");
+const { hashPass } = require("../../../utils/pass");
 
-async function createUser(req, res) {
-	const { email, pass, firstName, lastName, modules, startDate, deadline, lang } = req.body
+async function createUser({ body = {} }, res, next) {
+  try {
+    const { email, pass, firstName, lastName, modules, lang } = body;
 
-	if (!email) {
-		res.status(401);
-		res.send({
-			OK: false,
-			error: "missing_parameters",
-			error_description: "Missing required parameters",
-			error_code: 10008,
-		});
-		return
-	}
-	const userEmail = lowerString(email);
+    if (!email) {
+      next({ code: 10002 });
+      return;
+    }
 
-	const isUserExist = await getDBRequest("checkUsername", {
-		email: userEmail,
-	});
+    const userEmail = lowerString(email);
 
-	if (isUserExist) {
-		res.status(401);
-		res.send({
-			OK: false,
-			error: "user_already_exist",
-			error_description: "User with this email is already exist",
-			error_code: 10008,
-		});
+    const isUserExist = await getDBRequest("checkUsername", {
+      email: userEmail,
+    });
 
-		return
-	}
+    if (isUserExist) {
+      next({ code: 20102 });
+      return;
+    }
 
-	const userModules = {};
-	(modules || []).forEach((userModule) => {
-		//const date = new Date(Date.now());
-		userModules[userModule.id] = {
-			start: startDate, // date.toISOString().split("T")[0],
-			deadline, //calculateDeadline(date, 80),
-		};
-	});
-	const newUser = {
-		email: userEmail,
-		pass: pass ? hashPass(pass) : "",
-		firstName,
-		lastName,
-		modules: userModules,
-		lang,
-	};
-	const createdUser = await getDBRequest("addUser", newUser);
+    const newUser = {
+      email: userEmail,
+      pass: pass ? hashPass(pass) : "",
+      firstName,
+      lastName,
+      modules,
+      lang,
+    };
 
-	const sendData = {
-		OK: true,
-		data: {
-			id: createdUser.id,
-			email: createdUser.email,
-			firstName: createdUser.firstName,
-			lastName: createdUser.lastName,
-		},
-	};
+    const createdUser = await getDBRequest("addUser", newUser);
 
-	if (!createdUser.pass) {
-		const secureKey = await setKey(createdUser.id, "oneTimeKey");
-		sendData.data.key = secureKey;
-	}
+    if (!createdUser.pass) {
+      newUser.key = await setKey(createdUser.id, "oneTimeKey");
+    }
 
-	const data = generateMessage(0, sendData);
-	res.status(200).send(data);
+    next({ content: newUser });
 
-	log.info(`New user was created:`, createdUser);
+    log.info(`New user was created:`, createdUser);
 
-	return
-};
+    return;
+  } catch (e) {
+    log.error(e);
+    next({ code: 20214 });
+    return;
+  }
+}
 
 module.exports = createUser;
