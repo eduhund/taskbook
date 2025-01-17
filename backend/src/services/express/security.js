@@ -1,6 +1,6 @@
 const { checkToken } = require("../tokenMachine/tokenMachine");
 
-const trustedMachines = process.env.TRUSTED || [];
+const { ADMIN_TOKEN = "", TRUSTED = [] } = process.env;
 
 /***
  * Function checks user access token.
@@ -13,7 +13,7 @@ function checkAuth(wall) {
   return (req, res, next) => {
     req.data = {};
 
-    const isTrustedMachine = trustedMachines.includes(req.ip);
+    const isTrustedMachine = TRUSTED.includes(req.ip);
 
     if (wall && isTrustedMachine) {
       req.data = {
@@ -47,6 +47,10 @@ function checkAdmin(req, res, next) {
   }
 
   const token = req?.headers?.accesstoken;
+
+  if (token === ADMIN_TOKEN) {
+    next();
+  }
   const tokenData = checkToken(token);
   if (!tokenData) {
     next({ code: 10103 });
