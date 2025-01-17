@@ -50,6 +50,7 @@ function checkAdmin(req, res, next) {
 
   if (token === ADMIN_TOKEN) {
     next();
+    return true;
   }
   const tokenData = checkToken(token);
   if (!tokenData) {
