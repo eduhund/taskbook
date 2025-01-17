@@ -8,7 +8,7 @@ async function createUser({ body = {} }, res, next) {
   try {
     const { email, pass, firstName, lastName, modules, lang } = body;
 
-    if (!email) {
+    if (!(email && (firstName || lastName))) {
       next({ code: 10002 });
       return;
     }

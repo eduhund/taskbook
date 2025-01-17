@@ -168,27 +168,28 @@ function responseGenerator(code, data = {}) {
 
 function responseHandler(message, req, res, next) {
   const { code, content, trace } = message;
-  const { data } = req;
+  const { data, query, body } = req;
+  const input = { data, query, body };
   if (!code) {
-    log.debug({ input: data, output: message });
     res.status(200).send(responseGenerator(0, content));
     return;
   }
   const error = responseGenerator(code || -1);
   if (code > 10000 && code < 20000) {
-    log.debug(trace);
-    log.warn({ input: data, output: error });
+    log.warn(error?.error?.description);
+    log.debug({ input, output: error, trace });
     res.status(400).send(error);
     return;
   } else {
-    log.debug(trace);
-    log.error({ input: data, output: error });
+    log.warn(error?.error?.description);
+    log.debug({ input, output: error, trace });
     res.status(500).send(error);
     return;
   }
 }
 
 function pathHandler(req, res, next) {
+  log.debug(req.path);
   res.status(404);
   res.send(responseGenerator(10001));
 }

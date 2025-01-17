@@ -5,7 +5,7 @@ const { log } = require("@logger");
 const { PUBLIC, TEACHER } = require("../../modules/apiRequests/apiRequests");
 const { checkAdmin } = require("./security");
 const { paramsProcessor } = require("../../utils/validate");
-const { responseHandler } = require("./responses");
+const { responseHandler, pathHandler } = require("./responses");
 
 const { SERVER_PORT = 8888, ORIGIN = "*" } = process.env;
 
@@ -49,6 +49,8 @@ for (const request of TEACHER) {
   }
   oldTeacher.use(responseHandler);
 }
+
+app.use(pathHandler);
 
 function start() {
   return new Promise((resolve, reject) => {
