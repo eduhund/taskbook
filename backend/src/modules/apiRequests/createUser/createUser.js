@@ -4,6 +4,20 @@ const { setKey } = require("../../../services/tokenMachine/OTK");
 const { lowerString } = require("../../../utils/stringProcessor");
 const { hashPass } = require("../../../utils/pass");
 
+function optimiseDate(date) {
+  const initialDate = new Date(date);
+  return initialDate.toISOString().split("T")[0];
+}
+
+function createModules(modules) {
+  const modulesObject = {};
+  return modules.forEach(({ id, startDate, endDate }) => {
+    const start = optimiseDate(startDate);
+    const deadline = optimiseDate(endDate);
+    modulesObject[id] = { start, deadline };
+  });
+}
+
 async function createUser({ body = {} }, res, next) {
   try {
     const { email, pass, firstName, lastName, modules, lang } = body;
@@ -29,7 +43,7 @@ async function createUser({ body = {} }, res, next) {
       pass: pass ? hashPass(pass) : "",
       firstName,
       lastName,
-      modules,
+      modules: createModules(modules),
       lang,
     };
 
