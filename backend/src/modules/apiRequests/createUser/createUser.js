@@ -11,7 +11,7 @@ function optimiseDate(date) {
 
 function createModules(modules) {
   const modulesObject = {};
-  return modules.forEach(({ id, start, deadline }) => {
+  modules.forEach(({ id, start, deadline }) => {
     const startDate = optimiseDate(start);
     const deadlineDate = optimiseDate(deadline);
     modulesObject[id] = { start: startDate, deadline: deadlineDate };
