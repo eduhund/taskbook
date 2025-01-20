@@ -56,6 +56,7 @@ for (const request of TEACHER) {
 
 const public = express.Router();
 app.use("/public", public);
+public.use(paramsProcessor);
 for (const request of PUBLIC) {
   const { path, method, exec } = request;
   switch (method) {

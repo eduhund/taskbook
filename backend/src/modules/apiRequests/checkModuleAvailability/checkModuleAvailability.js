@@ -49,7 +49,7 @@ function validator(
 
 async function checkModuleAvailability(req, res, next) {
   try {
-    const { email, moduleId, purchaseType } = req.query;
+    const { email, moduleId, purchaseType } = req.data;
 
     if (!email || !moduleId) {
       next({ code: 10002 });
