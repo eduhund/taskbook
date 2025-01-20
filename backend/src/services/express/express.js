@@ -26,10 +26,11 @@ app.use(require("body-parser").urlencoded({ extended: false }));
 
 app.use("/diplomas", express.static("diplomas"));
 
+app.use(paramsProcessor);
+
 // API v.2
 const student = express.Router();
 app.use("/student", student);
-student.use(paramsProcessor);
 for (const request of STUDENT) {
   const { path, method, exec } = request;
   switch (method) {
@@ -51,12 +52,10 @@ for (const request of TEACHER) {
     case "post":
       teacher.post(path, exec);
   }
-  teacher.use(responseHandler);
 }
 
 const public = express.Router();
 app.use("/public", public);
-public.use(paramsProcessor);
 for (const request of PUBLIC) {
   const { path, method, exec } = request;
   switch (method) {
@@ -65,9 +64,9 @@ for (const request of PUBLIC) {
     case "post":
       public.post(path, exec);
   }
-  public.use(responseHandler);
 }
 
+app.use(responseHandler);
 app.use(pathHandler);
 
 function start() {
