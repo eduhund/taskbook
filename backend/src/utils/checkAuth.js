@@ -1,4 +1,4 @@
-const { USERS } = require("../modules/dbRequests/mongo");
+const { USERS } = require("../services/mongo/mongo");
 const accessTokens = require("../services/tokenMachine/tokenMachine");
 const { getModuleId } = require("./idExtractor");
 const { generateMessage } = require("./messageGenerator");
@@ -6,23 +6,23 @@ const { generateMessage } = require("./messageGenerator");
 const trustedAddress = process.env.TRUSTED;
 
 function checkAuth(req, res, next) {
-	const preUserId = req?.query?.userId || req?.body?.userId;
-	if (trustedAddress.includes(req.ip) && preUserId) {
-		req.userId = preUserId;
-		next();
-		return;
-	}
-	const token = req?.query?.accessToken || req?.body?.accessToken;
-	const userId = accessTokens.checkList()?.[token]?.id;
+  const preUserId = req?.query?.userId || req?.body?.userId;
+  if (trustedAddress.includes(req.ip) && preUserId) {
+    req.userId = preUserId;
+    next();
+    return;
+  }
+  const token = req?.query?.accessToken || req?.body?.accessToken;
+  const userId = accessTokens.checkList()?.[token]?.id;
 
-	if (!userId) {
-		const error = generateMessage(10105);
-		res.status(401).send(error);
-		return error;
-	} else {
-		req.userId = userId;
-		next();
-	}
+  if (!userId) {
+    const error = generateMessage(10105);
+    res.status(401).send(error);
+    return error;
+  } else {
+    req.userId = userId;
+    next();
+  }
 }
 
 /**
@@ -32,16 +32,16 @@ function checkAuth(req, res, next) {
  * @returns {string | null}
  */
 function checkToken(tokenList = {}, token = "") {
-	return tokenList?.[token] || null;
+  return tokenList?.[token] || null;
 }
 
 function checkDate(start, deadline) {
-	if (!start && !deadline) return undefined;
-	const today = Date.now();
-	const UTCMidnight = new Date(deadline);
-	UTCMidnight.setUTCHours(23, 59, 59, 0);
-	const UTCDeadline = Date.parse(UTCMidnight);
-	return today >= Date.parse(start) && today <= UTCDeadline ? true : false;
+  if (!start && !deadline) return undefined;
+  const today = Date.now();
+  const UTCMidnight = new Date(deadline);
+  UTCMidnight.setUTCHours(23, 59, 59, 0);
+  const UTCDeadline = Date.parse(UTCMidnight);
+  return today >= Date.parse(start) && today <= UTCDeadline ? true : false;
 }
 
 /**
@@ -51,27 +51,27 @@ function checkDate(start, deadline) {
  * @returns {boolean}
  */
 function checkModuleAccess(req, res, next) {
-	const userId = req.userId;
+  const userId = req.userId;
 
-	const lessonId = req?.query?.lessonId || req?.body?.lessonId;
-	const taskId = req?.query?.taskId || req?.body?.taskId;
-	const questionId = req?.query?.questionId || req?.body?.questionId;
-	const moduleId =
-		req?.query?.moduleId ||
-		req?.body?.moduleId ||
-		getModuleId(lessonId || taskId || questionId);
+  const lessonId = req?.query?.lessonId || req?.body?.lessonId;
+  const taskId = req?.query?.taskId || req?.body?.taskId;
+  const questionId = req?.query?.questionId || req?.body?.questionId;
+  const moduleId =
+    req?.query?.moduleId ||
+    req?.body?.moduleId ||
+    getModuleId(lessonId || taskId || questionId);
 
-	USERS.findOne({ id: userId }).then((user) => {
-		startDate = user?.modules?.[moduleId]?.start;
-		deadline = user?.modules?.[moduleId]?.deadline;
-		if (checkDate(startDate, deadline)) {
-			next();
-		} else {
-			const error = generateMessage(10201);
-			res.status(403).send(error);
-			return error;
-		}
-	});
+  USERS.findOne({ id: userId }).then((user) => {
+    startDate = user?.modules?.[moduleId]?.start;
+    deadline = user?.modules?.[moduleId]?.deadline;
+    if (checkDate(startDate, deadline)) {
+      next();
+    } else {
+      const error = generateMessage(10201);
+      res.status(403).send(error);
+      return error;
+    }
+  });
 }
 
 /**
@@ -81,23 +81,22 @@ function checkModuleAccess(req, res, next) {
  * @returns {boolean}
  */
 function checkCertAccess(req, res, next) {
-	const userId = req.userId;
+  const userId = req.userId;
 
-	const lessonId = req?.query?.lessonId || req?.body?.lessonId;
-	const moduleId = req?.query?.moduleId || 
-		req?.body?.moduleId ||
-		getModuleId(lessonId);
+  const lessonId = req?.query?.lessonId || req?.body?.lessonId;
+  const moduleId =
+    req?.query?.moduleId || req?.body?.moduleId || getModuleId(lessonId);
 
-	USERS.findOne({ id: userId }).then((user) => {
-		const modules = Object.keys(user?.modules || {});
-		if (modules.includes(moduleId)) {
-			next();
-		} else {
-			const error = generateMessage(10201);
-			res.status(403).send(error);
-			return error;
-		}
-	});
+  USERS.findOne({ id: userId }).then((user) => {
+    const modules = Object.keys(user?.modules || {});
+    if (modules.includes(moduleId)) {
+      next();
+    } else {
+      const error = generateMessage(10201);
+      res.status(403).send(error);
+      return error;
+    }
+  });
 }
 
 module.exports = { checkToken, checkAuth, checkModuleAccess, checkCertAccess };

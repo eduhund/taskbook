@@ -2,7 +2,11 @@ const express = require("express");
 const cors = require("cors");
 const { log } = require("@logger");
 
-const { PUBLIC, TEACHER } = require("../../modules/apiRequests/apiRequests");
+const {
+  PUBLIC,
+  STUDENT,
+  TEACHER,
+} = require("../../modules/apiRequests/apiRequests");
 const { checkAdmin } = require("./security");
 const { paramsProcessor } = require("../../utils/validate");
 const { responseHandler, pathHandler } = require("./responses");
@@ -26,7 +30,7 @@ app.use("/diplomas", express.static("diplomas"));
 const student = express.Router();
 app.use("/student", student);
 student.use(paramsProcessor);
-for (const request of PUBLIC) {
+for (const request of STUDENT) {
   const { path, method, exec } = request;
   switch (method) {
     case "get":
@@ -36,30 +40,44 @@ for (const request of PUBLIC) {
   }
 }
 
-const oldTeacher = express.Router();
-app.use("/teacher", oldTeacher);
-oldTeacher.use(checkAdmin);
+const teacher = express.Router();
+app.use("/teacher", teacher);
+teacher.use(checkAdmin);
 for (const request of TEACHER) {
   const { path, method, exec } = request;
   switch (method) {
     case "get":
-      oldTeacher.get(path, exec);
+      teacher.get(path, exec);
     case "post":
-      oldTeacher.post(path, exec);
+      teacher.post(path, exec);
   }
-  oldTeacher.use(responseHandler);
+  teacher.use(responseHandler);
+}
+
+const public = express.Router();
+app.use("/public", public);
+for (const request of PUBLIC) {
+  const { path, method, exec } = request;
+  switch (method) {
+    case "get":
+      public.get(path, exec);
+    case "post":
+      public.post(path, exec);
+  }
+  public.use(responseHandler);
 }
 
 app.use(pathHandler);
 
 function start() {
   return new Promise((resolve, reject) => {
+    log.info("Starting server...");
     app.listen(SERVER_PORT, (err) => {
       if (err) {
-        return reject(err);
+        reject({ message: "Failed to start server!", trace: err });
       }
-      log.info("Server starts on port", SERVER_PORT);
-      return resolve();
+      log.info("Server started on port", SERVER_PORT);
+      resolve();
     });
   });
 }

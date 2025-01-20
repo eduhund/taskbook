@@ -1,13 +1,13 @@
-const { TASKS } = require("../mongo");
+const { TASKS } = require("../../../services/mongo/mongo");
 
 function getTaskInfo({ query = {}, returns = [] }) {
-	const projection = {
-		_id: 0,
-	};
-	for (const param of returns) {
-		projection[param] = 1;
-	}
-	return TASKS.findOne(query, { projection });
+  const projection = {
+    _id: 0,
+  };
+  for (const param of returns) {
+    projection[param] = 1;
+  }
+  return TASKS.findOne(query, { projection });
 }
 
 module.exports = getTaskInfo;

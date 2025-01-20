@@ -1,5 +1,5 @@
 const { log } = require("../../../services/logger/logger");
-const { USERS, TASKS, STATE } = require("../../dbRequests/mongo");
+const { USERS, TASKS, STATE } = require("../../../services/mongo/mongo");
 const { generateMessage } = require("../../../utils/messageGenerator");
 
 async function getCommentsList(req, res) {
@@ -46,8 +46,8 @@ async function getCommentsList(req, res) {
 
   const data = generateMessage(0, commentList);
   res.status(200).send(data);
-  
-  return
+
+  return;
 }
 
 module.exports = getCommentsList;

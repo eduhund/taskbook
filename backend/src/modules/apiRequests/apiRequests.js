@@ -29,6 +29,8 @@ const getCommentsList = require("./getCommentsList/getCommentsList");
 const newPayment = require("./newPayment/newPayment");
 const sendAnswer = require("./sendAnswer/sendAnswer");
 
+const checkModuleAvailability = require("./checkModuleAvailability/checkModuleAvailability");
+
 const {
   checkAuth,
   checkModuleAccess,
@@ -63,9 +65,10 @@ const REQUESTS = {
   getCommentsList,
   newPayment,
   sendAnswer,
+  checkModuleAvailability,
 };
 
-const PUBLIC = [
+const STUDENT = [
   {
     name: "auth",
     method: "post",
@@ -307,6 +310,18 @@ const TEACHER = [
   },
 ];
 
+const PUBLIC = [
+  {
+    name: "checkModuleAvailability",
+    method: "get",
+    path: "/checkModuleAvailability",
+    exec: [
+      (req, res, next) =>
+        getApiRequest("checkModuleAvailability", { req, res, next }),
+    ],
+  },
+];
+
 async function getApiRequest(type, { req, res, next }) {
   try {
     return REQUESTS[type](req, res, next);
@@ -319,4 +334,4 @@ async function getApiRequest(type, { req, res, next }) {
   }
 }
 
-module.exports = { PUBLIC, TEACHER, getApiRequest };
+module.exports = { PUBLIC, STUDENT, TEACHER, getApiRequest };

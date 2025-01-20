@@ -86,6 +86,11 @@ const ERRORS = [
     description: "User with this email is already exist",
   },
   {
+    code: 20200,
+    type: "process_failure",
+    description: "Uncovered process error",
+  },
+  {
     code: 20201,
     type: "process_failure",
     description: "Error in auth process",
