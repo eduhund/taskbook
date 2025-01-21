@@ -36,6 +36,20 @@ async function updateUser(req, res) {
 
   if (updatedUser) {
     delete updatedUser.pass;
+
+    const userModules = Object.entries(updatedUser.modules || {}).map(
+      ([key, value]) => {
+        const { start, deadline } = value;
+        return {
+          id: key,
+          start,
+          deadline,
+        };
+      }
+    );
+
+    updatedUser.modules = userModules;
+
     const sendData = {
       OK: true,
       data: updatedUser,
