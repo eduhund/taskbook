@@ -4,7 +4,15 @@ const { lowerString } = require("../../../utils/stringProcessor");
 const { generateMessage } = require("../../../utils/messageGenerator");
 
 async function updateUser(req, res) {
-  const { id, email, firstName, lastName, lang, gender } = req.body;
+  const {
+    id,
+    email,
+    firstName,
+    lastName,
+    lang,
+    gender,
+    modules = [],
+  } = req.body;
 
   if (!id) {
     res.status(401);
@@ -17,13 +25,30 @@ async function updateUser(req, res) {
     return;
   }
 
+  const userModules = {};
+
+  modules.forEach(({ id, start, deadline }) => {
+    if (start) {
+      const startString = `modules.${id}.start`;
+      userModules[startString] = start;
+    }
+
+    if (deadline) {
+      const deadlineString = `modules.${id}.deadline`;
+      userModules[deadlineString] = deadline;
+    }
+  });
+
   const data = {
     email: lowerString(email),
     firstName,
     lastName,
     lang,
     gender,
+    ...userModules,
   };
+
+  console.log(data);
 
   for (const key of Object.keys(data)) {
     if (!data[key]) delete data[key];
