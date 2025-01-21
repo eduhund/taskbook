@@ -48,8 +48,6 @@ async function updateUser(req, res) {
     ...userModules,
   };
 
-  console.log(data);
-
   for (const key of Object.keys(data)) {
     if (!data[key]) delete data[key];
   }
