@@ -182,7 +182,10 @@ async function newPayment(req, res) {
 
     sendMail(mail, newUser?.email, "eduHund");
   } else if (payment?.isProlongation) {
-    deadline = calculateDeadline(user?.modules[payment.moduleId].deadline, 62);
+    const now = new Date(Date.now());
+    const currentDeadline = new Date(user?.modules[payment?.moduleId].deadline);
+    const newDeadline = currentDeadline > now ? currentDeadline : now;
+    deadline = calculateDeadline(newDeadline, 62);
 
     const prolData = {
       type: "renewal",
