@@ -52,7 +52,7 @@ async function getDashboard(req, res) {
 
     if (moduleData.prevModule) {
       if (Object.keys(modules).includes(moduleData.prevModule)) {
-        module.status = "unavailable";
+        moduleData.status = "unavailable";
       }
     }
 
