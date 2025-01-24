@@ -72,4 +72,4 @@ async function updateModulesState() {
   }
 }
 
-updateModulesState();
+//updateModulesState();
