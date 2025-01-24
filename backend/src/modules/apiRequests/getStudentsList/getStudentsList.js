@@ -31,6 +31,7 @@ async function getStudentsList(req, res) {
       const moduleName = moduleData?.shortName;
       const mascot = moduleData?.mascot;
       const totalTasks = moduleData?.totalTasks;
+      const diplomaId = moduleData?.diplomaId;
       const maxScore = Object.values(moduleData?.lessons || {}).reduce(
         (acc, lesson) => {
           return acc + lesson.maxScore || 0;
@@ -46,6 +47,7 @@ async function getStudentsList(req, res) {
         moduleName,
         mascot,
         deadline,
+        diplomaId,
       });
     }
 
