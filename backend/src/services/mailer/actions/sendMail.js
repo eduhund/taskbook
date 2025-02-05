@@ -1,14 +1,18 @@
-const { mailer } = require("../mailer");
-
-const { MAIL_FROM } = process.env;
-
-function sendMail(mail, to, subject) {
-	mailer.sendMail({
-		from: MAIL_FROM,
-		to,
-		subject,
-		html: mail,
-	});
+async function sendMailToUser(params, data) {
+  try {
+    const { template_id, address, lang = "ru" } = params;
+    return fetch(`${MAIL_API}/sendMail`, {
+      method: "POST",
+      body: {
+        template_id,
+        address,
+        lang,
+        data,
+      },
+    });
+  } catch (error) {
+    throw new Error("Error while sending mail");
+  }
 }
 
-module.exports = sendMail;
+module.exports = sendMailToUser;

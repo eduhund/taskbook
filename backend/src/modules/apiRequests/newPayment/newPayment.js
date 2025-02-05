@@ -4,8 +4,7 @@ const { calculateDeadline } = require("../../../utils/calculators");
 const { hashPass } = require("../../../utils/pass");
 const { setKey } = require("../../../services/tokenMachine/OTK");
 const { log } = require("../../../services/logger/logger");
-const { prepareMail } = require("../../../services/mailer/actions");
-const { sendMail } = require("../../../services/mailer/actions");
+const { sendMail } = require("../../../services/mailer");
 
 function checkSource(body) {
   const keys = Object.keys(body);
@@ -158,10 +157,9 @@ async function newPayment(req, res) {
     const link = `${process.env.FRONTEND_URL}/createPassword?email=${payment.email}&verifyKey=${secureKey}&lang=${lang}`;
 
     const params = {
+      template_id: getISODateOny(date) < start ? "rq4lt12h" : "l9ujirgq",
+      address: payment.email,
       lang,
-      status: "new",
-      type: "buy",
-      start: getISODateOny(date) < start ? "date" : "now",
     };
 
     const data = {
@@ -178,9 +176,7 @@ async function newPayment(req, res) {
       PASSWORD_LINK: link,
     };
 
-    const mail = prepareMail({ params, data });
-
-    sendMail(mail, newUser?.email, "eduHund");
+    sendMail(params, data);
   } else if (payment?.isProlongation) {
     const now = new Date(Date.now());
     const currentDeadline = new Date(user?.modules[payment?.moduleId].deadline);
@@ -205,8 +201,9 @@ async function newPayment(req, res) {
     });
 
     const params = {
-      lang: "ru" || user?.lang,
-      status: "renew",
+      template_id: "c8oikgth",
+      address: payment.email,
+      lang,
     };
 
     const data = {
@@ -220,9 +217,8 @@ async function newPayment(req, res) {
         day: "numeric",
       }),
     };
-    const mail = prepareMail({ params, data });
 
-    sendMail(mail, user?.email, "eduHund");
+    sendMail(params, data);
   } else {
     const activeModules = Object.entries(user.modules || {}).filter(
       ([, value]) =>
@@ -265,10 +261,9 @@ async function newPayment(req, res) {
     });
 
     const params = {
-      lang: user?.lang || "en",
-      status: "current",
-      type: "buy",
-      start: getISODateOny(date) < start ? "date" : "now",
+      template_id: getISODateOny(date) < start ? "ju2fou81" : "it2mrnd7",
+      address: payment.email,
+      lang,
     };
 
     const data = {
@@ -283,9 +278,7 @@ async function newPayment(req, res) {
       }),
     };
 
-    const mail = prepareMail({ params, data });
-
-    sendMail(mail, user?.email, "eduHund");
+    sendMail(params, data);
   }
 
   const response = await getDBRequest("setPayment", { payment });
