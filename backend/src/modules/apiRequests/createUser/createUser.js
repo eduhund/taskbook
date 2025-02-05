@@ -90,7 +90,7 @@ async function createUser({ body = {} }, res, next) {
           month: "long",
           day: "numeric",
         }),
-        PASSWORD: createdUser?.pass || "",
+        PASSWORD: pass || "",
         PASSWORD_LINK: link,
       };
 
