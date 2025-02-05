@@ -59,8 +59,10 @@ async function createUser({ body = {} }, res, next) {
 
     const createdUser = await getDBRequest("addUser", newUser);
 
+    const otk = await setKey(createdUser.id, "oneTimeKey");
+
     if (!createdUser.pass) {
-      newUser.key = await setKey(createdUser.id, "oneTimeKey");
+      newUser.key = otk;
     }
 
     if (settings.sendEmail && modules.length > 0) {
@@ -68,13 +70,13 @@ async function createUser({ body = {} }, res, next) {
         query: { code: modules[0].id },
       });
 
-      const link = `${process.env.FRONTEND_URL}/createPassword?email=${payment.email}&verifyKey=${secureKey}&lang=${lang}`;
+      const link = `${process.env.FRONTEND_URL}/createPassword?email=${userEmail}&verifyKey=${otk}&lang=${lang}`;
 
       const date = optimiseDate(Date.now());
       const start = optimiseDate(modules[0].start);
       const params = {
         template_id: date < start ? "p2vv6r2j" : "f53503qv",
-        address: payment.email,
+        address: userEmail,
         lang,
       };
 
@@ -88,11 +90,11 @@ async function createUser({ body = {} }, res, next) {
           month: "long",
           day: "numeric",
         }),
-        PASSWORD: createdUser.pass || "",
+        PASSWORD: createdUser?.pass || "",
         PASSWORD_LINK: link,
       };
 
-      sendMail(params, data);
+      await sendMail(params, data);
     }
 
     next({ content: newUser });

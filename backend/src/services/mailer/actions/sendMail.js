@@ -1,3 +1,5 @@
+const { MAIL_API } = process.env;
+
 async function sendMailToUser(params, data) {
   try {
     const { template_id, address, lang = "ru" } = params;

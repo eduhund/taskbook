@@ -176,7 +176,7 @@ async function newPayment(req, res) {
       PASSWORD_LINK: link,
     };
 
-    sendMail(params, data);
+    await sendMail(params, data);
   } else if (payment?.isProlongation) {
     const now = new Date(Date.now());
     const currentDeadline = new Date(user?.modules[payment?.moduleId].deadline);
@@ -218,7 +218,7 @@ async function newPayment(req, res) {
       }),
     };
 
-    sendMail(params, data);
+    await sendMail(params, data);
   } else {
     const activeModules = Object.entries(user.modules || {}).filter(
       ([, value]) =>
@@ -278,7 +278,7 @@ async function newPayment(req, res) {
       }),
     };
 
-    sendMail(params, data);
+    await sendMail(params, data);
   }
 
   const response = await getDBRequest("setPayment", { payment });
