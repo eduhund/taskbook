@@ -3,6 +3,7 @@ const { getDBRequest } = require("../../dbRequests/dbRequests");
 const { setKey } = require("../../../services/tokenMachine/OTK");
 const { lowerString } = require("../../../utils/stringProcessor");
 const { hashPass } = require("../../../utils/pass");
+const { sendMail } = require("../../../services/mailer");
 
 function optimiseDate(date) {
   const initialDate = new Date(date);
@@ -21,7 +22,15 @@ function createModules(modules) {
 
 async function createUser({ body = {} }, res, next) {
   try {
-    const { email, pass, firstName, lastName, modules, lang } = body;
+    const {
+      email,
+      pass,
+      firstName,
+      lastName,
+      modules,
+      lang,
+      settings = { sendEmail: false },
+    } = body;
 
     if (!(email && (firstName || lastName))) {
       next({ code: 10002 });
@@ -52,6 +61,38 @@ async function createUser({ body = {} }, res, next) {
 
     if (!createdUser.pass) {
       newUser.key = await setKey(createdUser.id, "oneTimeKey");
+    }
+
+    if (settings.sendEmail && modules.length > 0) {
+      const moduleInfo = await getDBRequest("getModuleInfo", {
+        query: { code: modules[0].id },
+      });
+
+      const link = `${process.env.FRONTEND_URL}/createPassword?email=${payment.email}&verifyKey=${secureKey}&lang=${lang}`;
+
+      const date = optimiseDate(Date.now());
+      const start = optimiseDate(modules[0].start);
+      const params = {
+        template_id: date < start ? "p2vv6r2j" : "f53503qv",
+        address: payment.email,
+        lang,
+      };
+
+      const data = {
+        NAME: newUser?.firstName || "",
+        MODULE: moduleInfo?.name || "",
+        MODULELINK: moduleInfo?.moduleLink || "",
+        MASCOTLETTERTOP: moduleInfo?.mascot?.letterTop || "",
+        MASCOTLETTERBOTTOM: moduleInfo?.mascot?.letterBottom || "",
+        START_DATE: new Date(Date.parse(start)).toLocaleDateString("ru-RU", {
+          month: "long",
+          day: "numeric",
+        }),
+        PASSWORD: createdUser.pass || "",
+        PASSWORD_LINK: link,
+      };
+
+      sendMail(params, data);
     }
 
     next({ content: newUser });
