@@ -7,7 +7,6 @@ const { buildSvg } = require("svg-content");
 async function createCert(data, quality = "medium") {
   const svg = fs.readFileSync(`./templates/diplomas/poster.svg`).toString();
   const processed = buildSvg(svg, data);
-  console.log(data);
   fs.writeFileSync(`./templates/diplomas/poster2.svg`, processed);
   const fileId = crypto.createHash("sha256").update(data.certId).digest("hex");
 

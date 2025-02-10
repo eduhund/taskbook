@@ -136,7 +136,6 @@ async function getDiploma(req, res) {
       progress,
       skills,
     };
-    console.log("Params:", params);
 
     const fullInfo = provideData(info, params);
 
