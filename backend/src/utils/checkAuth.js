@@ -8,12 +8,18 @@ const { TRUSTED = [], ADMIN_TOKEN = null } = process.env;
 function checkAuth(req, res, next) {
   const preUserId = req?.query?.userId || req?.body?.userId;
   const token = req?.query?.accessToken || req?.body?.accessToken;
-  if ((TRUSTED.includes(req.ip) || token === ADMIN_TOKEN) && preUserId) {
+  const tokenData = checkToken(token);
+
+  if (
+    (TRUSTED.includes(req.ip) || token === ADMIN_TOKEN || tokenData?.isAdmin) &&
+    preUserId
+  ) {
     req.userId = preUserId;
     next();
     return;
   }
-  const userId = accessTokens.checkList()?.[token]?.id;
+
+  const userId = tokenData?.id;
 
   if (!userId) {
     const error = generateMessage(10105);
