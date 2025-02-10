@@ -48,12 +48,6 @@ async function getDiploma(req, res) {
       query: { id: userId },
       returns: ["modules", "firstName", "lastName"],
     }),
-    getDBRequest("getUserState", {
-      query: {
-        userId,
-        taskId: { $regex: `^${moduleId}` },
-      },
-    }),
     getDBRequest("getModuleInfo", {
       query: { code: moduleId },
       returns: [
@@ -69,7 +63,7 @@ async function getDiploma(req, res) {
   ];
 
   try {
-    const [userData, stateData, moduleData] = await Promise.all(requests);
+    const [userData, moduleData] = await Promise.all(requests);
 
     const start = userData?.modules?.[moduleId]?.deadline;
     const deadline = userData?.modules?.[moduleId]?.deadline;
@@ -113,30 +107,14 @@ async function getDiploma(req, res) {
         ? userData.lastName
         : cyrillicToTranslit.transform(userData.lastName);
 
-    const score = stateData.reduce(
-      (progress, value) => progress + (value?.score || 0),
-      0
-    );
+    const score = userData?.modules?.[moduleId]?.totalScore || 0;
 
     let maxScore = 0;
     for (const lesson of Object.values(moduleData?.lessons)) {
-      for (const task of lesson.tasks) {
-        const taskData = await getDBRequest("getTaskInfo", {
-          query: {
-            id: task,
-            type: "practice",
-          },
-          returns: ["maxScore"],
-        });
-        maxScore += taskData?.maxScore || 0;
-      }
+      maxScore += lesson?.maxScore || 0;
     }
 
-    const doneTasks = stateData.reduce((progress, value) => {
-      if (value.isChecked) {
-        return progress + 1;
-      } else return progress;
-    }, 0);
+    const doneTasks = userData?.modules?.[moduleId]?.doneTasks || 0;
 
     const progress = Math.trunc((score / maxScore) * 100);
 
