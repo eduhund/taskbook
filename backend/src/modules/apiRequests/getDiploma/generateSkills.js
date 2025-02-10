@@ -85,8 +85,6 @@ async function getOneSkill(userId, skill, tasksData, stateData) {
 async function generateSkills(moduleId, userId, lang) {
   const [tasksData, stateData] = await getData(userId, moduleId);
 
-  console.log(tasksData, stateData);
-
   const skills = [];
 
   for (const skill of SKILLS[lang][moduleId] || []) {
