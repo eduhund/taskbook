@@ -41,12 +41,7 @@ async function getOneSkill(userId, skill, tasksData, stateData) {
   let maxScore = 0;
 
   if (!skill.subskills) {
-    [score, maxScore] = await scoreIterator(
-      userId,
-      skill.tasks,
-      tasksData,
-      stateData
-    );
+    [score, maxScore] = await scoreIterator(skill.tasks, tasksData, stateData);
   } else {
     const subskills = [];
     for (subskill of skill.subskills) {
@@ -56,7 +51,6 @@ async function getOneSkill(userId, skill, tasksData, stateData) {
       };
 
       const [subskillScore, subskillMaxScore] = await scoreIterator(
-        userId,
         subskill.tasks,
         tasksData,
         stateData
