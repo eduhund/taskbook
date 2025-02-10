@@ -3,16 +3,16 @@ const accessTokens = require("../services/tokenMachine/tokenMachine");
 const { getModuleId } = require("./idExtractor");
 const { generateMessage } = require("./messageGenerator");
 
-const trustedAddress = process.env.TRUSTED;
+const { TRUSTED = [], ADMIN_TOKEN = null } = process.env;
 
 function checkAuth(req, res, next) {
   const preUserId = req?.query?.userId || req?.body?.userId;
-  if (trustedAddress.includes(req.ip) && preUserId) {
+  const token = req?.query?.accessToken || req?.body?.accessToken;
+  if ((TRUSTED.includes(req.ip) || token === ADMIN_TOKEN) && preUserId) {
     req.userId = preUserId;
     next();
     return;
   }
-  const token = req?.query?.accessToken || req?.body?.accessToken;
   const userId = accessTokens.checkList()?.[token]?.id;
 
   if (!userId) {
