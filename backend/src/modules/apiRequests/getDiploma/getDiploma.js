@@ -27,16 +27,16 @@ async function getDiploma(req, res) {
     req?.query;
 
   const params = {
-    lang: lang || undefined,
-    isColor: isColor ? isColor === "true" : undefined,
+    lang: lang || "ru", //undefined,
+    isColor: isColor ? isColor === "true" : false, //undefined,
     isMascot:
       isColor === undefined
         ? isMascot
           ? isMascot === "true"
-          : undefined
+          : true //undefined
         : !(isColor === "true"),
-    isProgress: isProgress ? isProgress === "true" : undefined,
-    isPublic: isPublic ? isPublic === "true" : undefined,
+    isProgress: isProgress ? isProgress === "true" : true, //undefined,
+    isPublic: isPublic ? isPublic === "true" : false, //undefined,
   };
 
   for (const key of Object.keys(params)) {
@@ -74,6 +74,7 @@ async function getDiploma(req, res) {
       userData?.modules?.[moduleId]?.certId ||
       (await generateCertId(userId, moduleId, start));
 
+    /*
     const certData = await getDBRequest("getDiploma", {
       query: { id: certId },
       returns: ["lang", "isColor", "isMascot", "isProgress", "isPublic"],
@@ -97,6 +98,7 @@ async function getDiploma(req, res) {
       data: params,
       returns: ["lang", "isColor", "isMascot", "isProgress", "isPublic"],
     });
+    */
 
     const firstName =
       params.lang === "ru"
@@ -134,6 +136,7 @@ async function getDiploma(req, res) {
       progress,
       skills,
     };
+    console.log("Params:", params);
 
     const fullInfo = provideData(info, params);
 
