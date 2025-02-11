@@ -127,7 +127,14 @@ function OtherModuleCard({ type, status, data }: any) {
         return setString(lang, "moduleCardStatusDeadline");
       case "past":
         return setString(lang, "moduleCardStatusPast", {
-          deadline: data.deadline,
+          deadline: new Date(data.deadline).toLocaleDateString(
+            localeString[lang || "ru"],
+            {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            }
+          ),
         });
       default:
         return <></>;
@@ -437,6 +444,7 @@ function ActiveModuleCard({
     {
       day: "numeric",
       month: "long",
+      year: "numeric",
     }
   );
   const UIcountdown = (
