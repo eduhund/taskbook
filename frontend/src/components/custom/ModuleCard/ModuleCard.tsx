@@ -292,7 +292,7 @@ function OtherModuleCard({ type, status, data }: any) {
                   >{`${data?.prolongation?.value} ₽`}</Text>
                   <Button
                     view="secondary"
-                    label={setString(lang, "moduleCardPastBuyButton")}
+                    label={setString(lang, "moduleCardProlongationButton")}
                     onClick={() =>
                       window.open(
                         prolongationLink +
@@ -313,7 +313,7 @@ function OtherModuleCard({ type, status, data }: any) {
                   >{`${data?.price?.value} ₽`}</Text>
                   <Button
                     view="primary"
-                    label={setString(lang, "moduleCardBuyButton")}
+                    label={setString(lang, "moduleCardPastBuyButton")}
                     onClick={() =>
                       window.open(
                         buyLink + "?module=" + data?.code.toLowerCase()

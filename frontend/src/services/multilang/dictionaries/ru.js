@@ -25,7 +25,7 @@ const RU = {
   moduleCardBuyButton: "Купить",
   moduleCardBuyGiftButton: "Купить и подарить",
   moduleCardGiftButton: "Подарить",
-  moduleCardProlongationButton: "Продлить",
+  moduleCardProlongationButton: "Продлить доступ",
   moduleCardPastBuyButton: "Купить еще раз",
   moduleCardPastGiftButton: "Купить в подарок",
   moduleCardGoButton: "В начало модуля",
