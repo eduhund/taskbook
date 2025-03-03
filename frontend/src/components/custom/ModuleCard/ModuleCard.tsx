@@ -237,27 +237,7 @@ function OtherModuleCard({ type, status, data }: any) {
           </div>
         );
       case "active":
-        return (
-          <div className="infoBuy">
-            <Text preset="t6" as="span">
-              {setString(lang, "moduleCardGift")}
-            </Text>
-            <div className={`infoBuyButtons ${type}`}>
-              <Text
-                preset="t2"
-                as="span"
-                view="brand"
-              >{`${data?.price?.value} ₽`}</Text>
-              <Button
-                view="secondary"
-                label={setString(lang, "moduleCardBuyGiftButton")}
-                onClick={() =>
-                  window.open(buyLink + "?module=" + data?.code.toLowerCase())
-                }
-              />
-            </div>
-          </div>
-        );
+        return <></>;
       case "deadline":
         return (
           <div className="infoBuy">
@@ -329,14 +309,6 @@ function OtherModuleCard({ type, status, data }: any) {
                   />
                 </>
               )}
-
-              <Button
-                view="secondary"
-                label={setString(lang, "moduleCardPastGiftButton")}
-                onClick={() =>
-                  window.open(buyLink + "?module=" + data?.code.toLowerCase())
-                }
-              />
             </div>
           </div>
         );
