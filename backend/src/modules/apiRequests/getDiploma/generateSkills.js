@@ -69,7 +69,7 @@ async function getOneSkill(userId, skill, tasksData, stateData) {
     skillData.subskills = subskills;
   }
 
-  const progress = Math.trunc((score / maxScore) * 100);
+  const progress = Math.trunc((score > maxScore ? 1 : score / maxScore) * 100);
 
   skillData.progress = progress;
 
