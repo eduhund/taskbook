@@ -1,93 +1,91 @@
 const { getDBRequest } = require("../../dbRequests/dbRequests");
 const { SKILLS } = require("./skillsDict");
 
-async function getMaxScore(taskId) {
-	const data = await getDBRequest("getTaskInfo", {
-		query: { id: taskId },
-		returns: ["maxScore"],
-	});
-
-	return data?.maxScore || 0;
+async function getData(userId, moduleId) {
+  return Promise.all([
+    getDBRequest("getTasksList", {
+      query: {
+        id: { $regex: `^${moduleId}` },
+      },
+    }),
+    getDBRequest("getUserState", {
+      query: {
+        userId,
+        taskId: { $regex: `^${moduleId}` },
+      },
+    }),
+  ]);
 }
 
-async function getScore(userId, taskId) {
-	const data = await getDBRequest("getStateInfo", {
-		query: {
-			userId,
-			taskId,
-		},
-		returns: ["score"],
-	});
+async function scoreIterator(tasks = [], tasksData, stateData) {
+  let score = 0;
+  let maxScore = 0;
 
-	return data?.score || 0;
+  for (const taskId of tasks) {
+    const taskData = tasksData.find((task) => task.id === taskId);
+    const taskStateData = stateData.find((state) => state.taskId === taskId);
+
+    score += taskStateData?.score || 0;
+    maxScore += taskData?.maxScore || 0;
+  }
+
+  return [score, maxScore];
 }
 
-async function scoreIterator(userId, tasks = []) {
-	let score = 0;
-	let maxScore = 0;
+async function getOneSkill(userId, skill, tasksData, stateData) {
+  const skillData = {
+    name: skill.name,
+  };
 
-	for (taskId of tasks) {
-		const taskScore = await getScore(userId, taskId);
-		const taskMaxScore = await getMaxScore(taskId);
+  let score = 0;
+  let maxScore = 0;
 
-		score += taskScore;
-		maxScore += taskMaxScore;
-	}
+  if (!skill.subskills) {
+    [score, maxScore] = await scoreIterator(skill.tasks, tasksData, stateData);
+  } else {
+    const subskills = [];
+    for (subskill of skill.subskills) {
+      const subskillData = {
+        name: subskill.name,
+        code: subskill.code,
+      };
 
-	return [score, maxScore];
-}
+      const [subskillScore, subskillMaxScore] = await scoreIterator(
+        subskill.tasks,
+        tasksData,
+        stateData
+      );
 
-async function getOneSkill(userId, skill) {
-	const skillData = {
-		name: skill.name,
-	};
+      const progress = Math.trunc((subskillScore / subskillMaxScore) * 100);
 
-	let score = 0;
-	let maxScore = 0;
+      subskillData.progress = progress;
 
-	if (!skill.subskills) {
-		[score, maxScore] = await scoreIterator(userId, skill.tasks);
-	} else {
-		const subskills = [];
-		for (subskill of skill.subskills) {
-			const subskillData = {
-				name: subskill.name,
-				code: subskill.code,
-			};
+      subskills.push(subskillData);
 
-			const [subskillScore, subskillMaxScore] = await scoreIterator(
-				userId,
-				subskill.tasks
-			);
+      score += subskillScore;
+      maxScore += subskillMaxScore;
+    }
 
-			const progress = Math.trunc((subskillScore / subskillMaxScore) * 100);
+    skillData.subskills = subskills;
+  }
 
-			subskillData.progress = progress;
+  const progress = Math.trunc((score > maxScore ? 1 : score / maxScore) * 100);
 
-			subskills.push(subskillData);
+  skillData.progress = progress;
 
-			score += subskillScore;
-			maxScore += subskillMaxScore;
-		}
-
-		skillData.subskills = subskills;
-	}
-
-	const progress = Math.trunc((score / maxScore) * 100);
-
-	skillData.progress = progress;
-
-	return skillData;
+  return skillData;
 }
 
 async function generateSkills(moduleId, userId, lang) {
-	const skills = [];
+  const [tasksData, stateData] = await getData(userId, moduleId);
 
-	for (const skill of SKILLS[lang][moduleId] || []) {
-		skills.push(await getOneSkill(userId, skill));
-	}
+  const skills = [];
 
-	return skills;
+  for (const skill of SKILLS[lang][moduleId] || []) {
+    skills.push(await getOneSkill(userId, skill, tasksData, stateData));
+  }
+
+  return skills;
 }
 
 module.exports.generateSkills = generateSkills;

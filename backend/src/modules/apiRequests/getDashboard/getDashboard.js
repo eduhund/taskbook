@@ -1,9 +1,7 @@
 const { log } = require("@logger");
 const { getDBRequest } = require("../../dbRequests/dbRequests");
 
-const {
-	calculateTotalScore,
-} = require("../../../utils/calculators");
+const { calculateTotalScore } = require("../../../utils/calculators");
 const { getNextTaskId } = require("../../../utils/getNextTaskId");
 const setLessonsState = require("../../../utils/setLessonsState");
 const { getNumberOfDoneTasks } = require("./getNumberOfDoneTasks");
@@ -12,115 +10,119 @@ const { generateMessage } = require("../../../utils/messageGenerator");
 const { MACHINE } = process.env;
 
 async function getDashboard(req, res) {
-	const userId = req?.userId;
+  const userId = req?.userId;
 
-	const { email, lang, modules, firstName, lastName } = await getDBRequest("getUserInfo", {
-		query: { id: userId },
-	});
+  const { email, lang, modules, firstName, lastName, role } =
+    await getDBRequest("getUserInfo", {
+      query: { id: userId },
+    });
 
-	const username = `${firstName} ${lastName}`;
+  const username = `${firstName} ${lastName}`;
 
-	let modulesList = await getDBRequest("getModulesList", {
-		query: {
-			...(MACHINE === "prod" ? { active: true } : {}),
-			lang,
-		},
-	});
+  let modulesList = await getDBRequest("getModulesList", {
+    query: {
+      ...(MACHINE === "prod" ? { active: true } : {}),
+      lang,
+    },
+  });
 
-	modulesList.forEach((module) => {
-		module.status = "available";
+  const isAdmin = role === "admin" ? true : undefined;
 
-		delete module.intro;
-		delete module.final;
-	});
+  modulesList.forEach((module) => {
+    module.status = "available";
 
-	const availableModules = [];
+    delete module.intro;
+    delete module.final;
+  });
 
-	for (const moduleId of Object.keys(modules)) {
-		const moduleData = modulesList.find((item) => item.code == moduleId);
-		if (!moduleData) continue;
-		const today = Date.now();
-		const startDate = Date.parse(modules[moduleId].start);
-		const deadline = Date.parse(modules[moduleId].deadline);
-		const UTCMidnight = new Date(deadline);
-		UTCMidnight.setUTCHours(23, 59, 59, 0);
-		const UTCDeadline = Date.parse(UTCMidnight);
+  const availableModules = [];
 
-		moduleData.startDate = modules[moduleId].start;
-		moduleData.deadline = modules[moduleId].deadline;
+  for (const moduleId of Object.keys(modules)) {
+    const moduleData = modulesList.find((item) => item.code == moduleId);
+    if (!moduleData) continue;
+    const today = Date.now();
+    const startDate = Date.parse(modules[moduleId].start);
+    const deadline = Date.parse(modules[moduleId].deadline);
+    const UTCMidnight = new Date(deadline);
+    UTCMidnight.setUTCHours(23, 59, 59, 0);
+    const UTCDeadline = Date.parse(UTCMidnight);
 
-		if (moduleData.prevModule) {
-			if (Object.keys(modules).includes(moduleData.prevModule)) {
-				module.status = "unavailable";
-			}
-		}
+    moduleData.startDate = modules[moduleId].start;
+    moduleData.deadline = modules[moduleId].deadline;
 
-		if (today < startDate) {
-			moduleData.status = "paid";
-		} else if (today > UTCDeadline) {
-			moduleData.status = "past";
-		} else if (today > UTCDeadline - 864000000 && today < UTCDeadline) {
-			moduleData.status = "deadline";
-		} else {
-			moduleData.status = "active";
-		}
+    if (moduleData.prevModule) {
+      if (Object.keys(modules).includes(moduleData.prevModule)) {
+        moduleData.status = "unavailable";
+      }
+    }
 
-		if (
-			moduleData.status == "active" ||
-			moduleData.status == "deadline" ||
-			moduleData.status == "past"
-		) {
-			const moduleState = await getDBRequest("getUserState", {
-				query: {
-					userId,
-					taskId: { $regex: `^${moduleId}` },
-				},
-			});
+    if (today < startDate) {
+      moduleData.status = "paid";
+    } else if (today > UTCDeadline) {
+      moduleData.status = "past";
+    } else if (today > UTCDeadline - 864000000 && today < UTCDeadline) {
+      moduleData.status = "deadline";
+    } else {
+      moduleData.status = "active";
+    }
 
-			const nextTaskId = getNextTaskId(moduleData, moduleState);
+    if (
+      moduleData.status == "active" ||
+      moduleData.status == "deadline" ||
+      moduleData.status == "past"
+    ) {
+      const moduleState = await getDBRequest("getUserState", {
+        query: {
+          userId,
+          taskId: { $regex: `^${moduleId}` },
+        },
+      });
 
-			moduleData.doneTasks = getNumberOfDoneTasks(moduleState);
+      const nextTaskId = getNextTaskId(moduleData, moduleState);
 
-			moduleData.lessons = setLessonsState(moduleData.lessons, nextTaskId);
+      moduleData.doneTasks = getNumberOfDoneTasks(moduleState);
 
-			moduleData.totalScore = calculateTotalScore(moduleState);
+      moduleData.lessons = setLessonsState(moduleData.lessons, nextTaskId);
 
-			moduleData.nextTask = await getDBRequest("getTaskInfo", {
-				query: { id: nextTaskId },
-			}).then((result) => {
-				let nextTask;
-				if (result) {
-					nextTask = {
-						id: nextTaskId,
-						type: result?.type,
-						name: result?.name,
-						lesson: result?.lesson,
-					};
-				}
-				return nextTask;
-			});
+      moduleData.totalScore = calculateTotalScore(moduleState);
 
-			moduleData.moduleId = moduleId;
+      moduleData.nextTask = await getDBRequest("getTaskInfo", {
+        query: { id: nextTaskId },
+      }).then((result) => {
+        let nextTask;
+        if (result) {
+          nextTask = {
+            id: nextTaskId,
+            type: result?.type,
+            name: result?.name,
+            lesson: result?.lesson,
+          };
+        }
+        return nextTask;
+      });
 
-			availableModules.push(moduleData);
+      moduleData.moduleId = moduleId;
 
-			modulesList = modulesList.filter((module) => module.code !== moduleId);
-		}
-	}
+      availableModules.push(moduleData);
 
-	availableModules.push(...modulesList);
+      modulesList = modulesList.filter((module) => module.code !== moduleId);
+    }
+  }
 
-	const finalData = {
-		username,
-		email,
-		lang,
-		modules: availableModules,
-	};
+  availableModules.push(...modulesList);
 
-	const data = generateMessage(0, finalData);
-	res.status(200).send(data);
+  const finalData = {
+    username,
+    email,
+    lang,
+    isAdmin,
+    modules: availableModules,
+  };
 
-	return;
+  const data = generateMessage(0, finalData);
+  res.status(200).send(data);
+
+  return;
 }
 
 module.exports = getDashboard;

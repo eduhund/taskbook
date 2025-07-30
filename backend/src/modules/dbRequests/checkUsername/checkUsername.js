@@ -1,4 +1,4 @@
-const { USERS } = require("../mongo");
+const { USERS } = require("../../../services/mongo/mongo");
 
 async function checkUsername({ email }) {
   return USERS.findOne({ email }).then((user) => {
@@ -8,4 +8,4 @@ async function checkUsername({ email }) {
   });
 }
 
-module.exports = checkUsername
+module.exports = checkUsername;

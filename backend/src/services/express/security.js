@@ -1,7 +1,6 @@
 const { checkToken } = require("../tokenMachine/tokenMachine");
 
-const trustedMachines = process.env.TRUSTED || [];
-const adminToken = process.env.ADMIN_TOKEN
+const { ADMIN_TOKEN = "", TRUSTED = [] } = process.env;
 
 /***
  * Function checks user access token.
@@ -11,55 +10,61 @@ const adminToken = process.env.ADMIN_TOKEN
  * @returns {boolean} Result of auth checking
  */
 function checkAuth(wall) {
-	return (req, res, next) => {
-		req.data = {};
+  return (req, res, next) => {
+    req.data = {};
 
-		const isTrustedMachine = trustedMachines.includes(req.ip);
+    const isTrustedMachine = TRUSTED.includes(req.ip);
 
-		if (wall && isTrustedMachine) {
-			req.data = {
-				isAuth: true,
-			};
-		}
+    if (wall && isTrustedMachine) {
+      req.data = {
+        isAuth: true,
+      };
+    }
 
-		if (wall && !isTrustedMachine) {
-			const token = req?.headers?.accesstoken;
-			const userId = checkToken(token)?.id;
-			if (!userId) {
-				next({ code: 10103 });
-				return false;
-			}
-			req.data = {
-				userId,
-				isAuth: true,
-				wall,
-			};
-		}
+    if (wall && !isTrustedMachine) {
+      const token = req?.headers?.accesstoken;
+      const userId = checkToken(token)?.id;
+      if (!userId) {
+        next({ code: 10103 });
+        return false;
+      }
+      req.data = {
+        userId,
+        isAuth: true,
+        wall,
+      };
+    }
 
-		next();
-		return true;
-	};
+    next();
+    return true;
+  };
 }
 
 function checkAdmin(req, res, next) {
-	if (Object.keys(req.body).includes("gumroad_fee")) {
-		next();
-		return;
-	}
-	const token = req?.headers?.accesstoken;
+  if (Object.keys(req.body).includes("gumroad_fee")) {
+    next();
+    return;
+  }
 
-	if (token !== adminToken) {
-		res.status(401);
-		res.send({
-			OK: false,
-			error: "invalid_credentials",
-			error_description: "Invalid access token",
-			error_code: 10003,
-		});
-		return;
-	} else {
-		next();
-	}
+  const token = req?.headers?.accesstoken;
+
+  if (token === ADMIN_TOKEN) {
+    next();
+    return true;
+  }
+  const tokenData = checkToken(token);
+  if (!tokenData) {
+    next({ code: 10103 });
+    return false;
+  }
+
+  if (!tokenData?.isAdmin) {
+    next({ code: 10202 });
+    return false;
+  }
+
+  next();
+  return true;
 }
 
 module.exports = { checkAuth, checkAdmin };

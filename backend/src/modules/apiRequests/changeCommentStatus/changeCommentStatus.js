@@ -1,10 +1,9 @@
 const { log } = require("../../../services/logger/logger");
-const { STATE } = require("../../dbRequests/mongo");
+const { STATE } = require("../../../services/mongo/mongo");
 const { generateMessage } = require("../../../utils/messageGenerator");
 
 async function changeCommentStatus(req, res) {
-
-  const {userId, taskId, status = false} = req.body
+  const { userId, taskId, status = false } = req.body;
 
   await STATE.findOneAndUpdate(
     { userId, taskId },
@@ -19,7 +18,7 @@ async function changeCommentStatus(req, res) {
   const data = generateMessage(0);
   res.status(200).send(data);
 
-  return
+  return;
 }
 
 module.exports = changeCommentStatus;

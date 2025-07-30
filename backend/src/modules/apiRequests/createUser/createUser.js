@@ -1,79 +1,112 @@
 const { log } = require("../../../services/logger/logger");
 const { getDBRequest } = require("../../dbRequests/dbRequests");
-const { setKey } = require("../../../services/tokenMachine/OTK")
-const { lowerString } = require("../../../utils/stringProcessor")
-const { generateMessage } = require("../../../utils/messageGenerator");
+const { setKey } = require("../../../services/tokenMachine/OTK");
+const { lowerString } = require("../../../utils/stringProcessor");
+const { hashPass } = require("../../../utils/pass");
+const { sendMail } = require("../../../services/mailer");
 
-async function createUser(req, res) {
-	const { email, pass, firstName, lastName, modules, startDate, deadline, lang } = req.body
+function optimiseDate(date) {
+  const initialDate = new Date(date);
+  return initialDate.toISOString().split("T")[0];
+}
 
-	if (!email) {
-		res.status(401);
-		res.send({
-			OK: false,
-			error: "missing_parameters",
-			error_description: "Missing required parameters",
-			error_code: 10008,
-		});
-		return
-	}
-	const userEmail = lowerString(email);
+function createModules(modules) {
+  const modulesObject = {};
+  modules.forEach(({ id, start, deadline }) => {
+    const startDate = optimiseDate(start);
+    const deadlineDate = optimiseDate(deadline);
+    modulesObject[id] = { start: startDate, deadline: deadlineDate };
+  });
+  return modulesObject;
+}
 
-	const isUserExist = await getDBRequest("checkUsername", {
-		email: userEmail,
-	});
+async function createUser({ body = {} }, res, next) {
+  try {
+    const {
+      email,
+      pass,
+      firstName,
+      lastName,
+      modules,
+      lang,
+      settings = { sendEmail: false },
+    } = body;
 
-	if (isUserExist) {
-		res.status(401);
-		res.send({
-			OK: false,
-			error: "user_already_exist",
-			error_description: "User with this email is already exist",
-			error_code: 10008,
-		});
+    if (!(email && (firstName || lastName))) {
+      next({ code: 10002 });
+      return;
+    }
 
-		return
-	}
+    const userEmail = lowerString(email);
 
-	const userModules = {};
-	(modules || []).forEach((userModule) => {
-		//const date = new Date(Date.now());
-		userModules[userModule.id] = {
-			start: startDate, // date.toISOString().split("T")[0],
-			deadline, //calculateDeadline(date, 80),
-		};
-	});
-	const newUser = {
-		email: userEmail,
-		pass: pass ? hashPass(pass) : "",
-		firstName,
-		lastName,
-		modules: userModules,
-		lang,
-	};
-	const createdUser = await getDBRequest("addUser", newUser);
+    const isUserExist = await getDBRequest("checkUsername", {
+      email: userEmail,
+    });
 
-	const sendData = {
-		OK: true,
-		data: {
-			id: createdUser.id,
-			email: createdUser.email,
-			firstName: createdUser.firstName,
-			lastName: createdUser.lastName,
-		},
-	};
+    if (isUserExist) {
+      next({ code: 20102 });
+      return;
+    }
 
-	if (!createdUser.pass) {
-		const secureKey = await setKey(createdUser.id, "oneTimeKey");
-		sendData.data.key = secureKey;
-	}
+    const newUser = {
+      email: userEmail,
+      pass: pass ? hashPass(pass) : "",
+      firstName,
+      lastName,
+      modules: createModules(modules),
+      lang,
+    };
 
-	const data = generateMessage(0, sendData);
-	res.status(200).send(data);
+    const createdUser = await getDBRequest("addUser", newUser);
 
-	log.info(`New user was created:`, createdUser);
+    const otk = await setKey(createdUser.id, "oneTimeKey");
 
-	return
-};
+    if (!createdUser.pass) {
+      newUser.key = otk;
+    }
+
+    if (settings.sendEmail && modules.length > 0) {
+      const moduleInfo = await getDBRequest("getModuleInfo", {
+        query: { code: modules[0].id },
+      });
+
+      const link = `${process.env.FRONTEND_URL}/createPassword?email=${userEmail}&verifyKey=${otk}&lang=${lang}`;
+
+      const date = optimiseDate(Date.now());
+      const start = optimiseDate(modules[0].start);
+      const params = {
+        template_id: date < start ? "p2vv6r2j" : "f53503qv",
+        address: userEmail,
+        lang,
+      };
+
+      const data = {
+        NAME: newUser?.firstName || "",
+        MODULE: moduleInfo?.name || "",
+        MODULELINK: moduleInfo?.moduleLink || "",
+        MASCOTLETTERTOP: moduleInfo?.mascot?.letterTop || "",
+        MASCOTLETTERBOTTOM: moduleInfo?.mascot?.letterBottom || "",
+        START_DATE: new Date(Date.parse(start)).toLocaleDateString("ru-RU", {
+          month: "long",
+          day: "numeric",
+        }),
+        PASSWORD: pass || "",
+        PASSWORD_LINK: link,
+      };
+
+      await sendMail(params, data);
+    }
+
+    next({ content: newUser });
+
+    log.info(`New user was created:`, createdUser);
+
+    return;
+  } catch (e) {
+    log.error(e);
+    next({ code: 20214 });
+    return;
+  }
+}
 
 module.exports = createUser;

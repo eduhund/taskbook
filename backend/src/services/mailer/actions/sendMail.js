@@ -1,14 +1,23 @@
-const { mailer } = require("../mailer");
+const { MAIL_API } = process.env;
 
-const { MAIL_FROM } = process.env;
-
-function sendMail(mail, to, subject) {
-	mailer.sendMail({
-		from: MAIL_FROM,
-		to,
-		subject,
-		html: mail,
-	});
+async function sendMailToUser(params, data) {
+  try {
+    const { template_id, address, lang = "ru" } = params;
+    return fetch(`${MAIL_API}/send_mail_to_user`, {
+      method: "POST",
+      body: JSON.stringify({
+        template_id,
+        address,
+        lang,
+        data,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  } catch (error) {
+    throw new Error("Error while sending mail");
+  }
 }
 
-module.exports = sendMail;
+module.exports = sendMailToUser;

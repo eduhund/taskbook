@@ -1,22 +1,22 @@
-const { USERS } = require("../mongo");
+const { USERS } = require("../../../services/mongo/mongo");
 
 async function setUserInfo({ email, id, data }) {
-	const query = {}
+  const query = {};
 
-	if (email) {
-		query.email = email
-	}
+  if (email) {
+    query.email = email;
+  }
 
-	if (id) {
-		query.id = id
-	}
+  if (id) {
+    query.id = id;
+  }
 
-	const user = await USERS.findOneAndUpdate(
-		query,
-		{ $set: data },
-		{ upsert: false, returnDocument: "after" }
-	);
-	return user.value;
+  const user = await USERS.findOneAndUpdate(
+    query,
+    { $set: data },
+    { upsert: false, returnDocument: "after" }
+  );
+  return user.value;
 }
 
 module.exports = setUserInfo;

@@ -1,5 +1,5 @@
 const { log } = require("../../../services/logger/logger");
-const { USERS } = require("../../dbRequests/mongo");
+const { USERS } = require("../../../services/mongo/mongo");
 
 async function addUser(user) {
   log.info("Registering user:", user);
@@ -12,4 +12,4 @@ async function addUser(user) {
   });
 }
 
-module.exports = addUser
+module.exports = addUser;
