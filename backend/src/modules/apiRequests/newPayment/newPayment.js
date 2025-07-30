@@ -15,6 +15,21 @@ function getISODateOny(date) {
   return dateObject.toISOString().split("T")[0];
 }
 
+function getPromoAccessType(amount, currency) {
+  switch (currency) {
+    case "RUB":
+      if (amount === 1000) {
+        return "timely";
+      } else return null;
+    case "USD":
+      if (amount === 0) {
+        return "partly";
+      } else return null;
+    default:
+      return null;
+  }
+}
+
 async function newPayment(req, res) {
   try {
     const { body } = req;
@@ -27,6 +42,8 @@ async function newPayment(req, res) {
       moduleId,
       isProlongation,
       transactionId,
+      amount,
+      currency,
     } = body;
 
     const now = new Date();
@@ -48,7 +65,12 @@ async function newPayment(req, res) {
       query: { email: email },
     });
 
-    let deadline = calculateDeadline(startDate, 62);
+    const promoAccessType = getPromoAccessType(amount, currency);
+
+    let deadline = calculateDeadline(
+      startDate,
+      promoAccessType === "timely" ? 1 : 62
+    );
 
     const lang = moduleId === "HSE" || moduleId === "HSP" ? "en" : "ru";
 
@@ -65,6 +87,7 @@ async function newPayment(req, res) {
             start: startDate,
             deadline,
             prolongations: [],
+            promoAccessType: promoAccessType,
           },
         },
         lang,
@@ -177,6 +200,7 @@ async function newPayment(req, res) {
               transactionId,
               until: deadline,
             },
+            promoAccessType,
           ],
         };
       }
