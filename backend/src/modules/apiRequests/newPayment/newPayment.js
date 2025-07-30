@@ -132,9 +132,7 @@ async function newPayment(req, res) {
 		const startDateNormilized = `${dateArray[2]}-${dateArray[1]}-${dateArray[0]}`;
 		start = getISODateOny(startDateNormilized);
 	}
-
-	const duration = payment.value === "1000" ? 1 : 62;
-	let deadline = calculateDeadline(start, duration);
+	let deadline = calculateDeadline(start, 62);
 
 	if (!user) {
 		const userPass = Math.random().toString(36).substring(2);
