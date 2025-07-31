@@ -15,7 +15,7 @@ function getISODateOny(date) {
   return dateObject.toISOString().split("T")[0];
 }
 
-function getPromoAccessType(amount, currency) {
+function getAccessType(amount, currency) {
   switch (currency) {
     case "RUB":
       if (amount === 1000) {
@@ -24,9 +24,9 @@ function getPromoAccessType(amount, currency) {
     case "USD":
       if (amount === 0) {
         return "partly";
-      } else return null;
+      } else return "full";
     default:
-      return null;
+      return "full";
   }
 }
 
@@ -65,11 +65,11 @@ async function newPayment(req, res) {
       query: { email: email },
     });
 
-    const promoAccessType = getPromoAccessType(amount, currency);
+    const accessType = getAccessType(amount, currency);
 
     let deadline = calculateDeadline(
       startDate,
-      promoAccessType === "timely" ? 1 : 62
+      accessType === "timely" ? 1 : 62
     );
 
     const lang = moduleId === "HSE" || moduleId === "HSP" ? "en" : "ru";
@@ -87,7 +87,7 @@ async function newPayment(req, res) {
             start: startDate,
             deadline,
             prolongations: [],
-            promoAccessType: promoAccessType,
+            accessType: accessType,
           },
         },
         lang,
@@ -200,7 +200,7 @@ async function newPayment(req, res) {
               transactionId,
               until: deadline,
             },
-            promoAccessType,
+            accessType,
           ],
         };
       }
