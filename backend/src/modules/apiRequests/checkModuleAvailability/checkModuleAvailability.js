@@ -39,12 +39,12 @@ function validator(
         return { status: false, error: "Module isn't purchased" };
       }
 
-      if (modules[prevModule].accessType == "full") {
+      if (modules[newModule].accessType == "full") {
         return { status: false, error: "Module is already bought" };
       }
-      if (modules[prevModule].accessType == "timely") {
+      if (modules[newModule].accessType == "timely") {
         const now = Date.now();
-        const deadline = new Date(modules[prevModule].deadline).getTime();
+        const deadline = new Date(modules[newModule].deadline).getTime();
 
         if (now > deadline + 1000 * 60 * 60 * 24 * 1) {
           return { status: false, error: "Module access is expired" };
