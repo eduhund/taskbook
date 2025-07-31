@@ -34,6 +34,23 @@ function validator(
 
       return { status: true };
 
+    case "upgrade":
+      if (!modules[newModule]) {
+        return { status: false, error: "Module isn't purchased" };
+      }
+
+      if (modules[prevModule].accessType == "full") {
+        return { status: false, error: "Module is already bought" };
+      }
+      if (modules[prevModule].accessType == "timely") {
+        const now = Date.now();
+        const deadline = new Date(modules[prevModule].deadline).getTime();
+
+        if (now > deadline + 1000 * 60 * 60 * 24 * 1) {
+          return { status: false, error: "Module access is expired" };
+        }
+      }
+      return { status: true };
     case "refresh":
       if (!modules[newModule]) {
         return { status: false, error: "Module isn't purchased" };
