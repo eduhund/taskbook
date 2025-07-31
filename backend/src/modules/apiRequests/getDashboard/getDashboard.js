@@ -72,7 +72,8 @@ async function getDashboard(req, res) {
     if (
       moduleData.status == "active" ||
       moduleData.status == "deadline" ||
-      moduleData.status == "past"
+      moduleData.status == "past" ||
+      moduleData.status == "promo"
     ) {
       const moduleState = await getDBRequest("getUserState", {
         query: {
