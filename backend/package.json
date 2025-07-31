@@ -1,6 +1,6 @@
 {
   "name": "taskbook-backend",
-  "version": "2.6.0",
+  "version": "2.6.1",
   "description": "Public implementation for Eduhund platform backend",
   "main": "index.js",
   "scripts": {
