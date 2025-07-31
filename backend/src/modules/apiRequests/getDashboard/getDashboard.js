@@ -43,6 +43,7 @@ async function getDashboard(req, res) {
     const today = Date.now();
     const startDate = Date.parse(modules[moduleId].start);
     const deadline = Date.parse(modules[moduleId].deadline);
+    const accessType = modules[moduleId].accessType || "full";
     const UTCMidnight = new Date(deadline);
     UTCMidnight.setUTCHours(23, 59, 59, 0);
     const UTCDeadline = Date.parse(UTCMidnight);
@@ -58,6 +59,8 @@ async function getDashboard(req, res) {
 
     if (today < startDate) {
       moduleData.status = "paid";
+    } else if (accessType !== "full") {
+      moduleData.status = "promo";
     } else if (today > UTCDeadline) {
       moduleData.status = "past";
     } else if (today > UTCDeadline - 864000000 && today < UTCDeadline) {
