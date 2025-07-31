@@ -60,6 +60,7 @@ const localeString: any = {
 
 const buyLink = "https://pay.eduhund.com/new";
 const prolongationLink = "https://pay.eduhund.com/renewal";
+const upgradeLink = "https://pay.eduhund.com/upgrade";
 
 const lang = localStorage.getItem("lang") || undefined;
 const email = localStorage.getItem("email");
@@ -123,6 +124,8 @@ function OtherModuleCard({ type, status, data }: any) {
     switch (status) {
       case "active":
         return setString(lang, "moduleCardStatusActive");
+      case "promo":
+        return setString(lang, "moduleCardStatusUpgrade");
       case "deadline":
         return setString(lang, "moduleCardStatusDeadline");
       case "past":
@@ -152,6 +155,22 @@ function OtherModuleCard({ type, status, data }: any) {
             }%`}</span>
             <Text preset="t3" as="span" view="ghost">
               {setString(lang, "moduleCardProgressActive")}
+            </Text>
+          </div>
+        );
+      case "promo":
+        return (
+          <div className="cardState">
+            <Text preset="t3" as="span" view="secondary">
+              {setString(lang, "moduleCardProgressDeadline1")}
+            </Text>
+            <Text preset="t2" as="span" view="success" lineHeight="l">
+              {setString(lang, "moduleCardProgressDeadline2", {
+                days: (
+                  (Number(deadline) - Number(Date.now())) /
+                  (1000 * 3600 * 24)
+                ).toFixed(),
+              })}
             </Text>
           </div>
         );
@@ -238,6 +257,30 @@ function OtherModuleCard({ type, status, data }: any) {
         );
       case "active":
         return <></>;
+      case "promo":
+        return (
+          <div className="infoBuy">
+            <Text preset="t6" as="span">
+              {setString(lang, "moduleCardUpgradeHint")}
+            </Text>
+            <div className="infoBuyButtons">
+              <Text preset="t2" as="h3" view="brand">{`10700 ₽`}</Text>
+              <Button
+                view="secondary"
+                label={setString(lang, "moduleCardUpgradeButton")}
+                onClick={() =>
+                  window.open(
+                    upgradeLink +
+                      "?module=" +
+                      data?.code.toLowerCase() +
+                      "&email=" +
+                      email
+                  )
+                }
+              />
+            </div>
+          </div>
+        );
       case "deadline":
         return (
           <div className="infoBuy">
@@ -434,6 +477,34 @@ function ActiveModuleCard({
       className={`moduleCard large`}
       style={{ backgroundImage: `url(${mascot?.medium})` }}
     >
+      {status === "promo" && (
+        <div className="deadlineInformer">
+          <span>
+            {setString(lang, "moduleCardUpgradeInformer", {
+              deadline: UIdeadline,
+            })}
+          </span>
+          <span>
+            {setString(lang, "moduleCardUpgradePrice", {
+              price: 10700,
+            })}
+          </span>
+          <Button
+            size="s"
+            label="Получить"
+            onClick={() =>
+              window.open(
+                upgradeLink +
+                  "?module=" +
+                  code.toLowerCase() +
+                  "&email=" +
+                  email
+              )
+            }
+            view="primary"
+          />
+        </div>
+      )}
       {status === "deadline" && (
         <div className="deadlineInformer">
           <span>

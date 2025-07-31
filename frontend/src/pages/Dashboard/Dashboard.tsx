@@ -88,9 +88,13 @@ function Dashboard() {
     fetchData();
   }, []);
 
+  console.log(data);
+
   const activeModulesList = data?.modules.filter(
     (module: any) =>
-      module?.status === "active" || module?.status === "deadline"
+      module?.status === "active" ||
+      module?.status === "deadline" ||
+      module?.status === "promo"
   );
 
   const uxModulesList = data?.modules.filter(

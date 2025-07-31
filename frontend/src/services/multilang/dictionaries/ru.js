@@ -3,6 +3,10 @@ const RU = {
   moduleCardIntro: "Введение",
   moduleCardDiploma: "Сертификат",
   moduleCardFinal: "Финальная страница",
+  moduleCardUpgradeHint: "Вы можете получить полный доступ на два месяца",
+  moduleCardUpgradeInformer: "Промо-доступ до {{deadline}}",
+  moduleCardUpgradePrice:
+    "Вы можете получить полный доступ на два месяца за {{price}} руб",
   moduleCardDeadline: "Доступ до {{deadline}}",
   moduleCardDeadlineInformer: "Доступ закончится {{deadline}}",
   moduleCardDeadlinePrice:
@@ -11,6 +15,7 @@ const RU = {
   moduleCardCountdown: "Осталось {{days}}",
   moduleCardDoneTasks: "Вы решили {{doneTasks}} из {{total}}",
   moduleCardStatusActive: "Уже решаете",
+  moduleCardStatusUpgrade: "Промо-доступ",
   moduleCardStatusDeadline: "Дедлайн близко!",
   moduleCardStatusPast: "Доступ закончился {{deadline}}",
   moduleCardPaidDescription:
@@ -25,6 +30,7 @@ const RU = {
   moduleCardBuyButton: "Купить",
   moduleCardBuyGiftButton: "Купить и подарить",
   moduleCardGiftButton: "Подарить",
+  moduleCardUpgradeButton: "Получить доступ",
   moduleCardProlongationButton: "Продлить доступ",
   moduleCardPastBuyButton: "Купить еще раз",
   moduleCardPastGiftButton: "Купить в подарок",
