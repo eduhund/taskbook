@@ -1,43 +1,43 @@
 {
-	"name": "taskbook-backend",
-	"version": "2.5.0",
-	"description": "Public implementation for Eduhund platform backend",
-	"main": "index.js",
-	"scripts": {
-		"start": "node index.js",
-		"test": "jest --verbose"
-	},
-	"author": "Roman Nebel",
-	"license": "MIT",
-	"dependencies": {
-		"@log4js-node/slack": "^1.0.0",
-		"cors": "^2.8.5",
-		"cyrillic-to-translit-js": "^3.2.1",
-		"dotenv": "^16.0.2",
-		"express": "^4.18.1",
-		"lodash": "^4.17.21",
-		"log4js": "^6.7.0",
-		"module-alias": "^2.2.2",
-		"mongodb": "^4.5.0",
-		"node-fetch": "^2.6.9",
-		"nodemailer": "^6.9.7",
-		"pg": "^8.7.3",
-		"sharp": "^0.33.0",
-		"supertest": "^6.3.3",
-		"svg-content": "^0.1.1"
-	},
-	"devDependencies": {
-		"jest": "^27.4.0"
-	},
-	"_moduleAliases": {
-		"@root": ".",
-		"@StudentAPI": "./src/API/student/student",
-		"@assets": "./src/assets",
-		"@express": "./src/services/express",
-		"@logger": "./src/services/logger/logger",
-		"@mongo": "./src/services/mongo",
-		"@tokenMachine": "./src/services/tokenMachine",
-		"@processes": "./src/processes/processes",
-		"@utils": "./src/utils"
-	}
+  "name": "taskbook-backend",
+  "version": "2.6.0",
+  "description": "Public implementation for Eduhund platform backend",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "jest --verbose"
+  },
+  "author": "Roman Nebel",
+  "license": "MIT",
+  "dependencies": {
+    "@log4js-node/slack": "^1.0.0",
+    "cors": "^2.8.5",
+    "cyrillic-to-translit-js": "^3.2.1",
+    "dotenv": "^16.0.2",
+    "express": "^4.18.1",
+    "lodash": "^4.17.21",
+    "log4js": "^6.7.0",
+    "module-alias": "^2.2.2",
+    "mongodb": "^4.5.0",
+    "node-fetch": "^2.6.9",
+    "nodemailer": "^6.9.7",
+    "pg": "^8.7.3",
+    "sharp": "^0.33.0",
+    "supertest": "^6.3.3",
+    "svg-content": "^0.1.1"
+  },
+  "devDependencies": {
+    "jest": "^27.4.0"
+  },
+  "_moduleAliases": {
+    "@root": ".",
+    "@StudentAPI": "./src/API/student/student",
+    "@assets": "./src/assets",
+    "@express": "./src/services/express",
+    "@logger": "./src/services/logger/logger",
+    "@mongo": "./src/services/mongo",
+    "@tokenMachine": "./src/services/tokenMachine",
+    "@processes": "./src/processes/processes",
+    "@utils": "./src/utils"
+  }
 }

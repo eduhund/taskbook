@@ -15,6 +15,21 @@ function getISODateOny(date) {
   return dateObject.toISOString().split("T")[0];
 }
 
+function getAccessType(amount, currency) {
+  switch (currency) {
+    case "RUB":
+      if (amount === 1000) {
+        return "timely";
+      } else return null;
+    case "USD":
+      if (amount === 0) {
+        return "partly";
+      } else return "full";
+    default:
+      return "full";
+  }
+}
+
 async function newPayment(req, res) {
   try {
     const { body } = req;
@@ -26,7 +41,10 @@ async function newPayment(req, res) {
       startDate,
       moduleId,
       isProlongation,
+      isUpgrade,
       transactionId,
+      amount,
+      currency,
     } = body;
 
     const now = new Date();
@@ -48,7 +66,12 @@ async function newPayment(req, res) {
       query: { email: email },
     });
 
-    let deadline = calculateDeadline(startDate, 62);
+    const accessType = getAccessType(amount, currency);
+
+    let deadline = calculateDeadline(
+      startDate,
+      accessType === "timely" ? 1 : 62
+    );
 
     const lang = moduleId === "HSE" || moduleId === "HSP" ? "en" : "ru";
 
@@ -65,6 +88,7 @@ async function newPayment(req, res) {
             start: startDate,
             deadline,
             prolongations: [],
+            accessType: accessType,
           },
         },
         lang,
@@ -100,6 +124,58 @@ async function newPayment(req, res) {
       };
 
       await sendMail(params, data);
+    } else if (isUpgrade) {
+      const currentAccessType = user?.modules[moduleId]?.accessType || "full";
+      const currentDeadline = user?.modules[moduleId]?.deadline;
+      if (currentAccessType === "full") {
+        res.status(400);
+        res.send({
+          OK: false,
+          error: "invalid_params",
+        });
+        return;
+      } else if (currentAccessType === "timely") {
+        deadline = calculateDeadline(currentDeadline, 61);
+        const prolData = {
+          type: "upgrade",
+          transactionId,
+          until: deadline,
+        };
+        user.modules[moduleId].deadline = deadline;
+        user.modules[moduleId].accessType = "full";
+        if (!Array.isArray(user.modules[moduleId].prolongations)) {
+          user.modules[moduleId].prolongations = [];
+        }
+        user.modules[moduleId].prolongations.push(prolData);
+
+        await getDBRequest("setUserInfo", {
+          id: user?.id,
+          data: { modules: user.modules },
+        });
+
+        const params = {
+          template_id: "c8oikgth",
+          address: email,
+          lang,
+        };
+
+        const data = {
+          NAME: user?.firstName || "",
+          MODULE: moduleInfo?.name || "",
+          MODULELINK: moduleInfo?.moduleLink || "",
+          MASCOTLETTERTOP: moduleInfo?.mascot?.letterTop || "",
+          MASCOTLETTERBOTTOM: moduleInfo?.mascot?.letterBottom || "",
+          START_DATE: new Date(Date.parse(startDate)).toLocaleDateString(
+            "ru-RU",
+            {
+              month: "long",
+              day: "numeric",
+            }
+          ),
+        };
+
+        await sendMail(params, data);
+      }
     } else if (isProlongation) {
       const now = new Date(Date.now());
       const currentDeadline = new Date(user?.modules[moduleId].deadline);
@@ -177,6 +253,7 @@ async function newPayment(req, res) {
               transactionId,
               until: deadline,
             },
+            accessType,
           ],
         };
       }
