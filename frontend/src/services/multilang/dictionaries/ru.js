@@ -3,10 +3,9 @@ const RU = {
   moduleCardIntro: "Введение",
   moduleCardDiploma: "Сертификат",
   moduleCardFinal: "Финальная страница",
-  moduleCardUpgradeHint: "Вы можете получить полный доступ на два месяца",
+  moduleCardUpgradeHint: "Вы можете получить полный доступ",
   moduleCardUpgradeInformer: "Промо-доступ до {{deadline}}",
-  moduleCardUpgradePrice:
-    "Вы можете получить полный доступ на два месяца за {{price}} руб",
+  moduleCardUpgradePrice: "Вы можете получить полный доступ за {{price}} руб",
   moduleCardDeadline: "Доступ до {{deadline}}",
   moduleCardDeadlineInformer: "Доступ закончится {{deadline}}",
   moduleCardDeadlinePrice:

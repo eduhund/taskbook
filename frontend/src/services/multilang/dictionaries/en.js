@@ -3,10 +3,9 @@ const EN = {
   moduleCardIntro: "Introduction",
   moduleCardDiploma: "Certificate",
   moduleCardFinal: "Final page",
-  moduleCardUpgradeHint: "You can get full access for two months",
+  moduleCardUpgradeHint: "You can get full access",
   moduleCardUpgradeInformer: "Promo access till {{deadline}}",
-  moduleCardUpgradePrice:
-    "You can get full access for two months for {{price}} RUB",
+  moduleCardUpgradePrice: "You can get full access for {{price}} RUB",
   moduleCardDeadline: "Accessible till {{deadline}}",
   moduleCardDeadlineInformer: "Access expires on {{deadline}}",
   moduleCardDeadlinePrice:
