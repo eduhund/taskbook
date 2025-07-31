@@ -142,6 +142,7 @@ async function newPayment(req, res) {
           until: deadline,
         };
         user.modules[moduleId].deadline = deadline;
+        user.modules[moduleId].accessType = "full";
         if (!Array.isArray(user.modules[moduleId].prolongations)) {
           user.modules[moduleId].prolongations = [];
         }
