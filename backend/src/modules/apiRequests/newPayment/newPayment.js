@@ -100,8 +100,15 @@ async function newPayment(req, res) {
 
       const link = `${process.env.FRONTEND_URL}/createPassword?email=${email}&verifyKey=${secureKey}&lang=${lang}`;
 
+      let templateId = "l9ujirgq";
+      if (getISODateOny(now) < startDate) {
+        templateId = "rq4lt12h";
+      } else if (accessType === "timely") {
+        templateId = "q5phfmrn";
+      }
+
       const params = {
-        template_id: getISODateOny(now) < startDate ? "rq4lt12h" : "l9ujirgq",
+        template_id: templateId,
         address: email,
         lang,
       };
@@ -263,8 +270,15 @@ async function newPayment(req, res) {
         data: { modules: user.modules },
       });
 
+      let templateId = "it2mrnd7";
+      if (getISODateOny(now) < startDate) {
+        templateId = "ju2fou81";
+      } else if (accessType === "timely") {
+        templateId = "iarldm9r";
+      }
+
       const params = {
-        template_id: getISODateOny(now) < startDate ? "ju2fou81" : "it2mrnd7",
+        template_id: templateId,
         address: email,
         lang,
       };
