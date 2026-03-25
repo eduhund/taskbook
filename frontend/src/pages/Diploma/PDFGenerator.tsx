@@ -2,10 +2,18 @@ import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 
 async function generatePDF({ module, certId, fileId, withSkills }: any) {
-	const URL = process.env.REACT_APP_LINK;
+	const SERVER_URL = process.env.REACT_APP_SERVER || "";
+	const SERVER_ORIGIN = (() => {
+		try {
+			return new URL(SERVER_URL).origin;
+		} catch {
+			return "";
+		}
+	})();
+	const DIPLOMAS_URL = `${SERVER_ORIGIN}/diplomas`;
 	var doc = new jsPDF("p", "pt", "a4");
 	doc.addImage(
-		`${URL}/diplomas/${fileId}/medium.png`,
+		`${DIPLOMAS_URL}/${fileId}/medium.png`,
 		"PNG",
 		0,
 		0,

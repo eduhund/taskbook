@@ -24,7 +24,15 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(require("body-parser").urlencoded({ extended: false }));
 
-app.use("/diplomas", express.static("diplomas"));
+app.use(
+  "/diplomas",
+  cors(corsOptions),
+  express.static("diplomas", {
+    setHeaders: (res) => {
+      res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
+    },
+  })
+);
 
 app.use(paramsProcessor);
 

@@ -17,7 +17,15 @@ import initialState from "../../store/initialState";
 const lang = localStorage.getItem("lang") || undefined;
 
 function Diploma() {
-	const URL = process.env.REACT_APP_LINK;
+	const SERVER_URL = process.env.REACT_APP_SERVER || "";
+	const SERVER_ORIGIN = (() => {
+		try {
+			return new URL(SERVER_URL).origin;
+		} catch {
+			return "";
+		}
+	})();
+	const DIPLOMAS_URL = `${SERVER_ORIGIN}/diplomas`;
 	const params = useParams();
 	const moduleId = params.module?.toUpperCase() || "";
 
@@ -71,7 +79,7 @@ function Diploma() {
 										id="cert"
 										className="cert"
 										alt="diploma"
-										src={`${URL}/diplomas/${
+										src={`${DIPLOMAS_URL}/${
 											data?.fileId
 										}/medium.png?${Date.now()}`}
 									/>
