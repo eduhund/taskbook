@@ -1,3 +1,4 @@
+const { log } = require("@logger");
 const { getTaskProcessor } = require("./taskProcessor");
 
 /**
@@ -32,6 +33,12 @@ function calculateScore(state = {}, task = {}) {
 	const sum = Object.entries(state ?? {}).reduce(
 		(currentValue, [questionId, questionState]) => {
 			const question = questionsById[questionId];
+			if (!question) {
+				log.warn(
+					`calculateScore: unknown questionId in state (taskId=${task?.id || "unknown"}, questionId=${questionId})`
+				);
+				return currentValue;
+			}
 			return (
 				currentValue +
 				getTaskProcessor(question).getScore(questionState, question)
