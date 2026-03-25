@@ -13,7 +13,6 @@ async function generateCert(fullInfo) {
   return new Promise((resolve, reject) => {
     const child = fork(__dirname + "/../../../utils/certGenerator");
     child.on("message", (fileId) => {
-      log.info("New certificate generated:", fileId);
       child.kill();
       return resolve(fileId);
     });
@@ -162,12 +161,6 @@ async function getDiploma(req, res) {
 
     const data = generateMessage(0, moduleData);
     res.status(200).send(data);
-
-    log.info(
-      `${userId} created a certificate for module ${moduleId}:`,
-      fileId,
-      params
-    );
 
     return;
   } catch (error) {

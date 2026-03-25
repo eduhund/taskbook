@@ -37,11 +37,9 @@ async function checkKey(key) {
         Authorization: bearerToken,
       },
     });
-    const { OK, error } = await response.json();
-    console.log(error);
+    const { OK } = await response.json();
     return OK;
   } catch (e) {
-    console.log(e);
     return false;
   }
 }

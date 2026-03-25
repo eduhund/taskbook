@@ -1,5 +1,3 @@
-const { log } = require("@logger");
-
 const ERRORS = [
   {
     code: -1,
@@ -172,29 +170,22 @@ function responseGenerator(code, data = {}) {
 }
 
 function responseHandler(message, req, res, next) {
-  const { code, content, trace } = message;
-  const { data, query, body } = req;
-  const input = { data, query, body };
+  const { code, content } = message;
   if (!code) {
     res.status(200).send(responseGenerator(0, content));
     return;
   }
   const error = responseGenerator(code || -1);
   if (code > 10000 && code < 20000) {
-    log.warn(error?.error?.description);
-    log.debug({ input, output: error, trace });
     res.status(400).send(error);
     return;
   } else {
-    log.warn(error?.error?.description);
-    log.debug({ input, output: error, trace });
     res.status(500).send(error);
     return;
   }
 }
 
 function pathHandler(req, res, next) {
-  log.debug(req.path);
   res.status(404);
   res.send(responseGenerator(10001));
 }

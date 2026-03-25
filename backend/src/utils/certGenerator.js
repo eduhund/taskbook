@@ -38,10 +38,8 @@ async function createCert(data, quality = "medium") {
 }
 
 process.on("message", async (msg) => {
-  console.log(msg);
   const cert = await createCert(msg);
   process.send(cert);
-  console.log("finish");
 });
 
 module.exports = createCert;

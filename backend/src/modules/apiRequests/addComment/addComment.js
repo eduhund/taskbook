@@ -1,5 +1,3 @@
-const { log } = require("@logger");
-
 const { getDBRequest } = require("../../dbRequests/dbRequests");
 const { generateMessage } = require("../../../utils/messageGenerator");
 const { sendMessage } = require("../../../services/assistant/assistant");
@@ -68,8 +66,6 @@ async function addComment(req, res) {
   };
 
   sendMessage(messageData);
-
-  log.info(`New comment from user ${userId}: ${comment}`);
 
   return;
 }
