@@ -2,6 +2,8 @@ const { log } = require("../../../services/logger/logger");
 const { getDBRequest } = require("../../dbRequests/dbRequests");
 const { lowerString } = require("../../../utils/stringProcessor");
 const { generateMessage } = require("../../../utils/messageGenerator");
+const { normalizeISODate } = require("../../../utils/date");
+const { getDeadline } = require("../../../utils/access");
 
 async function updateUser(req, res) {
   const {
@@ -26,18 +28,60 @@ async function updateUser(req, res) {
   }
 
   const userModules = {};
+  const currentUser = await getDBRequest("getUserInfo", {
+    query: { id },
+    returns: ["modules"],
+  });
 
-  modules.forEach(({ id, start, deadline }) => {
+  for (const { id, start, deadline } of modules) {
     if (start) {
+      const normalizedStart = normalizeISODate(start);
+      if (!normalizedStart) {
+        res.status(400);
+        res.send({
+          OK: false,
+          error: "invalid_params",
+          error_description: "Invalid start date format",
+        });
+        return;
+      }
       const startString = `modules.${id}.start`;
-      userModules[startString] = start;
+      userModules[startString] = normalizedStart;
     }
 
     if (deadline) {
+      const normalizedDeadline = normalizeISODate(deadline);
+      if (!normalizedDeadline) {
+        res.status(400);
+        res.send({
+          OK: false,
+          error: "invalid_params",
+          error_description: "Invalid deadline date format",
+        });
+        return;
+      }
       const deadlineString = `modules.${id}.deadline`;
-      userModules[deadlineString] = deadline;
+      userModules[deadlineString] = normalizedDeadline;
+
+      const currentProlongations = currentUser?.modules?.[id]?.prolongations;
+      if (Array.isArray(currentProlongations)) {
+        const trimmedProlongations = currentProlongations
+          .map((item) => {
+            const normalizedUntil = normalizeISODate(item?.until);
+            if (!normalizedUntil) {
+              return null;
+            }
+            return { ...item, until: normalizedUntil };
+          })
+          .filter(
+            (item) =>
+              item !== null && Date.parse(item.until) <= Date.parse(normalizedDeadline)
+          );
+
+        userModules[`modules.${id}.prolongations`] = trimmedProlongations;
+      }
     }
-  });
+  }
 
   const data = {
     email: lowerString(email),
@@ -62,11 +106,11 @@ async function updateUser(req, res) {
 
     const userModules = Object.entries(updatedUser.modules || {}).map(
       ([key, value]) => {
-        const { start, deadline } = value;
+        const { start } = value;
         return {
           id: key,
           start,
-          deadline,
+          deadline: getDeadline(value),
         };
       }
     );

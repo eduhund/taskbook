@@ -4,17 +4,16 @@ const { setKey } = require("../../../services/tokenMachine/OTK");
 const { lowerString } = require("../../../utils/stringProcessor");
 const { hashPass } = require("../../../utils/pass");
 const { sendMail } = require("../../../services/mailer");
-
-function optimiseDate(date) {
-  const initialDate = new Date(date);
-  return initialDate.toISOString().split("T")[0];
-}
+const { normalizeISODate } = require("../../../utils/date");
 
 function createModules(modules) {
   const modulesObject = {};
   modules.forEach(({ id, start, deadline }) => {
-    const startDate = optimiseDate(start);
-    const deadlineDate = optimiseDate(deadline);
+    const startDate = normalizeISODate(start);
+    const deadlineDate = normalizeISODate(deadline);
+    if (!startDate || !deadlineDate) {
+      throw new Error(`Invalid module dates for ${id}`);
+    }
     modulesObject[id] = { start: startDate, deadline: deadlineDate };
   });
   return modulesObject;
@@ -48,12 +47,20 @@ async function createUser({ body = {} }, res, next) {
       return;
     }
 
+    let modulesData = {};
+    try {
+      modulesData = createModules(modules);
+    } catch {
+      next({ code: 10002 });
+      return;
+    }
+
     const newUser = {
       email: userEmail,
       pass: pass ? hashPass(pass) : "",
       firstName,
       lastName,
-      modules: createModules(modules),
+      modules: modulesData,
       lang,
     };
 
@@ -72,8 +79,12 @@ async function createUser({ body = {} }, res, next) {
 
       const link = `${process.env.FRONTEND_URL}/createPassword?email=${userEmail}&verifyKey=${otk}&lang=${lang}`;
 
-      const date = optimiseDate(Date.now());
-      const start = optimiseDate(modules[0].start);
+      const date = normalizeISODate(Date.now());
+      const start = normalizeISODate(modules[0].start);
+      if (!date || !start) {
+        next({ code: 10002 });
+        return;
+      }
       const params = {
         template_id: date < start ? "p2vv6r2j" : "f53503qv",
         address: userEmail,

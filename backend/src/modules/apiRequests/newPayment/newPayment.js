@@ -3,6 +3,8 @@ const { calculateDeadline } = require("../../../utils/calculators");
 const { hashPass } = require("../../../utils/pass");
 const { setKey } = require("../../../services/tokenMachine/OTK");
 const { sendMail } = require("../../../services/mailer");
+const { normalizeISODate } = require("../../../utils/date");
+const { getDeadline } = require("../../../utils/access");
 const { log } = require("@logger");
 
 function getDateObject(date) {
@@ -38,7 +40,7 @@ async function newPayment(req, res) {
       email,
       firstName,
       lastName,
-      startDate,
+      startDate: rawStartDate,
       moduleId,
       isProlongation,
       isUpgrade,
@@ -48,6 +50,16 @@ async function newPayment(req, res) {
     } = body;
 
     const now = new Date();
+    const purchaseDate = normalizeISODate(now);
+    const startDate = normalizeISODate(rawStartDate);
+    if (!purchaseDate || !startDate) {
+      res.status(400);
+      res.send({
+        OK: false,
+        error: "invalid_params",
+      });
+      return;
+    }
 
     const moduleInfo = await getDBRequest("getModuleInfo", {
       query: { code: moduleId.toUpperCase() },
@@ -68,10 +80,17 @@ async function newPayment(req, res) {
 
     const accessType = getAccessType(amount, currency);
 
-    let deadline = calculateDeadline(
-      startDate,
-      accessType === "timely" ? 1 : 62
+    let deadline = normalizeISODate(
+      calculateDeadline(startDate, accessType === "timely" ? 1 : 62)
     );
+    if (!deadline) {
+      res.status(400);
+      res.send({
+        OK: false,
+        error: "invalid_params",
+      });
+      return;
+    }
 
     const lang = moduleId === "HSE" || moduleId === "HSP" ? "en" : "ru";
 
@@ -133,7 +152,7 @@ async function newPayment(req, res) {
       await sendMail(params, data);
     } else if (isUpgrade) {
       const currentAccessType = user?.modules[moduleId]?.accessType || "full";
-      const currentDeadline = user?.modules[moduleId]?.deadline;
+      const currentDeadline = normalizeISODate(user?.modules[moduleId]?.deadline);
       if (currentAccessType === "full") {
         res.status(400);
         res.send({
@@ -142,7 +161,16 @@ async function newPayment(req, res) {
         });
         return;
       } else if (currentAccessType === "timely") {
-        deadline = calculateDeadline(currentDeadline, 61);
+        const upgradeBase = currentDeadline || startDate;
+        deadline = normalizeISODate(calculateDeadline(upgradeBase, 61));
+        if (!deadline) {
+          res.status(400);
+          res.send({
+            OK: false,
+            error: "invalid_params",
+          });
+          return;
+        }
         const prolData = {
           type: "upgrade",
           transactionId,
@@ -184,10 +212,15 @@ async function newPayment(req, res) {
         await sendMail(params, data);
       }
     } else if (isProlongation) {
-      const now = new Date(Date.now());
-      const currentDeadline = new Date(user?.modules[moduleId].deadline);
-      const newDeadline = currentDeadline > now ? currentDeadline : now;
-      deadline = calculateDeadline(newDeadline, 62);
+      deadline = normalizeISODate(calculateDeadline(purchaseDate, 62));
+      if (!deadline) {
+        res.status(400);
+        res.send({
+          OK: false,
+          error: "invalid_params",
+        });
+        return;
+      }
 
       const prolData = {
         type: "renewal",
@@ -229,9 +262,27 @@ async function newPayment(req, res) {
 
       await sendMail(params, data);
     } else {
+      const extensionDeadline = normalizeISODate(calculateDeadline(purchaseDate, 62));
+      if (!extensionDeadline) {
+        res.status(400);
+        res.send({
+          OK: false,
+          error: "invalid_params",
+        });
+        return;
+      }
+
       const activeModules = Object.entries(user.modules || {}).filter(
-        ([, value]) =>
-          Date.now() - Date.parse(value.deadline) <= 7 * 24 * 60 * 60 * 1000
+        ([, value]) => {
+          const normalizedDeadline = getDeadline(value);
+          if (!normalizedDeadline) {
+            return false;
+          }
+          return (
+            Date.now() - Date.parse(normalizedDeadline) <=
+            7 * 24 * 60 * 60 * 1000
+          );
+        }
       );
 
       for (const [id] of activeModules) {
@@ -240,10 +291,10 @@ async function newPayment(req, res) {
         const data = {
           type,
           transactionId,
-          until: deadline,
+          until: extensionDeadline,
         };
 
-        user.modules[id].deadline = deadline;
+        user.modules[id].deadline = extensionDeadline;
         if (!Array.isArray(user.modules[id].prolongations)) {
           user.modules[id].prolongations = [];
         }
@@ -260,8 +311,8 @@ async function newPayment(req, res) {
               transactionId,
               until: deadline,
             },
-            accessType,
           ],
+          accessType,
         };
       }
 

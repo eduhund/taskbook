@@ -6,6 +6,7 @@ const { getNextTaskId } = require("../../../utils/getNextTaskId");
 const setLessonsState = require("../../../utils/setLessonsState");
 const { getNumberOfDoneTasks } = require("./getNumberOfDoneTasks");
 const { generateMessage } = require("../../../utils/messageGenerator");
+const { getDeadline } = require("../../../utils/access");
 
 const { MACHINE } = process.env;
 
@@ -42,14 +43,15 @@ async function getDashboard(req, res) {
     if (!moduleData) continue;
     const today = Date.now();
     const startDate = Date.parse(modules[moduleId].start);
-    const deadline = Date.parse(modules[moduleId].deadline);
+    const effectiveDeadline = getDeadline(modules[moduleId]);
+    const deadline = Date.parse(effectiveDeadline);
     const accessType = modules[moduleId].accessType || "full";
     const UTCMidnight = new Date(deadline);
     UTCMidnight.setUTCHours(23, 59, 59, 0);
     const UTCDeadline = Date.parse(UTCMidnight);
 
     moduleData.startDate = modules[moduleId].start;
-    moduleData.deadline = modules[moduleId].deadline;
+    moduleData.deadline = effectiveDeadline || modules[moduleId].deadline;
 
     if (moduleData.prevModule) {
       if (Object.keys(modules).includes(moduleData.prevModule)) {

@@ -1,3 +1,5 @@
+const { normalizeISODate } = require("./date");
+
 /**
  * Calculate deadline for user's module
  *
@@ -8,20 +10,18 @@
  * @returns {String} Date of deadline
  */
 function getDeadline({ deadline, prolongations = [] }) {
-  if (prolongations.length === 0) return deadline;
+  const baseDeadline = normalizeISODate(deadline);
+  const prolongationDeadlines = (prolongations || [])
+    .map((item) => normalizeISODate(item?.until))
+    .filter(Boolean);
 
-  if (prolongations.length > 1) {
-    prolongations.sort((a, b) => {
-      if (!a?.until && !b?.until) return 0;
-      if (!a?.until) return 1;
-      if (!b?.until) return -1;
-      return Date.parse(b.until) - Date.parse(a.until);
-    });
+  const allDeadlines = [baseDeadline, ...prolongationDeadlines].filter(Boolean);
+  if (allDeadlines.length === 0) {
+    return undefined;
   }
 
-  return prolongations[0]?.until > deadline
-    ? prolongations[0]?.until
-    : deadline;
+  allDeadlines.sort((a, b) => Date.parse(b) - Date.parse(a));
+  return allDeadlines[0];
 }
 
 module.exports = { getDeadline };

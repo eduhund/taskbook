@@ -1,6 +1,7 @@
 const { log } = require("@logger");
 
 const { getDBRequest } = require("../../dbRequests/dbRequests");
+const { getDeadline } = require("../../../utils/access");
 
 function validator(
   newModule,
@@ -26,9 +27,13 @@ function validator(
       }
 
       const now = Date.now();
-      const deadline = new Date(modules[newModule].deadline).getTime();
+      const renewalDeadline = new Date(getDeadline(modules[newModule])).getTime();
 
-      if (now > deadline + 1000 * 60 * 60 * 24 * 14) {
+      if (Number.isNaN(renewalDeadline)) {
+        return { status: false, error: "Module deadline is invalid" };
+      }
+
+      if (now > renewalDeadline + 1000 * 60 * 60 * 24 * 14) {
         return { status: false, error: "Module access is expired" };
       }
 
@@ -44,9 +49,13 @@ function validator(
       }
       if (modules[newModule].accessType == "timely") {
         const now = Date.now();
-        const deadline = new Date(modules[newModule].deadline).getTime();
+        const upgradeDeadline = new Date(getDeadline(modules[newModule])).getTime();
 
-        if (now > deadline + 1000 * 60 * 60 * 24 * 1) {
+        if (Number.isNaN(upgradeDeadline)) {
+          return { status: false, error: "Module deadline is invalid" };
+        }
+
+        if (now > upgradeDeadline + 1000 * 60 * 60 * 24 * 1) {
           return { status: false, error: "Module access is expired" };
         }
       }

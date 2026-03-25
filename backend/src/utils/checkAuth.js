@@ -2,6 +2,7 @@ const { USERS } = require("../services/mongo/mongo");
 const accessTokens = require("../services/tokenMachine/tokenMachine");
 const { getModuleId } = require("./idExtractor");
 const { generateMessage } = require("./messageGenerator");
+const { getDeadline } = require("./access");
 
 const { TRUSTED = [], ADMIN_TOKEN = null } = process.env;
 
@@ -71,8 +72,8 @@ function checkModuleAccess(req, res, next) {
     getModuleId(lessonId || taskId || questionId);
 
   USERS.findOne({ id: userId }).then((user) => {
-    startDate = user?.modules?.[moduleId]?.start;
-    deadline = user?.modules?.[moduleId]?.deadline;
+    const startDate = user?.modules?.[moduleId]?.start;
+    const deadline = getDeadline(user?.modules?.[moduleId] || {});
     if (checkDate(startDate, deadline)) {
       next();
     } else {
