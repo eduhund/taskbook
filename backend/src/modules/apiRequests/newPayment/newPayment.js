@@ -120,7 +120,9 @@ async function newPayment(req, res) {
       const link = `${process.env.FRONTEND_URL}/createPassword?email=${email}&verifyKey=${secureKey}&lang=${lang}`;
 
       let templateId = "l9ujirgq";
-      if (getISODateOny(now) < startDate) {
+      if ("COD" === moduleId.toUpperCase()) {
+        templateId = "e8fhbtha";
+      } else if (getISODateOny(now) < startDate) {
         templateId = "rq4lt12h";
       } else if (accessType === "timely") {
         templateId = "q5phfmrn";
@@ -322,7 +324,9 @@ async function newPayment(req, res) {
       });
 
       let templateId = "it2mrnd7";
-      if (getISODateOny(now) < startDate) {
+      if ("COD" === moduleId.toUpperCase()) {
+        templateId = "p4n2r9k5";
+      } else if (getISODateOny(now) < startDate) {
         templateId = "ju2fou81";
       } else if (accessType === "timely") {
         templateId = "iarldm9r";
